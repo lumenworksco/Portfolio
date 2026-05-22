@@ -33,7 +33,7 @@ const cards: Card[] = [
     typeColor: "#EE8130",
     description:
       "A product-focused tech studio building our own apps — full stack, end to end, from idea to production. I lead engineering and the full product build cycle alongside a co-founder who handles business and design.",
-    href: "/Lumen-Studio",
+    href: "https://lumen.braunf.com",
     available: true,
     accentColor: "#f59e0b",
     spotlightColor: "rgba(245, 158, 11, 0.4)",
@@ -61,7 +61,7 @@ const cards: Card[] = [
     typeColor: "#7AC74C",
     description:
       "A privacy-first student wellbeing platform using passive behavioural signals and on-device AI to help universities support students before stress becomes a crisis — without surveillance.",
-    href: "/CalmCampus",
+    href: "https://calm.braunf.com",
     available: true,
     accentColor: "#10b981",
     spotlightColor: "rgba(16, 185, 129, 0.4)",
