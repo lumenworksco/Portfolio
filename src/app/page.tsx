@@ -202,7 +202,7 @@ export default function SelectPage() {
         )}
       </AnimatePresence>
 
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-16 gap-8">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-8 md:py-16 gap-5 md:gap-8">
         {/* Professor dialog header */}
         <FadeContent blur duration={650} initialOpacity={0} className="w-full max-w-4xl">
           <DialogBox showCursor>
@@ -225,7 +225,7 @@ export default function SelectPage() {
                 color: "rgba(255,255,255,0.85)",
                 lineHeight: "1.6",
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
-                whiteSpace: "nowrap",
+                whiteSpace: undefined,
               }}
             >
               These three are no ordinary Pokémon — each one rare in its own right.{" "}
@@ -235,7 +235,7 @@ export default function SelectPage() {
         </FadeContent>
 
         {/* Card grid */}
-        <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl">
           {cards.map((card, i) => {
             const isSelected = selectedId === card.id;
             const isOther = selectedId !== null && !isSelected;
@@ -270,7 +270,7 @@ export default function SelectPage() {
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
-                      minHeight: "370px",
+                      minHeight: "clamp(260px, 40vw, 370px)",
                       border: `1px solid ${
                         isSelected
                           ? card.accentColor
@@ -328,7 +328,7 @@ export default function SelectPage() {
                     </motion.div>
 
                     {/* Title */}
-                    <h2 className="text-2xl font-bold mb-1">
+                    <h2 className="text-xl md:text-2xl font-bold mb-1">
                       <GradientText
                         colors={
                           card.available

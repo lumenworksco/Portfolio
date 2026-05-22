@@ -3,11 +3,17 @@
     border-radius: 1.5rem;
     border: 1px solid #222;
     background-color: #0e0e12;
-    padding: 2rem;
+    padding: 1.5rem;
     overflow: hidden;
     --mouse-x: 50%;
     --mouse-y: 50%;
     --spotlight-color: rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+    .card-spotlight {
+        padding: 2rem;
+    }
 }
 
 .card-spotlight::before {
