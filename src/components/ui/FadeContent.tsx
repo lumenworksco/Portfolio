@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useEffect, useState, ReactNode } from "react";
 
 interface FadeContentProps {
@@ -12,15 +14,15 @@ interface FadeContentProps {
 }
 
 const FadeContent: React.FC<FadeContentProps> = ({
-                                                     children,
-                                                     blur = false,
-                                                     duration = 1000,
-                                                     easing = "ease-out",
-                                                     delay = 0,
-                                                     threshold = 0.1,
-                                                     initialOpacity = 0,
-                                                     className = "",
-                                                 }) => {
+    children,
+    blur = false,
+    duration = 1000,
+    easing = "ease-out",
+    delay = 0,
+    threshold = 0.1,
+    initialOpacity = 0,
+    className = "",
+}) => {
     const [inView, setInView] = useState(false);
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -32,16 +34,13 @@ const FadeContent: React.FC<FadeContentProps> = ({
             ([entry]) => {
                 if (entry.isIntersecting) {
                     observer.unobserve(element);
-                    setTimeout(() => {
-                        setInView(true);
-                    }, delay);
+                    setTimeout(() => setInView(true), delay);
                 }
             },
             { threshold }
         );
 
         observer.observe(element);
-
         return () => observer.disconnect();
     }, [threshold, delay]);
 

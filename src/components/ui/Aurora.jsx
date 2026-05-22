@@ -1,3 +1,5 @@
+"use client";
+
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { useEffect, useRef } from "react";
 
@@ -44,7 +46,7 @@ float snoise(vec2 v){
             dot(x0, x0),
             dot(x12.xy, x12.xy),
             dot(x12.zw, x12.zw)
-        ), 
+        ),
         0.0
     );
     m = m * m;
@@ -82,22 +84,18 @@ struct ColorStop {
 }
 
 void main() {
-    // Compute UVs from gl_FragCoord
     vec2 uv = gl_FragCoord.xy / uResolution;
-    
-    // Build our three color stops from uniform array uColorStops
+
     ColorStop colors[3];
     colors[0] = ColorStop(uColorStops[0], 0.0);
     colors[1] = ColorStop(uColorStops[1], 0.5);
     colors[2] = ColorStop(uColorStops[2], 1.0);
 
-    // Interpolate color along uv.x
     vec3 rampColor;
     COLOR_RAMP(colors, uv.x, rampColor);
 
-    // Noise-based "height," scaled by amplitude
-    float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) 
-                   * 0.5 
+    float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25))
+                   * 0.5
                    * uAmplitude;
     height = exp(height);
     height = (uv.y * 2.0 - height + 0.2);

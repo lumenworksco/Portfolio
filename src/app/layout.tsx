@@ -1,34 +1,24 @@
 import type { Metadata } from "next";
-import { Varela_Round } from 'next/font/google';
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const varelaRound = Varela_Round({
-    weight: '400',
-    subsets: ['latin'],
-    variable: '--font-varela-round',
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Florian Braun's Portfolio",
-  description: "Welcome to my personal portfolio website showcasing my work and experience in software development",
+  title: "Florian Braun",
+  description: "Select your experience — Florian Braun's creative hub.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${varelaRound.variable} antialiased`}
-      >
-        {children}
-        <Analytics />
-        <SpeedInsights />
-      </body>
+      <body className={`${inter.variable} antialiased`}>{children}</body>
     </html>
   );
 }

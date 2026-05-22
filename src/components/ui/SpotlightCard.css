@@ -2,7 +2,7 @@
     position: relative;
     border-radius: 1.5rem;
     border: 1px solid #222;
-    background-color: #111;
+    background-color: #0e0e12;
     padding: 2rem;
     overflow: hidden;
     --mouse-x: 50%;
@@ -21,9 +21,15 @@
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
+    z-index: 0;
 }
 
 .card-spotlight:hover::before,
 .card-spotlight:focus-within::before {
-    opacity: 0.6;
+    opacity: 1;
+}
+
+.card-spotlight > * {
+    position: relative;
+    z-index: 1;
 }
