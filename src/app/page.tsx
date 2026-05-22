@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Code2, Brain } from "lucide-react";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
@@ -13,70 +14,146 @@ interface Card {
   id: CardId;
   title: string;
   subtitle: string;
+  pokemonType: string;
+  typeColor: string;
   description: string;
   href: string | null;
   available: boolean;
   accentColor: string;
   spotlightColor: `rgba(${number}, ${number}, ${number}, ${number})`;
   gradientColors: string[];
-  icon: string;
 }
 
 const cards: Card[] = [
   {
     id: "lumen",
     title: "Lumen Studio",
-    subtitle: "Design & Visual",
+    subtitle: "Tech Studio",
+    pokemonType: "FIRE",
+    typeColor: "#EE8130",
     description:
-      "A creative design studio crafting immersive visual experiences, brand identities, and digital worlds.",
+      "A product-focused tech studio building our own apps — full stack, end to end, from idea to production. I lead engineering and the full product build cycle alongside a co-founder who handles business and design.",
     href: "/Lumen-Studio",
     available: true,
     accentColor: "#f59e0b",
     spotlightColor: "rgba(245, 158, 11, 0.4)",
     gradientColors: ["#fde68a", "#f59e0b", "#fbbf24", "#f59e0b", "#fde68a"],
-    icon: "✦",
   },
   {
     id: "portfolio",
     title: "Portfolio",
     subtitle: "Personal Space",
+    pokemonType: "PSYCHIC",
+    typeColor: "#F95587",
     description:
-      "A personal portfolio showcasing projects, experience, and the journey of a developer. Coming soon.",
+      "A personal portfolio showcasing projects, experience, and the journey of a developer.",
     href: null,
     available: false,
     accentColor: "#8b5cf6",
     spotlightColor: "rgba(139, 92, 246, 0.2)",
     gradientColors: ["#c4b5fd", "#8b5cf6", "#a78bfa", "#8b5cf6", "#c4b5fd"],
-    icon: "◈",
   },
   {
     id: "calm",
     title: "CalmCampus",
-    subtitle: "Student Wellness",
+    subtitle: "Student Wellbeing",
+    pokemonType: "GRASS",
+    typeColor: "#7AC74C",
     description:
-      "A wellness companion for students, helping build healthy daily routines and mental clarity.",
+      "A privacy-first student wellbeing platform using passive behavioural signals and on-device AI to help universities support students before stress becomes a crisis — without surveillance.",
     href: "/CalmCampus",
     available: true,
     accentColor: "#10b981",
     spotlightColor: "rgba(16, 185, 129, 0.4)",
     gradientColors: ["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"],
-    icon: "◉",
   },
 ];
 
+const cardIcons: Record<CardId, React.ReactElement> = {
+  lumen: <Sparkles size={30} />,
+  portfolio: <Code2 size={30} />,
+  calm: <Brain size={30} />,
+};
+
+// ─── Pokémon Type Badge ────────────────────────────────────────────────────────
+function TypeBadge({ type, color }: { type: string; color: string }) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "3px 10px 2px",
+        borderRadius: "4px",
+        background: color,
+        color: "#fff",
+        fontSize: "8px",
+        fontFamily: "var(--font-pixel), monospace",
+        letterSpacing: "0.04em",
+        textTransform: "uppercase",
+        lineHeight: "1.8",
+        boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.25)",
+      }}
+    >
+      {type}
+    </span>
+  );
+}
+
+// ─── Professor Dialog Box ──────────────────────────────────────────────────────
+function DialogBox({
+  children,
+  showCursor = false,
+}: {
+  children: React.ReactNode;
+  showCursor?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        background: "rgba(8, 8, 12, 0.92)",
+        border: "3px solid rgba(255,255,255,0.85)",
+        borderRadius: "8px",
+        padding: "14px 20px",
+        boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.08), 0 4px 32px rgba(0,0,0,0.6)",
+      }}
+    >
+      {children}
+      {showCursor && (
+        <span
+          className="dialog-cursor"
+          style={{
+            position: "absolute",
+            bottom: "10px",
+            right: "16px",
+            color: "rgba(255,255,255,0.7)",
+            fontSize: "10px",
+            fontFamily: "var(--font-pixel), monospace",
+          }}
+        >
+          ▼
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ─── Card entrance variants ────────────────────────────────────────────────────
 const cardVariants = {
-  hidden: { opacity: 0, y: 32, scale: 0.96 },
+  hidden: { opacity: 0, y: 36, scale: 0.95 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.55, delay: 0.2 + i * 0.14, ease: "easeOut" as const },
+    transition: { duration: 0.55, delay: 0.35 + i * 0.14, ease: "easeOut" as const },
   }),
 };
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SelectPage() {
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
+
+  const selectedCard = cards.find((c) => c.id === selectedId) ?? null;
 
   const handleSelect = useCallback(
     (card: Card) => {
@@ -85,7 +162,7 @@ export default function SelectPage() {
       if (card.href) {
         setTimeout(() => {
           window.location.href = card.href!;
-        }, 650);
+        }, 700);
       }
     },
     [selectedId]
@@ -102,7 +179,7 @@ export default function SelectPage() {
         />
       </div>
 
-      {/* Dark vignette so text stays readable */}
+      {/* Vignette */}
       <div
         className="fixed inset-0 z-[1] pointer-events-none"
         style={{
@@ -119,31 +196,42 @@ export default function SelectPage() {
             className="fixed inset-0 z-50 pointer-events-none"
             style={{ background: "#fff" }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.85, 0] }}
-            transition={{ duration: 0.65, times: [0, 0.25, 1], ease: "easeOut" }}
+            animate={{ opacity: [0, 0.9, 0] }}
+            transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
           />
         )}
       </AnimatePresence>
 
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-16">
-        {/* Header */}
-        <FadeContent blur duration={700} initialOpacity={0}>
-          <div className="text-center mb-14">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-16 gap-8">
+        {/* Professor dialog header */}
+        <FadeContent blur duration={650} initialOpacity={0} className="w-full max-w-4xl">
+          <DialogBox showCursor>
             <p
-              className="text-xs font-mono tracking-[0.3em] uppercase mb-5"
-              style={{ color: "rgba(255,255,255,0.35)" }}
+              style={{
+                fontSize: "10px",
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                fontWeight: 600,
+                color: "rgba(255,255,255,0.38)",
+                marginBottom: "8px",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+              }}
             >
-              Select your experience
+              Prof. Braun
             </p>
-            <h1 className="text-4xl md:text-[3.25rem] font-bold leading-tight">
-              <GradientText
-                colors={["#fbbf24", "#a78bfa", "#34d399", "#a78bfa", "#fbbf24"]}
-                animationSpeed={7}
-              >
-                Choose your path.
-              </GradientText>
-            </h1>
-          </div>
+            <p
+              style={{
+                fontSize: "13px",
+                color: "rgba(255,255,255,0.85)",
+                lineHeight: "1.6",
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                whiteSpace: "nowrap",
+              }}
+            >
+              These three are no ordinary Pokémon — each one rare in its own right.{" "}
+              <span style={{ color: "#fff", fontWeight: 600 }}>Which will you choose?</span>
+            </p>
+          </DialogBox>
         </FadeContent>
 
         {/* Card grid */}
@@ -169,7 +257,7 @@ export default function SelectPage() {
                   onClick={() => handleSelect(card)}
                   animate={{
                     scale: isSelected ? 1.04 : isOther ? 0.93 : isHovered ? 1.025 : 1,
-                    opacity: isOther ? 0.22 : 1,
+                    opacity: isOther ? 0.2 : 1,
                     y: isHovered ? -10 : 0,
                   }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
@@ -182,7 +270,7 @@ export default function SelectPage() {
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
-                      minHeight: "360px",
+                      minHeight: "370px",
                       border: `1px solid ${
                         isSelected
                           ? card.accentColor
@@ -197,11 +285,11 @@ export default function SelectPage() {
                         : "none",
                       transition: "border-color 0.3s ease, box-shadow 0.3s ease",
                       background: card.available
-                        ? "rgba(10,10,14,0.85)"
+                        ? "rgba(10,10,14,0.88)"
                         : "rgba(10,10,14,0.6)",
                     }}
                   >
-                    {/* Glow blob behind the icon */}
+                    {/* Corner glow */}
                     <div
                       style={{
                         position: "absolute",
@@ -211,7 +299,7 @@ export default function SelectPage() {
                         height: "140px",
                         borderRadius: "50%",
                         background: card.accentColor,
-                        opacity: isHovered || isSelected ? 0.07 : 0.03,
+                        opacity: isHovered || isSelected ? 0.07 : 0.025,
                         filter: "blur(40px)",
                         transition: "opacity 0.4s ease",
                         pointerEvents: "none",
@@ -219,18 +307,25 @@ export default function SelectPage() {
                     />
 
                     {/* Icon */}
-                    <div
-                      className="text-3xl mb-6 font-mono"
+                    <motion.div
+                      animate={
+                        isSelected
+                          ? { scale: [1, 1.3, 0.9, 1.1, 1] }
+                          : { scale: 1 }
+                      }
+                      transition={{ duration: 0.45, ease: "easeOut" }}
                       style={{
                         color: card.available ? card.accentColor : "#555",
-                        textShadow: isHovered
-                          ? `0 0 20px ${card.accentColor}80`
+                        marginBottom: "24px",
+                        filter: isHovered
+                          ? `drop-shadow(0 0 10px ${card.accentColor}90)`
                           : "none",
-                        transition: "text-shadow 0.3s ease",
+                        transition: "filter 0.3s ease",
+                        display: "inline-block",
                       }}
                     >
-                      {card.icon}
-                    </div>
+                      {cardIcons[card.id]}
+                    </motion.div>
 
                     {/* Title */}
                     <h2 className="text-2xl font-bold mb-1">
@@ -246,13 +341,19 @@ export default function SelectPage() {
                       </GradientText>
                     </h2>
 
-                    {/* Subtitle */}
-                    <p
-                      className="text-[10px] font-mono tracking-[0.25em] uppercase mb-5"
-                      style={{ color: "rgba(255,255,255,0.3)" }}
-                    >
-                      {card.subtitle}
-                    </p>
+                    {/* Subtitle + type badge */}
+                    <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
+                      <p
+                        className="text-[10px] font-mono tracking-[0.2em] uppercase"
+                        style={{ color: "rgba(255,255,255,0.3)" }}
+                      >
+                        {card.subtitle}
+                      </p>
+                      <TypeBadge
+                        type={card.pokemonType}
+                        color={card.available ? card.typeColor : "#3f3f46"}
+                      />
+                    </div>
 
                     {/* Accent line */}
                     <div
@@ -260,7 +361,7 @@ export default function SelectPage() {
                         width: isHovered || isSelected ? "48px" : "24px",
                         height: "1px",
                         background: card.available ? card.accentColor : "#333",
-                        marginBottom: "20px",
+                        marginBottom: "18px",
                         transition: "width 0.4s ease",
                         opacity: card.available ? 1 : 0.4,
                       }}
@@ -272,35 +373,41 @@ export default function SelectPage() {
                       style={{
                         color: card.available
                           ? "rgba(255,255,255,0.55)"
-                          : "rgba(255,255,255,0.25)",
+                          : "rgba(255,255,255,0.22)",
                       }}
                     >
                       {card.description}
                     </p>
 
-                    {/* CTA / badge */}
+                    {/* CTA */}
                     <div className="mt-7">
                       {card.available ? (
                         <span
-                          className="text-xs font-mono"
                           style={{
+                            fontSize: "11px",
+                            fontFamily: "var(--font-pixel), monospace",
                             color: card.accentColor,
-                            opacity: isHovered ? 1 : 0.7,
+                            opacity: isHovered ? 1 : 0.65,
                             transition: "opacity 0.3s ease",
+                            letterSpacing: "0.04em",
                           }}
                         >
-                          → Enter
+                          ▶ CHOOSE
                         </span>
                       ) : (
                         <span
-                          className="text-[10px] font-mono px-2.5 py-1 rounded"
                           style={{
+                            fontSize: "8px",
+                            fontFamily: "var(--font-pixel), monospace",
                             color: "rgba(255,255,255,0.2)",
                             background: "rgba(255,255,255,0.04)",
                             border: "1px solid rgba(255,255,255,0.07)",
+                            padding: "4px 10px 3px",
+                            borderRadius: "4px",
+                            letterSpacing: "0.04em",
                           }}
                         >
-                          Coming soon
+                          COMING SOON
                         </span>
                       )}
                     </div>
@@ -311,14 +418,50 @@ export default function SelectPage() {
           })}
         </div>
 
-        {/* Bottom hint */}
-        <FadeContent blur duration={600} delay={900} initialOpacity={0}>
-          <p
-            className="mt-12 text-[10px] font-mono tracking-[0.35em] uppercase"
-            style={{ color: "rgba(255,255,255,0.2)" }}
-          >
-            Click to select
-          </p>
+        {/* Bottom dialog */}
+        <FadeContent blur duration={600} delay={950} initialOpacity={0} className="w-full max-w-4xl">
+          <DialogBox showCursor={selectedId === null}>
+            <AnimatePresence mode="wait">
+              {selectedId === null ? (
+                <motion.p
+                  key="idle"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    fontSize: "11px",
+                    fontFamily: "var(--font-pixel), monospace",
+                    color: "rgba(255,255,255,0.55)",
+                    letterSpacing: "0.05em",
+                    lineHeight: "1.8",
+                  }}
+                >
+                  Choose a Pokémon!
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="chosen"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    fontSize: "11px",
+                    fontFamily: "var(--font-pixel), monospace",
+                    letterSpacing: "0.05em",
+                    lineHeight: "1.8",
+                  }}
+                >
+                  <span style={{ color: "rgba(255,255,255,0.55)" }}>So, you want </span>
+                  <span style={{ color: selectedCard?.accentColor ?? "#fff" }}>
+                    {selectedCard?.title}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.55)" }}>{"? "}This choice is yours!</span>
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </DialogBox>
         </FadeContent>
       </main>
     </div>
