@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     description: "Exploring the Intersection of AI & Entrepreneurship",
     url: "https://braunf.com",
     siteName: "Florian Braun",
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "Florian Braun" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Florian Braun" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Florian Braun",
     description: "Exploring the Intersection of AI & Entrepreneurship",
-    images: ["/og.svg"],
+    images: ["/og.png"],
   },
 };
 
