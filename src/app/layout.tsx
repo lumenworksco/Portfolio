@@ -18,6 +18,20 @@ const pressStart2P = Press_Start_2P({
 export const metadata: Metadata = {
   title: "Florian Braun",
   description: "Select your experience — Florian Braun's creative hub.",
+  openGraph: {
+    title: "Florian Braun",
+    description: "Exploring the Intersection of AI & Entrepreneurship",
+    url: "https://braunf.com",
+    siteName: "Florian Braun",
+    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "Florian Braun" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Florian Braun",
+    description: "Exploring the Intersection of AI & Entrepreneurship",
+    images: ["/og.svg"],
+  },
 };
 
 export default function RootLayout({
