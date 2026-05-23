@@ -425,6 +425,59 @@ export default function SelectPage() {
           })}
         </div>
 
+        {/* Side projects */}
+        <FadeContent blur duration={600} delay={1100} initialOpacity={0} className="w-full max-w-4xl">
+          <div className="flex items-center gap-4 px-1">
+            <span
+              style={{
+                fontSize: "8px",
+                fontFamily: "var(--font-pixel), monospace",
+                color: "rgba(255,255,255,0.2)",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Also
+            </span>
+            <div style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
+            <a
+              href="https://nihongo.braunf.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "7px 14px",
+                borderRadius: "6px",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                textDecoration: "none",
+                transition: "background 0.2s ease, border-color 0.2s ease",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+              }}
+            >
+              <span style={{ fontSize: "13px", lineHeight: 1 }}>日本語</span>
+              <div>
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: 500, margin: 0 }}>
+                  Nihongo · N5
+                </p>
+                <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.04em", margin: 0 }}>
+                  nihongo.braunf.com ↗
+                </p>
+              </div>
+            </a>
+          </div>
+        </FadeContent>
+
         {/* Bottom dialog */}
         <FadeContent blur duration={600} delay={950} initialOpacity={0} className="w-full max-w-4xl">
           <DialogBox showCursor={selectedId === null}>
