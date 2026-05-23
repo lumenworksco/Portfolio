@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Code2, Brain } from "lucide-react";
 import Aurora from "@/components/ui/Aurora";
@@ -47,8 +48,8 @@ const cards: Card[] = [
     typeColor: "#F95587",
     description:
       "A personal portfolio showcasing projects, experience, and the journey of a developer.",
-    href: null,
-    available: false,
+    href: "/portfolio",
+    available: true,
     accentColor: "#8b5cf6",
     spotlightColor: "rgba(139, 92, 246, 0.2)",
     gradientColors: ["#c4b5fd", "#8b5cf6", "#a78bfa", "#8b5cf6", "#c4b5fd"],
@@ -150,6 +151,7 @@ const cardVariants = {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SelectPage() {
+  const router = useRouter();
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
 
@@ -160,12 +162,17 @@ export default function SelectPage() {
       if (!card.available || selectedId !== null) return;
       setSelectedId(card.id);
       if (card.href) {
+        const isInternal = card.href.startsWith("/");
         setTimeout(() => {
-          window.location.href = card.href!;
+          if (isInternal) {
+            router.push(card.href!);
+          } else {
+            window.location.href = card.href!;
+          }
         }, 700);
       }
     },
-    [selectedId]
+    [selectedId, router]
   );
 
   return (
