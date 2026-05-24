@@ -414,28 +414,45 @@ export default function PokedexPage() {
         }}
       />
 
-      {/* Entry scan line */}
+      {/* Entry reveal overlay — slides away from top, scan glow at leading edge */}
       <AnimatePresence>
         {!scanDone && (
-          <motion.div
-            key="scanline"
-            initial={{ top: "-4px" }}
-            animate={{ top: "100vh" }}
-            transition={{ duration: 1.5, ease: "linear" }}
-            onAnimationComplete={() => setScanDone(true)}
-            style={{
-              position: "fixed",
-              left: 0,
-              right: 0,
-              height: "4px",
-              zIndex: 40,
-              background:
-                "linear-gradient(to right, transparent, #CC0000 20%, #ff5555 50%, #CC0000 80%, transparent)",
-              boxShadow:
-                "0 0 24px #CC000090, 0 0 60px #CC000040, 0 0 2px #ff4444",
-              pointerEvents: "none",
-            }}
-          />
+          <>
+            {/* Dark cover that clips away from the top, revealing content */}
+            <motion.div
+              key="reveal-overlay"
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "#060608",
+                zIndex: 32,
+                pointerEvents: "none",
+              }}
+              initial={{ clipPath: "inset(0 0 0 0)" }}
+              animate={{ clipPath: "inset(100% 0 0 0)" }}
+              transition={{ duration: 1.5, ease: "linear" }}
+              onAnimationComplete={() => setScanDone(true)}
+            />
+            {/* Scan glow line at the reveal boundary */}
+            <motion.div
+              key="scanline"
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "4px",
+                zIndex: 33,
+                background:
+                  "linear-gradient(to right, transparent, #CC0000 20%, #ff6666 50%, #CC0000 80%, transparent)",
+                boxShadow: "0 0 20px #CC000099, 0 0 50px #CC000050, 0 2px 8px #CC000060",
+                pointerEvents: "none",
+              }}
+              initial={{ y: 0 }}
+              animate={{ y: "100vh" }}
+              transition={{ duration: 1.5, ease: "linear" }}
+            />
+          </>
         )}
       </AnimatePresence>
 

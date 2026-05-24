@@ -451,18 +451,37 @@ export default function SelectPage() {
         {/* Side projects */}
         <FadeContent blur duration={600} delay={1100} initialOpacity={0} className="w-full max-w-4xl">
           <div className="flex items-center gap-4 px-1">
-            <span
+            <button
+              onClick={handlePokedex}
               style={{
                 fontSize: "8px",
                 fontFamily: "var(--font-pixel), monospace",
-                color: "rgba(255,255,255,0.2)",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
+                color: POKEDEX_RED,
+                letterSpacing: "0.06em",
+                background: "rgba(204,0,0,0.08)",
+                border: "1px solid rgba(204,0,0,0.2)",
+                borderRadius: "5px",
+                padding: "5px 12px 4px",
+                cursor: "pointer",
                 whiteSpace: "nowrap",
+                transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "rgba(204,0,0,0.16)";
+                el.style.borderColor = "rgba(204,0,0,0.38)";
+                el.style.boxShadow = "0 0 14px rgba(204,0,0,0.22)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "rgba(204,0,0,0.08)";
+                el.style.borderColor = "rgba(204,0,0,0.2)";
+                el.style.boxShadow = "none";
               }}
             >
-              Also
-            </span>
+              ▶ POKÉDEX
+            </button>
             <div style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
             <a
               href="https://nihongo.braunf.com"
@@ -506,62 +525,22 @@ export default function SelectPage() {
           <DialogBox showCursor={selectedId === null && !navigatingToPokedex}>
             <AnimatePresence mode="wait">
               {selectedId === null && !navigatingToPokedex ? (
-                <motion.div
+                <motion.p
                   key="idle"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "16px",
+                    fontSize: "11px",
+                    fontFamily: "var(--font-pixel), monospace",
+                    color: "rgba(255,255,255,0.55)",
+                    letterSpacing: "0.05em",
+                    lineHeight: "1.8",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      fontFamily: "var(--font-pixel), monospace",
-                      color: "rgba(255,255,255,0.55)",
-                      letterSpacing: "0.05em",
-                      lineHeight: "1.8",
-                    }}
-                  >
-                    Choose a Pokémon!
-                  </span>
-                  <button
-                    onClick={handlePokedex}
-                    style={{
-                      fontSize: "8px",
-                      fontFamily: "var(--font-pixel), monospace",
-                      color: POKEDEX_RED,
-                      letterSpacing: "0.06em",
-                      background: "rgba(204,0,0,0.08)",
-                      border: `1px solid rgba(204,0,0,0.22)`,
-                      borderRadius: "5px",
-                      padding: "5px 12px 4px",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                      transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-                      flexShrink: 0,
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLButtonElement;
-                      el.style.background = "rgba(204,0,0,0.16)";
-                      el.style.borderColor = "rgba(204,0,0,0.4)";
-                      el.style.boxShadow = `0 0 14px rgba(204,0,0,0.25)`;
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLButtonElement;
-                      el.style.background = "rgba(204,0,0,0.08)";
-                      el.style.borderColor = "rgba(204,0,0,0.22)";
-                      el.style.boxShadow = "none";
-                    }}
-                  >
-                    ▶ POKÉDEX
-                  </button>
-                </motion.div>
+                  Choose a Pokémon!
+                </motion.p>
               ) : navigatingToPokedex ? (
                 <motion.p
                   key="pokedex"
