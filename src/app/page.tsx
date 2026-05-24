@@ -11,6 +11,8 @@ import FadeContent from "@/components/ui/FadeContent";
 
 type CardId = "lumen" | "portfolio" | "calm";
 
+const POKEDEX_RED = "#CC0000";
+
 interface Card {
   id: CardId;
   title: string;
@@ -154,12 +156,13 @@ export default function SelectPage() {
   const router = useRouter();
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
+  const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
 
   const selectedCard = cards.find((c) => c.id === selectedId) ?? null;
 
   const handleSelect = useCallback(
     (card: Card) => {
-      if (!card.available || selectedId !== null) return;
+      if (!card.available || selectedId !== null || navigatingToPokedex) return;
       setSelectedId(card.id);
       if (card.href) {
         const isInternal = card.href.startsWith("/");
@@ -172,8 +175,14 @@ export default function SelectPage() {
         }, 700);
       }
     },
-    [selectedId, router]
+    [selectedId, navigatingToPokedex, router]
   );
+
+  const handlePokedex = useCallback(() => {
+    if (selectedId !== null || navigatingToPokedex) return;
+    setNavigatingToPokedex(true);
+    setTimeout(() => router.push("/pokedex"), 700);
+  }, [selectedId, navigatingToPokedex, router]);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
@@ -195,7 +204,7 @@ export default function SelectPage() {
         }}
       />
 
-      {/* Full-screen selection flash */}
+      {/* Card selection flash — white */}
       <AnimatePresence>
         {selectedId !== null && (
           <motion.div
@@ -204,6 +213,20 @@ export default function SelectPage() {
             style={{ background: "#fff" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.9, 0] }}
+            transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Pokédex navigation flash — red */}
+      <AnimatePresence>
+        {navigatingToPokedex && (
+          <motion.div
+            key="pokedex-flash"
+            className="fixed inset-0 z-50 pointer-events-none"
+            style={{ background: POKEDEX_RED }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.82, 0] }}
             transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
           />
         )}
@@ -245,8 +268,8 @@ export default function SelectPage() {
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl">
           {cards.map((card, i) => {
             const isSelected = selectedId === card.id;
-            const isOther = selectedId !== null && !isSelected;
-            const isHovered = hoveredId === card.id && selectedId === null;
+            const isOther = (selectedId !== null && !isSelected) || navigatingToPokedex;
+            const isHovered = hoveredId === card.id && selectedId === null && !navigatingToPokedex;
 
             return (
               <motion.div
@@ -480,11 +503,68 @@ export default function SelectPage() {
 
         {/* Bottom dialog */}
         <FadeContent blur duration={600} delay={950} initialOpacity={0} className="w-full max-w-4xl">
-          <DialogBox showCursor={selectedId === null}>
+          <DialogBox showCursor={selectedId === null && !navigatingToPokedex}>
             <AnimatePresence mode="wait">
-              {selectedId === null ? (
-                <motion.p
+              {selectedId === null && !navigatingToPokedex ? (
+                <motion.div
                   key="idle"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "16px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontFamily: "var(--font-pixel), monospace",
+                      color: "rgba(255,255,255,0.55)",
+                      letterSpacing: "0.05em",
+                      lineHeight: "1.8",
+                    }}
+                  >
+                    Choose a Pokémon!
+                  </span>
+                  <button
+                    onClick={handlePokedex}
+                    style={{
+                      fontSize: "8px",
+                      fontFamily: "var(--font-pixel), monospace",
+                      color: POKEDEX_RED,
+                      letterSpacing: "0.06em",
+                      background: "rgba(204,0,0,0.08)",
+                      border: `1px solid rgba(204,0,0,0.22)`,
+                      borderRadius: "5px",
+                      padding: "5px 12px 4px",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLButtonElement;
+                      el.style.background = "rgba(204,0,0,0.16)";
+                      el.style.borderColor = "rgba(204,0,0,0.4)";
+                      el.style.boxShadow = `0 0 14px rgba(204,0,0,0.25)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLButtonElement;
+                      el.style.background = "rgba(204,0,0,0.08)";
+                      el.style.borderColor = "rgba(204,0,0,0.22)";
+                      el.style.boxShadow = "none";
+                    }}
+                  >
+                    ▶ POKÉDEX
+                  </button>
+                </motion.div>
+              ) : navigatingToPokedex ? (
+                <motion.p
+                  key="pokedex"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -492,12 +572,12 @@ export default function SelectPage() {
                   style={{
                     fontSize: "11px",
                     fontFamily: "var(--font-pixel), monospace",
-                    color: "rgba(255,255,255,0.55)",
                     letterSpacing: "0.05em",
                     lineHeight: "1.8",
+                    color: POKEDEX_RED,
                   }}
                 >
-                  Choose a Pokémon!
+                  Opening POKÉDEX...
                 </motion.p>
               ) : (
                 <motion.p
