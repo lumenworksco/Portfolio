@@ -67,9 +67,9 @@ const cards: Card[] = [
       "A privacy-first student wellbeing platform using passive behavioural signals and on-device AI to help universities support students before stress becomes a crisis — without surveillance.",
     href: "https://calm.braunf.com",
     available: true,
-    accentColor: "#10b981",
-    spotlightColor: "rgba(16, 185, 129, 0.4)",
-    gradientColors: ["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"],
+    accentColor: "#84cc16",
+    spotlightColor: "rgba(132, 204, 22, 0.3)",
+    gradientColors: ["#d9f99d", "#84cc16", "#bef264", "#84cc16", "#d9f99d"],
   },
 ];
 
