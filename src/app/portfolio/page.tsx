@@ -137,16 +137,45 @@ function BadgeCard({ label, sub }: { label: string; sub?: string }) {
   );
 }
 
-// ─── Publication card ─────────────────────────────────────────────────────────
-function PubCard({ title, year }: { title: string; year: string }) {
+// ─── Research card ─────────────────────────────────────────────────────────────
+function ResearchCard({
+  title, year, abstract, tags,
+}: {
+  title: string; year: string; abstract: string; tags: string[];
+}) {
   return (
     <motion.div
       variants={itemVariant}
-      className="rounded-xl p-4"
+      className="rounded-xl p-5"
       style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
-      <p className="text-sm text-white leading-snug">{title}</p>
-      <p className="text-xs mt-1 font-mono" style={{ color: "rgba(139,92,246,0.6)" }}>{year} · Independent Research Paper</p>
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <p className="text-sm font-semibold text-white leading-snug">{title}</p>
+        <span
+          className="text-[10px] font-mono shrink-0 mt-0.5"
+          style={{ color: "rgba(139,92,246,0.65)" }}
+        >
+          {year}
+        </span>
+      </div>
+      <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.42)" }}>
+        {abstract}
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className="text-[10px] px-2 py-0.5 rounded-full"
+            style={{
+              background: "rgba(139,92,246,0.1)",
+              border: "1px solid rgba(139,92,246,0.22)",
+              color: "rgba(139,92,246,0.85)",
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
     </motion.div>
   );
 }
@@ -417,17 +446,49 @@ export default function PortfolioPage() {
           </motion.div>
         </motion.section>
 
-        {/* ── Publications ──────────────────────────────────────────────────── */}
+        {/* ── Research ──────────────────────────────────────────────────────── */}
         <Section className="mb-14">
-          <SectionHeading>Publications</SectionHeading>
+          <SectionHeading>Research</SectionHeading>
+
+          {/* Interests */}
+          <motion.div variants={itemVariant} className="flex flex-wrap gap-2 mb-8">
+            {[
+              "Cross-lingual NLP",
+              "LLM Interpretability",
+              "Multilingual Alignment",
+              "On-device AI",
+              "Behavioural Signal Processing",
+            ].map((interest) => (
+              <span
+                key={interest}
+                style={{
+                  display: "inline-block",
+                  padding: "4px 11px",
+                  borderRadius: "99px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.5)",
+                }}
+              >
+                {interest}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Papers */}
           <div className="flex flex-col gap-4">
-            <PubCard
+            <ResearchCard
               title="Interpretable Cross-Lingual Alignment in Small Language Models: Probing Cultural and Pragmatic Reasoning in Japanese-English Bilingual LLMs"
               year="2026"
+              abstract="Investigates how small language models encode cross-lingual alignment, focusing on cultural and pragmatic reasoning in Japanese-English bilingual settings. Probes internal representations to assess whether models capture language-specific pragmatic cues or converge on a language-neutral representation."
+              tags={["NLP", "Cross-lingual", "LLMs", "Interpretability", "Japanese-English"]}
             />
-            <PubCard
+            <ResearchCard
               title="The Foundational Role of Data Structures and Algorithms in Artificial Intelligence Systems"
               year="Oct 2025"
+              abstract="Examines how classical computer science fundamentals — sorting, searching, graph algorithms, and dynamic programming — underpin modern AI infrastructure and ML systems at scale. Argues that algorithmic literacy remains essential for building efficient, production-grade AI systems."
+              tags={["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure"]}
             />
           </div>
         </Section>
