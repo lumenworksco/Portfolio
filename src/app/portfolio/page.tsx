@@ -221,9 +221,36 @@ export default function PortfolioPage() {
                 Aspiring Researcher in LLMs and NLP
               </span>
             </p>
-            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <div className="flex items-center gap-1.5 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
               <MapPin size={13} />
               <span className="text-xs font-mono">Leuven, Belgium</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { flag: "🇳🇱", lang: "Dutch",    note: "Native" },
+                { flag: "🇫🇷", lang: "French",   note: "Native" },
+                { flag: "🇬🇧", lang: "English",  note: "C1"     },
+                { flag: "🇩🇪", lang: "German",   note: "A2"     },
+                { flag: "🇯🇵", lang: "Japanese", note: "N5"     },
+                { flag: "🇪🇸", lang: "Spanish",  note: "A1"     },
+              ].map(({ flag, lang, note }) => (
+                <span
+                  key={lang}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "4px 10px",
+                    borderRadius: "99px",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  <span style={{ fontSize: "13px", lineHeight: 1 }}>{flag}</span>
+                  <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)" }}>{lang}</span>
+                  <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "monospace" }}>{note}</span>
+                </span>
+              ))}
             </div>
           </div>
         </FadeContent>
