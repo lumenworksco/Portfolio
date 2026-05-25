@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowLeft, MapPin } from "lucide-react";
+import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import GradientText from "@/components/ui/GradientText";
@@ -364,6 +365,30 @@ export default function PortfolioPage() {
             </div>
           </Section>
         </div>
+
+        {/* ── GitHub Activity ───────────────────────────────────────────────── */}
+        <motion.section
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="mb-14"
+        >
+          <motion.h2
+            variants={fadeUp}
+            className="text-xs font-mono tracking-[0.25em] uppercase mb-6"
+            style={{ color: "#8b5cf6" }}
+          >
+            GitHub Activity
+          </motion.h2>
+          <motion.div
+            variants={fadeUp}
+            className="rounded-xl p-5"
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+          >
+            <GitHubActivity />
+          </motion.div>
+        </motion.section>
 
         {/* ── Publications ──────────────────────────────────────────────────── */}
         <Section className="mb-14">
