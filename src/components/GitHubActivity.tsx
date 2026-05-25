@@ -49,19 +49,30 @@ function groupByWeek(days: Day[]): (Day | null)[][] {
   return weeks;
 }
 
-function getMonthLabels(weeks: (Day | null)[][]): { label: string; index: number }[] {
+const MIN_LABEL_GAP_PX = 28;
+
+function getMonthLabels(
+  weeks: (Day | null)[][],
+  cellSize: number,
+  gap: number
+): { label: string; index: number }[] {
   const labels: { label: string; index: number }[] = [];
-  let last = -1;
+  let lastMonth = -1;
+  let lastLabelPx = -MIN_LABEL_GAP_PX - 1;
+
   weeks.forEach((week, wi) => {
     const first = week.find((d) => d !== null);
     if (!first) return;
-    const m = new Date(first.date + "T00:00:00").getMonth();
-    if (m !== last) {
+    const date = new Date(first.date + "T00:00:00");
+    const m = date.getMonth();
+    const px = wi * (cellSize + gap);
+    if (m !== lastMonth && px - lastLabelPx >= MIN_LABEL_GAP_PX) {
       labels.push({
-        label: new Date(first.date + "T00:00:00").toLocaleString("en-US", { month: "short" }),
+        label: date.toLocaleString("en-US", { month: "short" }),
         index: wi,
       });
-      last = m;
+      lastMonth = m;
+      lastLabelPx = px;
     }
   });
   return labels;
@@ -78,7 +89,7 @@ function timeAgo(iso: string): string {
   return `${Math.floor(d / 30)}mo ago`;
 }
 
-const CELL = 11;
+const CELL = 10;
 const GAP = 2;
 
 export function GitHubActivity() {
@@ -97,9 +108,8 @@ export function GitHubActivity() {
       .then(([contrib, evts]) => {
         setWeeks(groupByWeek(contrib.contributions ?? []));
         setTotal(contrib.total?.lastYear ?? null);
-        setEvents(
-          (evts as GitHubEvent[]).filter((e) => e.type === "PushEvent").slice(0, 6)
-        );
+        const evtArray = Array.isArray(evts) ? (evts as GitHubEvent[]) : [];
+        setEvents(evtArray.filter((e) => e.type === "PushEvent").slice(0, 6));
         setState("done");
       })
       .catch(() => setState("error"));
@@ -127,7 +137,7 @@ export function GitHubActivity() {
     );
   }
 
-  const monthLabels = getMonthLabels(weeks);
+  const monthLabels = getMonthLabels(weeks, CELL, GAP);
 
   return (
     <div>
@@ -176,7 +186,7 @@ export function GitHubActivity() {
       </div>
 
       {/* Calendar */}
-      <div style={{ overflowX: "auto", paddingBottom: "6px" }}>
+      <div style={{ overflowX: "auto", paddingBottom: "6px", scrollbarWidth: "none" }}>
         {/* Month labels */}
         <div
           style={{
@@ -260,10 +270,7 @@ export function GitHubActivity() {
           <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
             {events.map((event, i) => {
               const msg =
-                event.payload.commits
-                  ?.filter((c) => c.distinct)
-                  .at(0)
-                  ?.message.split("\n")[0] ?? "";
+                event.payload.commits?.at(0)?.message.split("\n")[0] ?? "";
               if (!msg) return null;
               const repo = event.repo.name.split("/").pop() ?? event.repo.name;
               return (

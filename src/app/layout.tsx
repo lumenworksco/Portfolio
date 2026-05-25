@@ -16,22 +16,43 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "Florian Braun",
-  description: "Select your experience — Florian Braun's creative hub.",
+  metadataBase: new URL("https://braunf.com"),
+  title: {
+    default: "Florian Braun",
+    template: "%s · Florian Braun",
+  },
+  description:
+    "Co-Founder, Engineer & Researcher. Building at the intersection of AI and entrepreneurship — Leuven, Belgium.",
+  keywords: [
+    "Florian Braun",
+    "software engineer",
+    "AI researcher",
+    "entrepreneur",
+    "Lumen Studio",
+    "CalmCampus",
+    "NLP",
+    "machine learning",
+    "Leuven",
+  ],
+  authors: [{ name: "Florian Braun", url: "https://braunf.com" }],
   openGraph: {
-    title: "Florian Braun",
-    description: "Exploring the Intersection of AI & Entrepreneurship",
+    type: "website",
+    locale: "en_US",
     url: "https://braunf.com",
     siteName: "Florian Braun",
+    title: "Florian Braun",
+    description:
+      "Co-Founder, Engineer & Researcher. Building at the intersection of AI and entrepreneurship.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Florian Braun" }],
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Florian Braun",
-    description: "Exploring the Intersection of AI & Entrepreneurship",
+    description:
+      "Co-Founder, Engineer & Researcher. Building at the intersection of AI and entrepreneurship.",
     images: ["/og.png"],
   },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
