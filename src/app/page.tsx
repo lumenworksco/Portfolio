@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Code2, Brain } from "lucide-react";
+import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
@@ -494,40 +495,69 @@ export default function SelectPage() {
               ▶ POKÉDEX
             </button>
             <div style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
-            <a
-              href="https://nihongo.braunf.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "7px 14px",
-                borderRadius: "6px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
-                textDecoration: "none",
-                transition: "background 0.2s ease, border-color 0.2s ease",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
-              }}
-            >
-              <span style={{ fontSize: "13px", lineHeight: 1 }}>日本語</span>
-              <div>
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: 500, margin: 0 }}>
-                  Nihongo · N5
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              {/* Contact */}
+              <Link
+                href="/contact"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "7px 12px",
+                  borderRadius: "6px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  textDecoration: "none",
+                  transition: "background 0.2s ease, border-color 0.2s ease",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                }}
+              >
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
+                  Contact
                 </p>
-                <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.04em", margin: 0 }}>
-                  nihongo.braunf.com ↗
-                </p>
-              </div>
-            </a>
+              </Link>
+              {/* Nihongo */}
+              <a
+                href="https://nihongo.braunf.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "7px 14px",
+                  borderRadius: "6px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  textDecoration: "none",
+                  transition: "background 0.2s ease, border-color 0.2s ease",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                }}
+              >
+                <span style={{ fontSize: "13px", lineHeight: 1 }}>日本語</span>
+                <div>
+                  <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: 500, margin: 0 }}>
+                    Nihongo · N5
+                  </p>
+                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.04em", margin: 0 }}>
+                    nihongo.braunf.com ↗
+                  </p>
+                </div>
+              </a>
+            </div>
           </div>
         </FadeContent>
 

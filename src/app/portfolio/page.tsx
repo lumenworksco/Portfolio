@@ -389,13 +389,47 @@ export default function PortfolioPage() {
           className="text-center pt-8"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.06)",
-            color: "rgba(255,255,255,0.2)",
-            fontSize: "11px",
-            fontFamily: "var(--font-pixel), monospace",
-            letterSpacing: "0.1em",
           }}
         >
-          braunf.com · {new Date().getFullYear()}
+          <a
+            href="/contact"
+            style={{
+              display: "inline-block",
+              marginBottom: "20px",
+              padding: "9px 22px 8px",
+              borderRadius: "6px",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.09)",
+              fontSize: "9px",
+              fontFamily: "var(--font-pixel), monospace",
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.1em",
+              textDecoration: "none",
+              transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
+            }}
+          >
+            ✉ GET IN TOUCH
+          </a>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.2)",
+              fontSize: "11px",
+              fontFamily: "var(--font-pixel), monospace",
+              letterSpacing: "0.1em",
+            }}
+          >
+            braunf.com · {new Date().getFullYear()}
+          </p>
         </motion.footer>
       </main>
     </div>
