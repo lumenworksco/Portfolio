@@ -32,28 +32,30 @@ interface Paper {
 const PAPERS: Paper[] = [
   {
     title: "Interpretable Cross-Lingual Alignment in Small Language Models: Probing Cultural and Pragmatic Reasoning in Japanese-English Bilingual LLMs",
-    year: "2026",
+    year: "April 2026",
     abstract:
-      "Investigates how small language models encode cross-lingual alignment, focusing on cultural and pragmatic reasoning in Japanese-English bilingual settings. Probes internal representations to assess whether models capture language-specific pragmatic cues or converge on a language-neutral representation.",
+      "Investigates how small Japanese language models represent and handle pragmatic meaning, focusing on areas where general-purpose LLMs often fail Japanese users. Addresses two major gaps: the lack of fine-grained evaluation methods for Japanese small language models beyond broad benchmarks such as JGLUE, and the limited understanding of culturally and pragmatically sensitive phenomena — honorifics, in-group vs. out-group reference, zero anaphora, and indirect refusal. Introduces J-PragEval-v0, a minimal-pair benchmark isolating four core pragmatic phenomena from surface fluency. Using linear probing and teacher-forced log-probability analysis, the study examines how these distinctions are encoded inside TinySwallow-1.5B. Proposes Pragmatic Representation Steering (PRS), a parameter-free inference-time method for steering model behaviour by editing residual-stream activations.",
     contributions: [
-      "Probing suite for cultural and pragmatic cues in bilingual small language models",
-      "Comparative analysis of language-neutral vs. language-specific internal representations",
-      "Evaluation across small-scale models on Japanese-English pragmatic reasoning benchmarks",
+      "J-PragEval-v0 — minimal-pair benchmark for four core Japanese pragmatic phenomena",
+      "Probing study of TinySwallow-1.5B: honorific register strongly encoded in residual stream; in-group/out-group and zero anaphora resolved dynamically at generation time",
+      "Pragmatic Representation Steering (PRS) — parameter-free inference-time steering via residual-stream activation editing",
     ],
-    tags: ["NLP", "Cross-lingual", "LLMs", "Interpretability", "Japanese-English"],
-    status: "In progress",
+    tags: ["NLP", "Japanese", "Pragmatics", "Probing", "Representation Steering", "LLMs"],
+    link: "https://doi.org/10.13140/RG.2.2.22007.18088",
+    status: "Published",
   },
   {
     title: "The Foundational Role of Data Structures and Algorithms in Artificial Intelligence Systems",
-    year: "Oct 2025",
+    year: "October 2025",
     abstract:
-      "Examines how classical computer science fundamentals — sorting, searching, graph algorithms, and dynamic programming — underpin modern AI infrastructure and ML systems at scale. Argues that algorithmic literacy remains essential for building efficient, production-grade AI systems.",
+      "Artificial Intelligence has transformed from a theoretical discipline to a cornerstone of modern technology, powering applications from autonomous vehicles to personalised medicine. At the heart of every AI system lies a carefully orchestrated interplay between data structures and algorithms that determines efficiency, scalability, and capability. Through theoretical analysis and practical case studies, this thesis demonstrates that the selection of appropriate data structures and algorithmic approaches directly impacts AI performance across search, optimisation, machine learning, and knowledge representation. Traces the historical evolution from early symbolic AI relying on tree structures and graph search to modern deep learning architectures utilising tensors and backpropagation — and argues that continued innovation in algorithms remains essential for addressing current AI challenges.",
     contributions: [
-      "Systematic mapping of classical algorithms to modern ML training and inference pipelines",
-      "Analysis of algorithmic complexity bottlenecks in large-scale AI workloads",
-      "Framework for evaluating algorithmic efficiency in production AI systems",
+      "Systematic mapping of classical algorithms (A*, dynamic programming, graph search) to modern ML training and inference",
+      "Historical analysis tracing symbolic AI through to transformer architectures via algorithmic lineage",
+      "Concrete examples of how data structure choices affect memory consumption, processing speed, and scalability in real-world AI systems",
     ],
-    tags: ["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure"],
+    tags: ["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure", "Thesis"],
+    link: "https://doi.org/10.13140/RG.2.2.13838.42566",
     status: "Published",
   },
 ];

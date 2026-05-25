@@ -480,15 +480,15 @@ export default function PortfolioPage() {
           <div className="flex flex-col gap-4">
             <ResearchCard
               title="Interpretable Cross-Lingual Alignment in Small Language Models: Probing Cultural and Pragmatic Reasoning in Japanese-English Bilingual LLMs"
-              year="2026"
-              abstract="Investigates how small language models encode cross-lingual alignment, focusing on cultural and pragmatic reasoning in Japanese-English bilingual settings. Probes internal representations to assess whether models capture language-specific pragmatic cues or converge on a language-neutral representation."
-              tags={["NLP", "Cross-lingual", "LLMs", "Interpretability", "Japanese-English"]}
+              year="April 2026"
+              abstract="Introduces J-PragEval-v0, a minimal-pair benchmark for four core Japanese pragmatic phenomena, and probes how TinySwallow-1.5B encodes honorifics, zero anaphora, in-group reference, and indirect refusal. Proposes Pragmatic Representation Steering (PRS), a parameter-free inference-time steering method via residual-stream activation editing."
+              tags={["NLP", "Japanese", "Pragmatics", "Probing", "Representation Steering"]}
             />
             <ResearchCard
               title="The Foundational Role of Data Structures and Algorithms in Artificial Intelligence Systems"
-              year="Oct 2025"
-              abstract="Examines how classical computer science fundamentals — sorting, searching, graph algorithms, and dynamic programming — underpin modern AI infrastructure and ML systems at scale. Argues that algorithmic literacy remains essential for building efficient, production-grade AI systems."
-              tags={["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure"]}
+              year="October 2025"
+              abstract="Through theoretical analysis and practical case studies, demonstrates that data structure and algorithm selection directly impacts AI performance across search, optimisation, and machine learning — tracing the algorithmic lineage from symbolic AI to modern transformer architectures."
+              tags={["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure", "Thesis"]}
             />
           </div>
 
