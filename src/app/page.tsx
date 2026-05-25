@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Code2, Brain } from "lucide-react";
@@ -157,6 +157,17 @@ export default function SelectPage() {
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
+
+  // Backtick easter egg → terminal
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "`" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        router.push("/terminal");
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [router]);
 
   const selectedCard = cards.find((c) => c.id === selectedId) ?? null;
 
