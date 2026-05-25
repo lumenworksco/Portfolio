@@ -44,7 +44,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
     <motion.h2
       variants={fadeUp}
       className="text-xs font-mono tracking-[0.25em] uppercase mb-6"
-      style={{ color: "#8b5cf6" }}
+      style={{ color: "#10b981" }}
     >
       {children}
     </motion.h2>
@@ -58,8 +58,8 @@ function SkillPill({ label }: { label: string }) {
       variants={itemVariant}
       className="inline-block text-xs px-3 py-1.5 rounded-full"
       style={{
-        background: "rgba(139, 92, 246, 0.1)",
-        border: "1px solid rgba(139, 92, 246, 0.25)",
+        background: "rgba(16, 185, 129, 0.1)",
+        border: "1px solid rgba(16, 185, 129, 0.25)",
         color: "rgba(255,255,255,0.75)",
       }}
     >
@@ -80,7 +80,7 @@ function LangBar({ lang, level, bars }: { lang: string; level: string; bars: num
           <div
             key={i}
             className="w-4 h-2 rounded-sm"
-            style={{ background: i < bars ? "rgba(139, 92, 246, 0.85)" : "rgba(255,255,255,0.08)" }}
+            style={{ background: i < bars ? "rgba(16, 185, 129, 0.85)" : "rgba(255,255,255,0.08)" }}
           />
         ))}
       </div>
@@ -105,14 +105,14 @@ function TimelineItem({
     <motion.div
       variants={itemVariant}
       className="relative pl-5"
-      style={{ borderLeft: "2px solid rgba(139, 92, 246, 0.25)" }}
+      style={{ borderLeft: "2px solid rgba(16, 185, 129, 0.25)" }}
     >
       <div
         className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full"
-        style={{ background: "#8b5cf6" }}
+        style={{ background: "#10b981" }}
       />
       <p className="text-sm font-semibold text-white leading-snug">{title}</p>
-      <p className="text-xs mt-0.5" style={{ color: "#8b5cf6", opacity: 0.85 }}>{org}</p>
+      <p className="text-xs mt-0.5" style={{ color: "#10b981", opacity: 0.85 }}>{org}</p>
       <p className="text-[11px] mt-0.5 font-mono" style={{ color: "rgba(255,255,255,0.3)" }}>{period}</p>
       {children && (
         <div className="mt-2 text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
@@ -153,7 +153,7 @@ function ResearchCard({
         <p className="text-sm font-semibold text-white leading-snug">{title}</p>
         <span
           className="text-[10px] font-mono shrink-0 mt-0.5"
-          style={{ color: "rgba(139,92,246,0.65)" }}
+          style={{ color: "rgba(16,185,129,0.65)" }}
         >
           {year}
         </span>
@@ -167,9 +167,9 @@ function ResearchCard({
             key={tag}
             className="text-[10px] px-2 py-0.5 rounded-full"
             style={{
-              background: "rgba(139,92,246,0.1)",
-              border: "1px solid rgba(139,92,246,0.22)",
-              color: "rgba(139,92,246,0.85)",
+              background: "rgba(16,185,129,0.1)",
+              border: "1px solid rgba(16,185,129,0.22)",
+              color: "rgba(16,185,129,0.85)",
             }}
           >
             {tag}
@@ -195,7 +195,7 @@ function ProjectCard({ title, period, tag, children }: { title: string; period: 
       {tag && (
         <span
           className="inline-block text-[10px] px-2 py-0.5 rounded-full mb-2"
-          style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)", color: "rgba(139,92,246,0.9)" }}
+          style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.25)", color: "rgba(16,185,129,0.9)" }}
         >
           {tag}
         </span>
@@ -211,7 +211,7 @@ export default function PortfolioPage() {
     <div className="relative min-h-screen w-full overflow-x-hidden" style={{ background: "#060608" }}>
       {/* Aurora */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <Aurora colorStops={["#6d28d9", "#7c3aed", "#4f46e5"]} speed={0.5} amplitude={0.9} />
+        <Aurora colorStops={["#064e3b", "#059669", "#047857"]} speed={0.5} amplitude={0.9} />
       </div>
 
       {/* Vignette */}
@@ -237,7 +237,7 @@ export default function PortfolioPage() {
           <div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">
               <GradientText
-                colors={["#c4b5fd", "#8b5cf6", "#a78bfa", "#8b5cf6", "#c4b5fd"]}
+                colors={["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"]}
                 animationSpeed={5}
               >
                 Florian Braun
@@ -433,7 +433,7 @@ export default function PortfolioPage() {
           <motion.h2
             variants={fadeUp}
             className="text-xs font-mono tracking-[0.25em] uppercase mb-6"
-            style={{ color: "#8b5cf6" }}
+            style={{ color: "#10b981" }}
           >
             GitHub Activity
           </motion.h2>
@@ -501,14 +501,14 @@ export default function PortfolioPage() {
                 alignItems: "center",
                 gap: "6px",
                 fontSize: "11px",
-                color: "rgba(139,92,246,0.6)",
+                color: "rgba(16,185,129,0.6)",
                 textDecoration: "none",
                 transition: "color 0.15s ease",
                 fontFamily: "monospace",
                 letterSpacing: "0.04em",
               }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(139,92,246,1)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(139,92,246,0.6)")}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(16,185,129,1)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(16,185,129,0.6)")}
             >
               View all research →
             </Link>

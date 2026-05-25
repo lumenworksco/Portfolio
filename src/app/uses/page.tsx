@@ -81,7 +81,7 @@ export default function UsesPage() {
       {/* Aurora */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Aurora
-          colorStops={["#6d28d9", "#7c3aed", "#4f46e5"]}
+          colorStops={["#064e3b", "#059669", "#047857"]}
           speed={0.45}
           amplitude={0.85}
         />

@@ -84,9 +84,9 @@ const INTERESTS = [
 ];
 
 const STATUS_COLORS: Record<Paper["status"], { bg: string; border: string; text: string }> = {
-  Published:      { bg: "rgba(74,222,128,0.08)",  border: "rgba(74,222,128,0.22)",  text: "rgba(74,222,128,0.9)"  },
+  Published:      { bg: "rgba(16,185,129,0.08)",  border: "rgba(16,185,129,0.28)",  text: "rgba(16,185,129,0.9)"  },
   "In progress":  { bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.22)",  text: "rgba(251,191,36,0.9)"  },
-  "Under review": { bg: "rgba(139,92,246,0.08)",  border: "rgba(139,92,246,0.22)",  text: "rgba(139,92,246,0.9)"  },
+  "Under review": { bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.22)",  text: "rgba(59,130,246,0.9)"  },
 };
 
 // ─── Paper card ────────────────────────────────────────────────────────────────
@@ -108,7 +108,7 @@ function PaperCard({ paper }: { paper: Paper }) {
           {paper.title}
         </p>
         <div className="flex flex-col items-end gap-2 shrink-0">
-          <span style={{ fontSize: "10px", fontFamily: "monospace", color: "rgba(139,92,246,0.65)", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: "10px", fontFamily: "monospace", color: "rgba(16,185,129,0.65)", whiteSpace: "nowrap" }}>
             {paper.year}
           </span>
           <span
@@ -151,7 +151,7 @@ function PaperCard({ paper }: { paper: Paper }) {
         <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
           {paper.contributions.map((c) => (
             <li key={c} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
-              <span style={{ color: "rgba(139,92,246,0.6)", marginTop: "2px", flexShrink: 0, fontSize: "10px" }}>▸</span>
+              <span style={{ color: "rgba(16,185,129,0.6)", marginTop: "2px", flexShrink: 0, fontSize: "10px" }}>▸</span>
               <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.42)", lineHeight: 1.6 }}>{c}</span>
             </li>
           ))}
@@ -168,9 +168,9 @@ function PaperCard({ paper }: { paper: Paper }) {
                 fontSize: "10px",
                 padding: "3px 9px",
                 borderRadius: "99px",
-                background: "rgba(139,92,246,0.1)",
-                border: "1px solid rgba(139,92,246,0.22)",
-                color: "rgba(139,92,246,0.85)",
+                background: "rgba(16,185,129,0.1)",
+                border: "1px solid rgba(16,185,129,0.22)",
+                color: "rgba(16,185,129,0.85)",
               }}
             >
               {tag}
@@ -223,7 +223,7 @@ export default function ResearchPage() {
       {/* Aurora */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Aurora
-          colorStops={["#6d28d9", "#7c3aed", "#4f46e5"]}
+          colorStops={["#064e3b", "#059669", "#047857"]}
           speed={0.45}
           amplitude={0.85}
         />
@@ -268,7 +268,7 @@ export default function ResearchPage() {
           </p>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-5">
             <GradientText
-              colors={["#c4b5fd", "#8b5cf6", "#a78bfa", "#8b5cf6", "#c4b5fd"]}
+              colors={["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"]}
               animationSpeed={5}
             >
               Research
@@ -354,7 +354,7 @@ export default function ResearchPage() {
                 <span
                   style={{
                     fontSize: "10px",
-                    color: "rgba(139,92,246,0.7)",
+                    color: "rgba(16,185,129,0.7)",
                     marginTop: "2px",
                     flexShrink: 0,
                   }}

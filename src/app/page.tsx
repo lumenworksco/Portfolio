@@ -53,9 +53,9 @@ const cards: Card[] = [
       "A personal portfolio showcasing projects, experience, and the journey of a developer.",
     href: "/portfolio",
     available: true,
-    accentColor: "#8b5cf6",
-    spotlightColor: "rgba(139, 92, 246, 0.2)",
-    gradientColors: ["#c4b5fd", "#8b5cf6", "#a78bfa", "#8b5cf6", "#c4b5fd"],
+    accentColor: "#10b981",
+    spotlightColor: "rgba(16, 185, 129, 0.2)",
+    gradientColors: ["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"],
   },
   {
     id: "calm",
@@ -556,24 +556,24 @@ export default function SelectPage() {
                   alignItems: "center",
                   padding: "9px 18px",
                   borderRadius: "6px",
-                  background: "rgba(139,92,246,0.1)",
-                  border: "1px solid rgba(139,92,246,0.35)",
+                  background: "rgba(16,185,129,0.1)",
+                  border: "1px solid rgba(16,185,129,0.35)",
                   textDecoration: "none",
-                  boxShadow: "0 0 16px rgba(139,92,246,0.12)",
+                  boxShadow: "0 0 16px rgba(16,185,129,0.12)",
                   transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(139,92,246,0.18)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(139,92,246,0.6)";
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 24px rgba(139,92,246,0.28)";
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(16,185,129,0.18)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(16,185,129,0.6)";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 24px rgba(16,185,129,0.28)";
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(139,92,246,0.1)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(139,92,246,0.35)";
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 16px rgba(139,92,246,0.12)";
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(16,185,129,0.1)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(16,185,129,0.35)";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 16px rgba(16,185,129,0.12)";
                 }}
               >
-                <p style={{ fontSize: "12px", color: "rgba(167,139,250,0.95)", fontWeight: 600, margin: 0, letterSpacing: "0.01em" }}>
+                <p style={{ fontSize: "12px", color: "rgba(52,211,153,0.95)", fontWeight: 600, margin: 0, letterSpacing: "0.01em" }}>
                   Research
                 </p>
               </Link>
