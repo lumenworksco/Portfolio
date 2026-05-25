@@ -18,16 +18,17 @@ interface Day {
   level: 0 | 1 | 2 | 3 | 4;
 }
 
-interface PushCommit {
-  message: string;
-  distinct: boolean;
-}
-
 interface GitHubEvent {
   type: string;
   repo: { name: string };
-  payload: { commits?: PushCommit[] };
+  payload: { head?: string };
   created_at: string;
+}
+
+interface RecentPush {
+  repo: string;
+  message: string;
+  createdAt: string;
 }
 
 function groupByWeek(days: Day[]): (Day | null)[][] {
@@ -95,24 +96,49 @@ const GAP = 2;
 export function GitHubActivity() {
   const [weeks, setWeeks] = useState<(Day | null)[][]>([]);
   const [total, setTotal] = useState<number | null>(null);
-  const [events, setEvents] = useState<GitHubEvent[]>([]);
+  const [pushes, setPushes] = useState<RecentPush[]>([]);
   const [state, setState] = useState<"loading" | "done" | "error">("loading");
 
   useEffect(() => {
-    Promise.all([
-      fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`).then((r) =>
-        r.json()
-      ),
-      fetch(`https://api.github.com/users/${USERNAME}/events/public`).then((r) => r.json()),
-    ])
-      .then(([contrib, evts]) => {
-        setWeeks(groupByWeek(contrib.contributions ?? []));
-        setTotal(contrib.total?.lastYear ?? null);
-        const evtArray = Array.isArray(evts) ? (evts as GitHubEvent[]) : [];
-        setEvents(evtArray.filter((e) => e.type === "PushEvent").slice(0, 6));
-        setState("done");
-      })
-      .catch(() => setState("error"));
+    const load = async () => {
+      const [contrib, evtsRaw] = await Promise.all([
+        fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`).then((r) => r.json()),
+        fetch(`https://api.github.com/users/${USERNAME}/events/public`).then((r) => r.json()),
+      ]);
+
+      setWeeks(groupByWeek(contrib.contributions ?? []));
+      setTotal(contrib.total?.lastYear ?? null);
+
+      // Deduplicate by repo, take top 5 unique repos
+      const evtArray: GitHubEvent[] = Array.isArray(evtsRaw) ? evtsRaw : [];
+      const seen = new Set<string>();
+      const unique = evtArray
+        .filter((e) => e.type === "PushEvent" && e.payload.head)
+        .filter((e) => { if (seen.has(e.repo.name)) return false; seen.add(e.repo.name); return true; })
+        .slice(0, 5);
+
+      // Fetch commit message for each head SHA
+      const results = await Promise.all(
+        unique.map(async (e) => {
+          try {
+            const data = await fetch(
+              `https://api.github.com/repos/${e.repo.name}/commits/${e.payload.head}`
+            ).then((r) => r.json());
+            const msg: string = data?.commit?.message?.split("\n")[0] ?? "";
+            return msg
+              ? { repo: e.repo.name.split("/").pop() ?? e.repo.name, message: msg, createdAt: e.created_at }
+              : null;
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      setPushes(results.filter((r): r is RecentPush => r !== null));
+      setState("done");
+    };
+
+    load().catch(() => setState("error"));
   }, []);
 
   if (state === "loading") {
@@ -254,7 +280,7 @@ export function GitHubActivity() {
       </div>
 
       {/* Recent pushes */}
-      {events.length > 0 && (
+      {pushes.length > 0 && (
         <div style={{ marginTop: "20px" }}>
           <p
             style={{
@@ -268,62 +294,51 @@ export function GitHubActivity() {
             RECENT
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-            {events.map((event, i) => {
-              const msg =
-                event.payload.commits?.at(0)?.message.split("\n")[0] ?? "";
-              if (!msg) return null;
-              const repo = event.repo.name.split("/").pop() ?? event.repo.name;
-              return (
-                <div
-                  key={i}
+            {pushes.map((push, i) => (
+              <div
+                key={i}
+                style={{ display: "flex", alignItems: "baseline", gap: "10px", minWidth: 0 }}
+              >
+                <span
                   style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: "10px",
+                    fontSize: "10px",
+                    color: "rgba(139,92,246,0.8)",
+                    fontFamily: "ui-monospace, Menlo, monospace",
+                    flexShrink: 0,
+                    maxWidth: "120px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {push.repo}
+                </span>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    color: "rgba(255,255,255,0.48)",
+                    fontFamily: "ui-monospace, Menlo, monospace",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    flex: 1,
                     minWidth: 0,
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "rgba(139,92,246,0.8)",
-                      fontFamily: "ui-monospace, Menlo, monospace",
-                      flexShrink: 0,
-                      maxWidth: "120px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {repo}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "rgba(255,255,255,0.48)",
-                      fontFamily: "ui-monospace, Menlo, monospace",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      flex: 1,
-                      minWidth: 0,
-                    }}
-                  >
-                    {msg}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "rgba(255,255,255,0.18)",
-                      fontFamily: "ui-monospace, Menlo, monospace",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {timeAgo(event.created_at)}
-                  </span>
-                </div>
-              );
-            })}
+                  {push.message}
+                </span>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    color: "rgba(255,255,255,0.18)",
+                    fontFamily: "ui-monospace, Menlo, monospace",
+                    flexShrink: 0,
+                  }}
+                >
+                  {timeAgo(push.createdAt)}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       )}
