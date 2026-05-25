@@ -116,7 +116,7 @@ function run(
         ],
         "contact.txt": [
           BLANK(),
-          L("out",   "Email   braunf25@proton.me"),
+          L("out",   "Email   contact@braunf.com"),
           L("out",   "Site    braunf.com"),
           L("out",   "Work    lumen.braunf.com"),
           BLANK(),

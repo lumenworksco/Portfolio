@@ -8,7 +8,7 @@ import Aurora from "@/components/ui/Aurora";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 
-const EMAIL = "braunf25@proton.me";
+const EMAIL = "contact@braunf.com";
 
 const LINKS = [
   { label: "Lumen Studio", href: "https://lumen.braunf.com", sub: "lumen.braunf.com" },
