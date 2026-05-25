@@ -522,6 +522,32 @@ export default function SelectPage() {
                   Contact
                 </p>
               </Link>
+              {/* Uses */}
+              <Link
+                href="/uses"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "7px 12px",
+                  borderRadius: "6px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  textDecoration: "none",
+                  transition: "background 0.2s ease, border-color 0.2s ease",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                }}
+              >
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
+                  Uses
+                </p>
+              </Link>
               {/* Nihongo */}
               <a
                 href="https://nihongo.braunf.com"

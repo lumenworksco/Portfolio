@@ -60,7 +60,7 @@ function run(
         L("out",   "  ls projects/     list all projects"),
         L("out",   "  cat <file>       read a file  (about, skills, contact)"),
         L("out",   "  open <name>      open a project in a new tab"),
-        L("out",   "  cd <path>        navigate  (/, /portfolio, /pokedex)"),
+        L("out",   "  cd <path>        navigate  (/, /portfolio, /pokedex, /uses)"),
         L("out",   "  neofetch         system information"),
         L("out",   "  clear            clear the terminal"),
         L("out",   "  exit             return to home"),
@@ -159,6 +159,8 @@ function run(
         "pokedex":    "/pokedex",
         "/terminal":  "/terminal",
         "terminal":   "/terminal",
+        "/uses":      "/uses",
+        "uses":       "/uses",
       };
       const route = routes[arg];
       if (!route) return [L("err", `cd: ${arg}: no such directory`), BLANK()];
