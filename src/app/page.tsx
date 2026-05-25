@@ -554,23 +554,26 @@ export default function SelectPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  padding: "7px 12px",
+                  padding: "9px 18px",
                   borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "rgba(139,92,246,0.1)",
+                  border: "1px solid rgba(139,92,246,0.35)",
                   textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
+                  boxShadow: "0 0 16px rgba(139,92,246,0.12)",
+                  transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(139,92,246,0.18)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(139,92,246,0.6)";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 24px rgba(139,92,246,0.28)";
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(139,92,246,0.1)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(139,92,246,0.35)";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 16px rgba(139,92,246,0.12)";
                 }}
               >
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
+                <p style={{ fontSize: "12px", color: "rgba(167,139,250,0.95)", fontWeight: 600, margin: 0, letterSpacing: "0.01em" }}>
                   Research
                 </p>
               </Link>

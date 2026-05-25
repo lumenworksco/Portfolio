@@ -272,7 +272,7 @@ export default function ResearchPage() {
               Research
             </GradientText>
           </h1>
-          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", lineHeight: "1.8", maxWidth: "480px" }}>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", lineHeight: "1.8", maxWidth: "480px", marginBottom: "20px" }}>
             My academic work sits at the intersection of{" "}
             <span style={{ color: "rgba(255,255,255,0.75)" }}>natural language processing</span>,{" "}
             <span style={{ color: "rgba(255,255,255,0.75)" }}>multilingual alignment</span>, and{" "}
@@ -281,6 +281,37 @@ export default function ResearchPage() {
             across typologically different languages — and whether that learning is genuinely cross-lingual
             or a surface-level statistical artefact.
           </p>
+          <a
+            href="https://www.researchgate.net/profile/Florian-Braun-14"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "7px",
+              padding: "7px 14px",
+              borderRadius: "7px",
+              background: "rgba(0,204,136,0.07)",
+              border: "1px solid rgba(0,204,136,0.22)",
+              textDecoration: "none",
+              transition: "background 0.15s ease, border-color 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,204,136,0.14)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,204,136,0.42)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,204,136,0.07)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,204,136,0.22)";
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(0,204,136,0.85)" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.586 0H4.414A4.414 4.414 0 0 0 0 4.414v15.172A4.414 4.414 0 0 0 4.414 24h15.172A4.414 4.414 0 0 0 24 19.586V4.414A4.414 4.414 0 0 0 19.586 0zM9.5 7.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm4.75 9.25H9.75v-7h4.5v7z"/>
+            </svg>
+            <span style={{ fontSize: "11px", color: "rgba(0,204,136,0.85)", fontWeight: 500, letterSpacing: "0.02em" }}>
+              ResearchGate ↗
+            </span>
+          </a>
         </FadeContent>
 
         {/* ── Research Interests ───────────────────────────────────────────────── */}
