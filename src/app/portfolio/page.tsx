@@ -491,6 +491,28 @@ export default function PortfolioPage() {
               tags={["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure"]}
             />
           </div>
+
+          {/* Link to full research page */}
+          <motion.div variants={itemVariant} className="mt-5">
+            <Link
+              href="/research"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "11px",
+                color: "rgba(139,92,246,0.6)",
+                textDecoration: "none",
+                transition: "color 0.15s ease",
+                fontFamily: "monospace",
+                letterSpacing: "0.04em",
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(139,92,246,1)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(139,92,246,0.6)")}
+            >
+              View all research →
+            </Link>
+          </motion.div>
         </Section>
 
         {/* ── Footer ────────────────────────────────────────────────────────── */}
