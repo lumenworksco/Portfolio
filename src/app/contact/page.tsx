@@ -12,7 +12,7 @@ const EMAIL = "contact@braunf.com";
 
 const LINKS = [
   { label: "Lumen Studio", href: "https://lumen.braunf.com", sub: "lumen.braunf.com" },
-  { label: "Nihongo · N5", href: "https://nihongo.braunf.com", sub: "nihongo.braunf.com" },
+  { label: "CalmCampus", href: "https://calm.braunf.com", sub: "calm.braunf.com" },
 ];
 
 export default function ContactPage() {
