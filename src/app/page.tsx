@@ -462,7 +462,7 @@ export default function SelectPage() {
 
         {/* Side projects */}
         <FadeContent blur duration={600} delay={1100} initialOpacity={0} className="w-full max-w-4xl">
-          <div className="flex items-center gap-4 px-1">
+          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 px-1">
             <button
               onClick={handlePokedex}
               style={{
@@ -478,6 +478,7 @@ export default function SelectPage() {
                 whiteSpace: "nowrap",
                 transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
                 flexShrink: 0,
+                alignSelf: "flex-start",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLButtonElement;
@@ -494,8 +495,8 @@ export default function SelectPage() {
             >
               ▶ POKÉDEX
             </button>
-            <div style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div className="hidden md:block" style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
               {/* Contact */}
               <Link
                 href="/contact"
