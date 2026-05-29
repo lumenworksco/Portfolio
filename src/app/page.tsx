@@ -578,6 +578,40 @@ export default function SelectPage() {
                   Research
                 </p>
               </Link>
+              {/* IoT */}
+              <a
+                href="https://iot.braunf.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "7px 14px",
+                  borderRadius: "6px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  textDecoration: "none",
+                  transition: "background 0.2s ease, border-color 0.2s ease",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                }}
+              >
+                <div>
+                  <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: 500, margin: 0 }}>
+                    IoT Lab
+                  </p>
+                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.04em", margin: 0 }}>
+                    iot.braunf.com ↗
+                  </p>
+                </div>
+              </a>
               {/* Nihongo */}
               <a
                 href="https://nihongo.braunf.com"
