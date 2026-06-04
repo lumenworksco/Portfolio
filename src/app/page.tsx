@@ -478,7 +478,6 @@ export default function SelectPage() {
                 whiteSpace: "nowrap",
                 transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
                 flexShrink: 0,
-                alignSelf: "flex-start",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLButtonElement;
