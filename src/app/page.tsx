@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Code2, Brain } from "lucide-react";
+import { Sparkles, Code2, Brain, Mail, Wrench, FlaskConical, BarChart3, Cpu } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -138,6 +138,90 @@ function DialogBox({
         </span>
       )}
     </div>
+  );
+}
+
+// ─── System panel icon chip ────────────────────────────────────────────────────
+function IconChip({
+  href,
+  icon,
+  label,
+  external = false,
+  accentColor = "rgba(255,255,255,0.7)",
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  external?: boolean;
+  accentColor?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  const style: React.CSSProperties = {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "44px",
+    height: "44px",
+    borderRadius: "8px",
+    background: hovered ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
+    border: `1px solid ${hovered ? accentColor + "70" : "rgba(255,255,255,0.09)"}`,
+    textDecoration: "none",
+    transition: "background 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
+    transform: hovered ? "translateY(-2px)" : "translateY(0)",
+    flexShrink: 0,
+  };
+
+  const inner = (
+    <>
+      <span
+        style={{
+          position: "absolute",
+          bottom: "calc(100% + 7px)",
+          left: "50%",
+          transform: `translateX(-50%) translateY(${hovered ? "0" : "4px"})`,
+          opacity: hovered ? 1 : 0,
+          pointerEvents: "none",
+          fontSize: "8px",
+          fontFamily: "var(--font-pixel), monospace",
+          letterSpacing: "0.04em",
+          color: "#fff",
+          background: "rgba(8,8,12,0.96)",
+          border: "1px solid rgba(255,255,255,0.15)",
+          borderRadius: "4px",
+          padding: "4px 7px 3px",
+          whiteSpace: "nowrap",
+          transition: "opacity 0.18s ease, transform 0.18s ease",
+          zIndex: 10,
+        }}
+      >
+        {label}
+        {external ? " ↗" : ""}
+      </span>
+      <div style={{ color: hovered ? accentColor : "rgba(255,255,255,0.55)", transition: "color 0.2s ease", lineHeight: 0 }}>
+        {icon}
+      </div>
+    </>
+  );
+
+  const handlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+  };
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" style={style} {...handlers}>
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} style={style} {...handlers}>
+      {inner}
+    </Link>
   );
 }
 
@@ -460,214 +544,126 @@ export default function SelectPage() {
           })}
         </div>
 
-        {/* Side projects */}
+        {/* System panel — secondary navigation, Pokédex-console styled */}
         <FadeContent blur duration={600} delay={1100} initialOpacity={0} className="w-full max-w-4xl">
-          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 px-1">
-            <button
-              onClick={handlePokedex}
+          <div
+            style={{
+              position: "relative",
+              background: "rgba(10,10,14,0.68)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "10px",
+              padding: "14px 18px 16px",
+              overflow: "hidden",
+            }}
+          >
+            {/* Bezel accent stripe */}
+            <div
               style={{
-                fontSize: "8px",
-                fontFamily: "var(--font-pixel), monospace",
-                color: POKEDEX_RED,
-                letterSpacing: "0.06em",
-                background: "rgba(204,0,0,0.08)",
-                border: "1px solid rgba(204,0,0,0.2)",
-                borderRadius: "5px",
-                padding: "5px 12px 4px",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-                flexShrink: 0,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "2px",
+                background: `linear-gradient(90deg, ${POKEDEX_RED} 0%, ${POKEDEX_RED}55 35%, transparent 70%)`,
               }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLButtonElement;
-                el.style.background = "rgba(204,0,0,0.16)";
-                el.style.borderColor = "rgba(204,0,0,0.38)";
-                el.style.boxShadow = "0 0 14px rgba(204,0,0,0.22)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLButtonElement;
-                el.style.background = "rgba(204,0,0,0.08)";
-                el.style.borderColor = "rgba(204,0,0,0.2)";
-                el.style.boxShadow = "none";
-              }}
-            >
-              ▶ POKÉDEX
-            </button>
-            <div className="hidden md:block" style={{ height: "1px", background: "rgba(255,255,255,0.07)", flex: 1 }} />
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px" }}>
-              {/* Contact */}
-              <Link
-                href="/contact"
+            />
+
+            {/* Panel label */}
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                className="pulse-dot"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "7px 12px",
-                  borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: POKEDEX_RED,
+                  boxShadow: `0 0 8px ${POKEDEX_RED}`,
                 }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+              />
+              <p
+                style={{
+                  fontSize: "9px",
+                  fontFamily: "var(--font-pixel), monospace",
+                  color: "rgba(255,255,255,0.32)",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
                 }}
               >
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
-                  Contact
-                </p>
-              </Link>
-              {/* Uses */}
-              <Link
-                href="/uses"
+                System
+              </p>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
+              {/* Primary: Pokédex */}
+              <button
+                onClick={handlePokedex}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "7px 12px",
+                  fontSize: "9px",
+                  fontFamily: "var(--font-pixel), monospace",
+                  color: POKEDEX_RED,
+                  letterSpacing: "0.06em",
+                  background: "rgba(204,0,0,0.1)",
+                  border: "1px solid rgba(204,0,0,0.28)",
                   borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
-                }}
-              >
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
-                  Uses
-                </p>
-              </Link>
-              {/* Research */}
-              <Link
-                href="/research"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "9px 18px",
-                  borderRadius: "6px",
-                  background: "rgba(16,185,129,0.1)",
-                  border: "1px solid rgba(16,185,129,0.35)",
-                  textDecoration: "none",
-                  boxShadow: "0 0 16px rgba(16,185,129,0.12)",
+                  padding: "9px 16px 7px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
                   transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+                  flexShrink: 0,
                 }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(16,185,129,0.18)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(16,185,129,0.6)";
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 24px rgba(16,185,129,0.28)";
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(204,0,0,0.18)";
+                  el.style.borderColor = "rgba(204,0,0,0.45)";
+                  el.style.boxShadow = "0 0 16px rgba(204,0,0,0.25)";
                 }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(16,185,129,0.1)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(16,185,129,0.35)";
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 16px rgba(16,185,129,0.12)";
-                }}
-              >
-                <p style={{ fontSize: "12px", color: "rgba(52,211,153,0.95)", fontWeight: 600, margin: 0, letterSpacing: "0.01em" }}>
-                  Research
-                </p>
-              </Link>
-              {/* DataCamp */}
-              <a
-                href="https://data.braunf.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "7px 12px",
-                  borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(204,0,0,0.1)";
+                  el.style.borderColor = "rgba(204,0,0,0.28)";
+                  el.style.boxShadow = "none";
                 }}
               >
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
-                  DataCamp ↗
-                </p>
-              </a>
-              {/* IoT */}
-              <a
-                href="https://iot.braunf.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "7px 12px",
-                  borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
-                }}
-              >
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", fontWeight: 500, margin: 0 }}>
-                  IoT Lab ↗
-                </p>
-              </a>
-              {/* Nihongo */}
-              <a
-                href="https://nihongo.braunf.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "7px 14px",
-                  borderRadius: "6px",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease, border-color 0.2s ease",
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.14)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.07)";
-                }}
-              >
-                <span style={{ fontSize: "13px", lineHeight: 1 }}>日本語</span>
-                <div>
-                  <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: 500, margin: 0 }}>
-                    Nihongo · N5
-                  </p>
-                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.28)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.04em", margin: 0 }}>
-                    nihongo.braunf.com ↗
-                  </p>
-                </div>
-              </a>
+                ▶ POKÉDEX
+              </button>
+
+              <div
+                className="hidden md:block"
+                style={{ width: "1px", alignSelf: "stretch", background: "rgba(255,255,255,0.08)" }}
+              />
+
+              {/* Secondary: uniform icon chips */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                <IconChip href="/contact" icon={<Mail size={16} />} label="Contact" />
+                <IconChip href="/uses" icon={<Wrench size={16} />} label="Uses" />
+                <IconChip
+                  href="/research"
+                  icon={<FlaskConical size={16} />}
+                  label="Research"
+                  accentColor="#34d399"
+                />
+                <IconChip
+                  href="https://data.braunf.com"
+                  icon={<BarChart3 size={16} />}
+                  label="DataCamp"
+                  external
+                  accentColor="#f59e0b"
+                />
+                <IconChip
+                  href="https://iot.braunf.com"
+                  icon={<Cpu size={16} />}
+                  label="IoT Lab"
+                  external
+                  accentColor="#60a5fa"
+                />
+                <IconChip
+                  href="https://nihongo.braunf.com"
+                  icon={<span style={{ fontSize: "13px", lineHeight: 1 }}>日</span>}
+                  label="Nihongo · N5"
+                  external
+                  accentColor="#f472b6"
+                />
+              </div>
             </div>
           </div>
         </FadeContent>
