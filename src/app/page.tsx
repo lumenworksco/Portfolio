@@ -116,7 +116,7 @@ function DialogBox({
         position: "relative",
         background: "rgba(8, 8, 12, 0.92)",
         border: "3px solid rgba(255,255,255,0.85)",
-        borderRadius: "8px",
+        borderRadius: "4px",
         padding: "14px 20px",
         boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.08), 0 4px 32px rgba(0,0,0,0.6)",
       }}
@@ -225,6 +225,99 @@ function IconChip({
   );
 }
 
+// ─── Poké Ball icon: idle float / hover wobble / shake-and-open reveal ─────────
+function PokeBall({
+  size = 36,
+  hovered = false,
+  opening = false,
+}: {
+  size?: number;
+  hovered?: boolean;
+  opening?: boolean;
+}) {
+  return (
+    <motion.div
+      style={{ width: size, height: size, position: "relative" }}
+      animate={
+        opening
+          ? { rotate: [0, -18, 16, -12, 8, -4, 0] }
+          : hovered
+          ? { rotate: [0, -7, 7, -5, 5, 0] }
+          : { rotate: 0, y: [0, -3, 0] }
+      }
+      transition={
+        opening
+          ? { duration: 0.5, ease: "easeInOut" }
+          : hovered
+          ? { duration: 0.55, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.35 }
+          : { duration: 2.4, ease: "easeInOut", repeat: Infinity }
+      }
+    >
+      <motion.svg
+        viewBox="0 0 100 100"
+        width={size}
+        height={size}
+        animate={opening ? { scale: [1, 1.22, 0], opacity: [1, 1, 0] } : { scale: 1, opacity: 1 }}
+        transition={opening ? { duration: 0.3, delay: 0.55, ease: "easeIn" } : { duration: 0 }}
+      >
+        <path
+          d="M50 6 A44 44 0 0 1 93.5 46 L6.5 46 A44 44 0 0 1 50 6 Z"
+          fill="#EE1515"
+          stroke="#161616"
+          strokeWidth="4.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6.5 54 L93.5 54 A44 44 0 0 1 50 94 A44 44 0 0 1 6.5 54 Z"
+          fill="#F5F5F7"
+          stroke="#161616"
+          strokeWidth="4.5"
+          strokeLinejoin="round"
+        />
+        <rect x="4" y="46" width="92" height="8" fill="#161616" />
+        <circle cx="50" cy="50" r="13" fill="#F5F5F7" stroke="#161616" strokeWidth="4.5" />
+        <circle cx="50" cy="50" r="5.5" fill="#F5F5F7" stroke="#161616" strokeWidth="3" />
+      </motion.svg>
+
+      {opening && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={{ opacity: [0, 1, 0], scale: [0.2, 2.6, 2.6] }}
+          transition={{ duration: 0.5, delay: 0.55, ease: "easeOut" }}
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            background: "radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%)",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+    </motion.div>
+  );
+}
+
+// ─── GBA-style selection cursor brackets ───────────────────────────────────────
+function CornerBrackets({ color, visible }: { color: string; visible: boolean }) {
+  const base: React.CSSProperties = {
+    position: "absolute",
+    width: "14px",
+    height: "14px",
+    borderColor: color,
+    opacity: visible ? 1 : 0,
+    transition: "opacity 0.25s ease",
+    pointerEvents: "none",
+  };
+  return (
+    <>
+      <span style={{ ...base, top: "-6px", left: "-6px", borderTop: "2px solid", borderLeft: "2px solid" }} />
+      <span style={{ ...base, top: "-6px", right: "-6px", borderTop: "2px solid", borderRight: "2px solid" }} />
+      <span style={{ ...base, bottom: "-6px", left: "-6px", borderBottom: "2px solid", borderLeft: "2px solid" }} />
+      <span style={{ ...base, bottom: "-6px", right: "-6px", borderBottom: "2px solid", borderRight: "2px solid" }} />
+    </>
+  );
+}
+
 // ─── Card entrance variants ────────────────────────────────────────────────────
 const cardVariants = {
   hidden: { opacity: 0, y: 36, scale: 0.95 },
@@ -268,7 +361,7 @@ export default function SelectPage() {
           } else {
             window.location.href = card.href!;
           }
-        }, 700);
+        }, 1050);
       }
     },
     [selectedId, navigatingToPokedex, router]
@@ -309,7 +402,7 @@ export default function SelectPage() {
             style={{ background: "#fff" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.9, 0] }}
-            transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.45, times: [0, 0.35, 1], ease: "easeOut" }}
           />
         )}
       </AnimatePresence>
@@ -390,14 +483,17 @@ export default function SelectPage() {
                   style={{
                     cursor: card.available ? "pointer" : "not-allowed",
                     height: "100%",
+                    position: "relative",
                   }}
                 >
+                  <CornerBrackets color={card.accentColor} visible={(isHovered || isSelected) && card.available} />
                   <SpotlightCard
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
                       minHeight: "clamp(260px, 40vw, 370px)",
-                      border: `1px solid ${
+                      borderRadius: "10px",
+                      border: `2px solid ${
                         isSelected
                           ? card.accentColor
                           : isHovered
@@ -432,26 +528,33 @@ export default function SelectPage() {
                       }}
                     />
 
-                    {/* Icon */}
-                    <motion.div
-                      animate={
-                        isSelected
-                          ? { scale: [1, 1.3, 0.9, 1.1, 1] }
-                          : { scale: 1 }
-                      }
-                      transition={{ duration: 0.45, ease: "easeOut" }}
-                      style={{
-                        color: card.available ? card.accentColor : "#555",
-                        marginBottom: "24px",
-                        filter: isHovered
-                          ? `drop-shadow(0 0 10px ${card.accentColor}90)`
-                          : "none",
-                        transition: "filter 0.3s ease",
-                        display: "inline-block",
-                      }}
-                    >
-                      {cardIcons[card.id]}
-                    </motion.div>
+                    {/* Icon: Poké Ball → shake → open → reveal */}
+                    <div style={{ position: "relative", width: "36px", height: "36px", marginBottom: "24px" }}>
+                      {card.available && <PokeBall size={36} hovered={isHovered} opening={isSelected} />}
+                      <motion.div
+                        initial={false}
+                        animate={{ opacity: isSelected ? 1 : 0, scale: isSelected ? 1 : 0.4 }}
+                        transition={{ duration: 0.3, delay: isSelected ? 0.85 : 0, ease: "easeOut" }}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: card.accentColor,
+                          filter: isHovered
+                            ? `drop-shadow(0 0 10px ${card.accentColor}90)`
+                            : "none",
+                        }}
+                      >
+                        {cardIcons[card.id]}
+                      </motion.div>
+                      {!card.available && (
+                        <div style={{ color: "#555", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+                          {cardIcons[card.id]}
+                        </div>
+                      )}
+                    </div>
 
                     {/* Title */}
                     <h2 className="text-xl md:text-2xl font-bold mb-1">
