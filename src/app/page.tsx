@@ -9,6 +9,7 @@ import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
+import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
 
 type CardId = "lumen" | "portfolio" | "calm";
 
@@ -375,6 +376,8 @@ export default function SelectPage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
+      <ChiptuneMusic />
+
       {/* Aurora WebGL background */}
       <div className="fixed inset-0 z-0">
         <Aurora
