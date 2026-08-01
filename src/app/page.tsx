@@ -226,12 +226,14 @@ function PillButton({
   onClick,
   color,
   external = false,
+  icon,
   children,
 }: {
   href?: string;
   onClick?: () => void;
   color: string;
   external?: boolean;
+  icon?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const [hovered, setHovered] = useState(false);
@@ -242,6 +244,7 @@ function PillButton({
     gap: "6px",
     fontSize: "9px",
     fontFamily: "var(--font-pixel), monospace",
+    lineHeight: 1,
     color,
     letterSpacing: "0.06em",
     background: hovered ? `${color}2e` : `${color}17`,
@@ -260,10 +263,21 @@ function PillButton({
     onMouseLeave: () => setHovered(false),
   };
 
+  const inner = (
+    <>
+      {icon && (
+        <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 0 }}>
+          {icon}
+        </span>
+      )}
+      <span style={{ display: "inline-block", lineHeight: 1, transform: "translateY(1px)" }}>{children}</span>
+    </>
+  );
+
   if (onClick) {
     return (
       <button onClick={onClick} style={style} {...handlers}>
-        {children}
+        {inner}
       </button>
     );
   }
@@ -271,14 +285,14 @@ function PillButton({
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" style={style} {...handlers}>
-        {children}
+        {inner}
       </a>
     );
   }
 
   return (
     <Link href={href!} style={style} {...handlers}>
-      {children}
+      {inner}
     </Link>
   );
 }
@@ -359,7 +373,25 @@ function CreatureSprite({
         <ellipse cx="36" cy="82" rx="9" ry="6" fill={color} />
         <ellipse cx="64" cy="82" rx="9" ry="6" fill={color} />
 
-        {/* back accessories */}
+        {/* stubby arms, peeking from the sides */}
+        <ellipse cx="13" cy="60" rx="8" ry="6" fill={color} stroke="#161616" strokeWidth="1.5" />
+        <ellipse cx="87" cy="60" rx="8" ry="6" fill={color} stroke="#161616" strokeWidth="1.5" />
+
+        {/* tail, tucked behind the body */}
+        {variant === "fire" && (
+          <path d="M80 66 C92 64 97 54 92 45 C93 55 85 59 78 64 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
+        )}
+        {variant === "psychic" && (
+          <>
+            <path d="M78 68 C88 72 93 80 89 89" stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            <path d="M89 82 L94 87 L89 92 L84 87 Z" fill="#fff" stroke="#161616" strokeWidth="1.2" />
+          </>
+        )}
+        {variant === "grass" && (
+          <path d="M79 68 C90 68 96 76 91 84 C90 76 83 74 77 76 Z" fill="#4ADE80" stroke="#166534" strokeWidth="1.5" />
+        )}
+
+        {/* head accessories */}
         {variant === "fire" && (
           <path d="M68 32 C79 24 81 11 74 3 C77 15 68 18 66 26 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
         )}
@@ -371,6 +403,9 @@ function CreatureSprite({
           stroke="#161616"
           strokeWidth="3"
         />
+
+        {/* belly patch */}
+        <ellipse cx="50" cy="70" rx="19" ry="15" fill="#fff" opacity="0.2" />
 
         {/* front accessories */}
         {variant === "grass" && (
@@ -395,12 +430,17 @@ function CreatureSprite({
           />
         )}
 
+        {/* glossy highlight */}
+        <ellipse cx="35" cy="34" rx="13" ry="9" fill="#fff" opacity="0.25" />
+
         {/* face */}
-        <circle cx="38" cy="55" r="7" fill="#fff" />
-        <circle cx="38" cy="56" r="4" fill="#161616" />
-        <circle cx="62" cy="55" r="7" fill="#fff" />
-        <circle cx="62" cy="56" r="4" fill="#161616" />
-        <path d="M43 67 Q50 72 57 67" stroke="#161616" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <circle cx="37" cy="56" r="8" fill="#fff" />
+        <circle cx="38" cy="57" r="4.5" fill="#161616" />
+        <circle cx="40" cy="54.5" r="1.4" fill="#fff" />
+        <circle cx="63" cy="56" r="8" fill="#fff" />
+        <circle cx="64" cy="57" r="4.5" fill="#161616" />
+        <circle cx="66" cy="54.5" r="1.4" fill="#fff" />
+        <path d="M42 68 Q50 74 58 68" stroke="#161616" strokeWidth="2.5" fill="none" strokeLinecap="round" />
       </svg>
 
       {/* selection sparkle burst */}
@@ -817,14 +857,19 @@ export default function SelectPage() {
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               {/* Primary: the specials, called out like Pokédex */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                <PillButton onClick={handlePokedex} color={POKEDEX_RED}>
-                  ▶ POKÉDEX
+                <PillButton onClick={handlePokedex} color={POKEDEX_RED} icon={<span style={{ fontSize: "9px" }}>▶</span>}>
+                  POKÉDEX
                 </PillButton>
-                <PillButton href="/research" color="#34d399">
-                  <FlaskConical size={12} /> RESEARCH
+                <PillButton href="/research" color="#34d399" icon={<FlaskConical size={12} />}>
+                  RESEARCH
                 </PillButton>
-                <PillButton href="https://nihongo.braunf.com" external color="#f472b6">
-                  <span style={{ fontSize: "12px", lineHeight: 1 }}>日</span> NIHONGO
+                <PillButton
+                  href="https://nihongo.braunf.com"
+                  external
+                  color="#f472b6"
+                  icon={<span style={{ fontSize: "12px" }}>日</span>}
+                >
+                  NIHONGO
                 </PillButton>
               </div>
 
