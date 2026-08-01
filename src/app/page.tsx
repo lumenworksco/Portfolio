@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Code2, Brain, Mail, Wrench, FlaskConical, BarChart3, Cpu } from "lucide-react";
+import { Mail, Wrench, FlaskConical, BarChart3, Cpu } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -73,12 +73,6 @@ const cards: Card[] = [
     gradientColors: ["#d9f99d", "#84cc16", "#bef264", "#84cc16", "#d9f99d"],
   },
 ];
-
-const cardIcons: Record<CardId, React.ReactElement> = {
-  lumen: <Sparkles size={30} />,
-  portfolio: <Code2 size={30} />,
-  calm: <Brain size={30} />,
-};
 
 // ─── Pokémon Type Badge ────────────────────────────────────────────────────────
 function TypeBadge({ type, color }: { type: string; color: string }) {
@@ -226,70 +220,200 @@ function IconChip({
   );
 }
 
-// ─── Poké Ball icon: idle float / hover wobble / shake-and-open reveal ─────────
-function PokeBall({
-  size = 36,
-  hovered = false,
-  opening = false,
+// ─── System panel pill button — for the few links worth calling out ───────────
+function PillButton({
+  href,
+  onClick,
+  color,
+  external = false,
+  children,
 }: {
+  href?: string;
+  onClick?: () => void;
+  color: string;
+  external?: boolean;
+  children: React.ReactNode;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  const style: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+    fontSize: "9px",
+    fontFamily: "var(--font-pixel), monospace",
+    color,
+    letterSpacing: "0.06em",
+    background: hovered ? `${color}2e` : `${color}17`,
+    border: `1px solid ${hovered ? color + "75" : color + "40"}`,
+    borderRadius: "6px",
+    padding: "9px 16px 7px",
+    cursor: "pointer",
+    whiteSpace: "nowrap",
+    textDecoration: "none",
+    boxShadow: hovered ? `0 0 16px ${color}40` : "none",
+    transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+  };
+
+  const handlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+  };
+
+  if (onClick) {
+    return (
+      <button onClick={onClick} style={style} {...handlers}>
+        {children}
+      </button>
+    );
+  }
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" style={style} {...handlers}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href!} style={style} {...handlers}>
+      {children}
+    </Link>
+  );
+}
+
+// ─── Original creature mascots — not depictions of any existing character ─────
+type CreatureVariant = "fire" | "psychic" | "grass";
+
+function CreatureSprite({
+  variant,
+  size = 92,
+  hovered = false,
+  selected = false,
+  color,
+}: {
+  variant: CreatureVariant;
   size?: number;
   hovered?: boolean;
-  opening?: boolean;
+  selected?: boolean;
+  color: string;
 }) {
+  const gradId = `body-grad-${variant}`;
+
   return (
     <motion.div
       style={{ width: size, height: size, position: "relative" }}
       animate={
-        opening
-          ? { rotate: [0, -18, 16, -12, 8, -4, 0] }
+        selected
+          ? { y: [0, -16, 2, -9, 0], rotate: [0, -4, 4, -2, 0] }
           : hovered
-          ? { rotate: [0, -7, 7, -5, 5, 0] }
-          : { rotate: 0, y: [0, -3, 0] }
+          ? { y: [0, -7, 0], rotate: [0, -2, 2, 0] }
+          : { y: [0, -3, 0], rotate: 0 }
       }
       transition={
-        opening
-          ? { duration: 0.5, ease: "easeInOut" }
-          : hovered
-          ? { duration: 0.55, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.35 }
-          : { duration: 2.4, ease: "easeInOut", repeat: Infinity }
+        selected
+          ? { duration: 0.75, ease: "easeOut" }
+          : { duration: hovered ? 0.9 : 2.6, repeat: Infinity, ease: "easeInOut" }
       }
     >
-      <motion.svg
-        viewBox="0 0 100 100"
-        width={size}
-        height={size}
-        animate={opening ? { scale: [1, 1.22, 0], opacity: [1, 1, 0] } : { scale: 1, opacity: 1 }}
-        transition={opening ? { duration: 0.3, delay: 0.55, ease: "easeIn" } : { duration: 0 }}
-      >
-        <path
-          d="M50 6 A44 44 0 0 1 93.5 46 L6.5 46 A44 44 0 0 1 50 6 Z"
-          fill="#EE1515"
-          stroke="#161616"
-          strokeWidth="4.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M6.5 54 L93.5 54 A44 44 0 0 1 50 94 A44 44 0 0 1 6.5 54 Z"
-          fill="#F5F5F7"
-          stroke="#161616"
-          strokeWidth="4.5"
-          strokeLinejoin="round"
-        />
-        <rect x="4" y="46" width="92" height="8" fill="#161616" />
-        <circle cx="50" cy="50" r="13" fill="#F5F5F7" stroke="#161616" strokeWidth="4.5" />
-        <circle cx="50" cy="50" r="5.5" fill="#F5F5F7" stroke="#161616" strokeWidth="3" />
-      </motion.svg>
+      {/* ground shadow */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-4px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: `${size * 0.5}px`,
+          height: `${size * 0.1}px`,
+          borderRadius: "50%",
+          background: "rgba(0,0,0,0.4)",
+          filter: "blur(3px)",
+        }}
+      />
 
-      {opening && (
+      {/* psychic aura ring */}
+      {variant === "psychic" && (
+        <motion.svg
+          viewBox="0 0 100 100"
+          width={size}
+          height={size}
+          style={{ position: "absolute", inset: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+        >
+          <ellipse cx="50" cy="55" rx="44" ry="44" fill="none" stroke={color} strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="3 6" />
+        </motion.svg>
+      )}
+
+      <svg viewBox="0 0 100 100" width={size} height={size}>
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
+            <stop offset="35%" stopColor={color} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={color} />
+          </linearGradient>
+        </defs>
+
+        {/* stubby legs */}
+        <ellipse cx="36" cy="82" rx="9" ry="6" fill={color} />
+        <ellipse cx="64" cy="82" rx="9" ry="6" fill={color} />
+
+        {/* back accessories */}
+        {variant === "fire" && (
+          <path d="M68 32 C79 24 81 11 74 3 C77 15 68 18 66 26 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
+        )}
+
+        {/* body */}
+        <path
+          d="M50 18 C72 18 88 34 88 56 C88 78 71 90 50 90 C29 90 12 78 12 56 C12 34 28 18 50 18 Z"
+          fill={`url(#${gradId})`}
+          stroke="#161616"
+          strokeWidth="3"
+        />
+
+        {/* front accessories */}
+        {variant === "grass" && (
+          <>
+            <path d="M50 19 C45 6 36 1 29 4 C38 6 41 15 44 21 Z" fill="#86EFAC" stroke="#166534" strokeWidth="2" />
+            <path d="M50 19 C55 6 64 1 71 4 C62 6 59 15 56 21 Z" fill="#4ADE80" stroke="#166534" strokeWidth="2" />
+          </>
+        )}
+        {variant === "psychic" && (
+          <>
+            <path d="M27 27 C18 12 12 3 8 5 C15 11 17 22 23 31 Z" fill={color} stroke="#161616" strokeWidth="1.5" />
+            <path d="M73 27 C82 12 88 3 92 5 C85 11 83 22 77 31 Z" fill={color} stroke="#161616" strokeWidth="1.5" />
+            <path d="M50 8 L55 17 L50 26 L45 17 Z" fill="#fff" opacity="0.9" stroke="#161616" strokeWidth="1.2" />
+          </>
+        )}
+        {variant === "fire" && (
+          <path
+            d="M50 6 C57 13 61 20 56 29 C55 22 51 21 47 27 C44 18 45 11 50 6 Z"
+            fill="#FDE68A"
+            stroke="#B45309"
+            strokeWidth="2"
+          />
+        )}
+
+        {/* face */}
+        <circle cx="38" cy="55" r="7" fill="#fff" />
+        <circle cx="38" cy="56" r="4" fill="#161616" />
+        <circle cx="62" cy="55" r="7" fill="#fff" />
+        <circle cx="62" cy="56" r="4" fill="#161616" />
+        <path d="M43 67 Q50 72 57 67" stroke="#161616" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      </svg>
+
+      {/* selection sparkle burst */}
+      {selected && (
         <motion.div
           initial={{ opacity: 0, scale: 0.2 }}
-          animate={{ opacity: [0, 1, 0], scale: [0.2, 2.6, 2.6] }}
-          transition={{ duration: 0.5, delay: 0.55, ease: "easeOut" }}
+          animate={{ opacity: [0, 1, 0], scale: [0.2, 2.2, 2.4] }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
           style={{
             position: "absolute",
             inset: 0,
             borderRadius: "50%",
-            background: "radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%)",
+            background: `radial-gradient(circle, ${color}bb 0%, transparent 70%)`,
             pointerEvents: "none",
           }}
         />
@@ -362,7 +486,7 @@ export default function SelectPage() {
           } else {
             window.location.href = card.href!;
           }
-        }, 1050);
+        }, 850);
       }
     },
     [selectedId, navigatingToPokedex, router]
@@ -405,7 +529,7 @@ export default function SelectPage() {
             style={{ background: "#fff" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.9, 0] }}
-            transition={{ duration: 0.6, delay: 0.45, times: [0, 0.35, 1], ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: 0.25, times: [0, 0.35, 1], ease: "easeOut" }}
           />
         )}
       </AnimatePresence>
@@ -494,7 +618,7 @@ export default function SelectPage() {
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
-                      minHeight: "clamp(260px, 40vw, 370px)",
+                      minHeight: "clamp(310px, 42vw, 410px)",
                       borderRadius: "10px",
                       border: `2px solid ${
                         isSelected
@@ -531,32 +655,23 @@ export default function SelectPage() {
                       }}
                     />
 
-                    {/* Icon: Poké Ball → shake → open → reveal */}
-                    <div style={{ position: "relative", width: "36px", height: "36px", marginBottom: "24px" }}>
-                      {card.available && <PokeBall size={36} hovered={isHovered} opening={isSelected} />}
-                      <motion.div
-                        initial={false}
-                        animate={{ opacity: isSelected ? 1 : 0, scale: isSelected ? 1 : 0.4 }}
-                        transition={{ duration: 0.3, delay: isSelected ? 0.85 : 0, ease: "easeOut" }}
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: card.accentColor,
-                          filter: isHovered
-                            ? `drop-shadow(0 0 10px ${card.accentColor}90)`
-                            : "none",
-                        }}
-                      >
-                        {cardIcons[card.id]}
-                      </motion.div>
-                      {!card.available && (
-                        <div style={{ color: "#555", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
-                          {cardIcons[card.id]}
-                        </div>
-                      )}
+                    {/* Creature mascot */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginBottom: "14px",
+                        filter: card.available ? "none" : "grayscale(1)",
+                        opacity: card.available ? 1 : 0.4,
+                      }}
+                    >
+                      <CreatureSprite
+                        variant={card.pokemonType.toLowerCase() as CreatureVariant}
+                        size={92}
+                        hovered={isHovered}
+                        selected={isSelected}
+                        color={card.available ? card.accentColor : "#666"}
+                      />
                     </div>
 
                     {/* Title */}
@@ -700,38 +815,18 @@ export default function SelectPage() {
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              {/* Primary: Pokédex */}
-              <button
-                onClick={handlePokedex}
-                style={{
-                  fontSize: "9px",
-                  fontFamily: "var(--font-pixel), monospace",
-                  color: POKEDEX_RED,
-                  letterSpacing: "0.06em",
-                  background: "rgba(204,0,0,0.1)",
-                  border: "1px solid rgba(204,0,0,0.28)",
-                  borderRadius: "6px",
-                  padding: "9px 16px 7px",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLButtonElement;
-                  el.style.background = "rgba(204,0,0,0.18)";
-                  el.style.borderColor = "rgba(204,0,0,0.45)";
-                  el.style.boxShadow = "0 0 16px rgba(204,0,0,0.25)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLButtonElement;
-                  el.style.background = "rgba(204,0,0,0.1)";
-                  el.style.borderColor = "rgba(204,0,0,0.28)";
-                  el.style.boxShadow = "none";
-                }}
-              >
-                ▶ POKÉDEX
-              </button>
+              {/* Primary: the specials, called out like Pokédex */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                <PillButton onClick={handlePokedex} color={POKEDEX_RED}>
+                  ▶ POKÉDEX
+                </PillButton>
+                <PillButton href="/research" color="#34d399">
+                  <FlaskConical size={12} /> RESEARCH
+                </PillButton>
+                <PillButton href="https://nihongo.braunf.com" external color="#f472b6">
+                  <span style={{ fontSize: "12px", lineHeight: 1 }}>日</span> NIHONGO
+                </PillButton>
+              </div>
 
               <div
                 className="hidden md:block"
@@ -742,12 +837,6 @@ export default function SelectPage() {
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                 <IconChip href="/contact" icon={<Mail size={16} />} label="Contact" />
                 <IconChip href="/uses" icon={<Wrench size={16} />} label="Uses" />
-                <IconChip
-                  href="/research"
-                  icon={<FlaskConical size={16} />}
-                  label="Research"
-                  accentColor="#34d399"
-                />
                 <IconChip
                   href="https://data.braunf.com"
                   icon={<BarChart3 size={16} />}
@@ -761,13 +850,6 @@ export default function SelectPage() {
                   label="IoT Lab"
                   external
                   accentColor="#60a5fa"
-                />
-                <IconChip
-                  href="https://nihongo.braunf.com"
-                  icon={<span style={{ fontSize: "13px", lineHeight: 1 }}>日</span>}
-                  label="Nihongo · N5"
-                  external
-                  accentColor="#f472b6"
                 />
               </div>
             </div>
