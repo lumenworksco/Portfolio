@@ -124,11 +124,12 @@ export default function ChiptuneMusic() {
         alignItems: "center",
         gap: "6px",
         padding: "6px 10px 5px",
-        borderRadius: "5px",
-        background: enabled ? "rgba(16,185,129,0.12)" : "rgba(255,255,255,0.03)",
-        border: `1px solid ${enabled ? "rgba(16,185,129,0.4)" : "rgba(255,255,255,0.1)"}`,
-        color: enabled ? "#34d399" : "rgba(255,255,255,0.45)",
+        borderRadius: "6px",
+        background: enabled ? "rgba(16,185,129,0.15)" : "linear-gradient(180deg, #F7F4E3 0%, #EAE5C8 100%)",
+        border: `2px solid ${enabled ? "#10b981" : "#1C1C1C"}`,
+        color: enabled ? "#0d7a5f" : "rgba(28,28,28,0.7)",
         cursor: "pointer",
+        boxShadow: "0 3px 10px rgba(0,0,0,0.35)",
         transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
       }}
     >

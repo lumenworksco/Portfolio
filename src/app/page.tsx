@@ -14,6 +14,13 @@ import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
 type CardId = "lumen" | "portfolio" | "calm";
 
 const POKEDEX_RED = "#CC0000";
+const EMERALD_CREAM = "#F7F4E3";
+const EMERALD_CREAM_DEEP = "#EAE5C8";
+const EMERALD_INK = "#1C1C1C";
+const EMERALD_BLUE = "#2E86AB";
+const EMERALD_BOX_BG = `linear-gradient(180deg, ${EMERALD_CREAM} 0%, ${EMERALD_CREAM_DEEP} 100%)`;
+const EMERALD_BOX_BORDER = `3px solid ${EMERALD_INK}`;
+const EMERALD_BOX_INSET = `inset 0 0 0 2px ${EMERALD_BLUE}30`;
 
 interface Card {
   id: CardId;
@@ -42,7 +49,7 @@ const cards: Card[] = [
     available: true,
     accentColor: "#f59e0b",
     spotlightColor: "rgba(245, 158, 11, 0.4)",
-    gradientColors: ["#fde68a", "#f59e0b", "#fbbf24", "#f59e0b", "#fde68a"],
+    gradientColors: ["#f59e0b", "#d97706", "#fbbf24", "#d97706", "#f59e0b"],
   },
   {
     id: "portfolio",
@@ -56,7 +63,7 @@ const cards: Card[] = [
     available: true,
     accentColor: "#10b981",
     spotlightColor: "rgba(16, 185, 129, 0.2)",
-    gradientColors: ["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"],
+    gradientColors: ["#059669", "#10b981", "#34d399", "#10b981", "#059669"],
   },
   {
     id: "calm",
@@ -68,9 +75,9 @@ const cards: Card[] = [
       "A privacy-first student wellbeing platform using passive behavioural signals and on-device AI to help universities support students before stress becomes a crisis — without surveillance.",
     href: "https://calm.braunf.com",
     available: true,
-    accentColor: "#84cc16",
-    spotlightColor: "rgba(132, 204, 22, 0.3)",
-    gradientColors: ["#d9f99d", "#84cc16", "#bef264", "#84cc16", "#d9f99d"],
+    accentColor: "#65a30d",
+    spotlightColor: "rgba(101, 163, 13, 0.3)",
+    gradientColors: ["#65a30d", "#4d7c0f", "#84cc16", "#4d7c0f", "#65a30d"],
   },
 ];
 
@@ -109,11 +116,11 @@ function DialogBox({
     <div
       style={{
         position: "relative",
-        background: "rgba(8, 8, 12, 0.92)",
-        border: "3px solid rgba(255,255,255,0.85)",
-        borderRadius: "4px",
+        background: EMERALD_BOX_BG,
+        border: EMERALD_BOX_BORDER,
+        borderRadius: "8px",
         padding: "14px 20px",
-        boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.08), 0 4px 32px rgba(0,0,0,0.6)",
+        boxShadow: `${EMERALD_BOX_INSET}, 0 6px 28px rgba(0,0,0,0.45)`,
       }}
     >
       {children}
@@ -124,7 +131,7 @@ function DialogBox({
             position: "absolute",
             bottom: "10px",
             right: "16px",
-            color: "rgba(255,255,255,0.7)",
+            color: EMERALD_INK,
             fontSize: "10px",
             fontFamily: "var(--font-pixel), monospace",
           }}
@@ -142,7 +149,7 @@ function IconChip({
   icon,
   label,
   external = false,
-  accentColor = "rgba(255,255,255,0.7)",
+  accentColor = EMERALD_INK,
 }: {
   href: string;
   icon: React.ReactNode;
@@ -160,8 +167,8 @@ function IconChip({
     width: "44px",
     height: "44px",
     borderRadius: "8px",
-    background: hovered ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)",
-    border: `1px solid ${hovered ? accentColor + "70" : "rgba(255,255,255,0.09)"}`,
+    background: hovered ? "rgba(28,28,28,0.08)" : "rgba(28,28,28,0.04)",
+    border: `1px solid ${hovered ? accentColor + "70" : "rgba(28,28,28,0.2)"}`,
     textDecoration: "none",
     transition: "background 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
     transform: hovered ? "translateY(-2px)" : "translateY(0)",
@@ -194,7 +201,7 @@ function IconChip({
         {label}
         {external ? " ↗" : ""}
       </span>
-      <div style={{ color: hovered ? accentColor : "rgba(255,255,255,0.55)", transition: "color 0.2s ease", lineHeight: 0 }}>
+      <div style={{ color: hovered ? accentColor : "rgba(28,28,28,0.6)", transition: "color 0.2s ease", lineHeight: 0 }}>
         {icon}
       </div>
     </>
@@ -526,7 +533,7 @@ export default function SelectPage() {
                 fontSize: "10px",
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                 fontWeight: 600,
-                color: "rgba(255,255,255,0.38)",
+                color: "rgba(28,28,28,0.5)",
                 marginBottom: "8px",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
@@ -537,14 +544,14 @@ export default function SelectPage() {
             <p
               style={{
                 fontSize: "13px",
-                color: "rgba(255,255,255,0.85)",
+                color: "rgba(28,28,28,0.88)",
                 lineHeight: "1.6",
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                 whiteSpace: undefined,
               }}
             >
               These three are no ordinary Pokémon — each one rare in its own right.{" "}
-              <span style={{ color: "#fff", fontWeight: 600 }}>Which will you choose?</span>
+              <span style={{ color: EMERALD_INK, fontWeight: 600 }}>Which will you choose?</span>
             </p>
           </DialogBox>
         </FadeContent>
@@ -594,17 +601,17 @@ export default function SelectPage() {
                           ? card.accentColor
                           : isHovered
                           ? card.accentColor + "80"
-                          : "#1e1e24"
+                          : EMERALD_INK
                       }`,
                       boxShadow: isSelected
-                        ? `0 0 50px ${card.accentColor}50, 0 0 120px ${card.accentColor}20`
+                        ? `${EMERALD_BOX_INSET}, 0 0 50px ${card.accentColor}50, 0 0 90px ${card.accentColor}20`
                         : isHovered
-                        ? `0 0 28px ${card.accentColor}30`
-                        : "none",
+                        ? `${EMERALD_BOX_INSET}, 0 0 28px ${card.accentColor}30`
+                        : EMERALD_BOX_INSET,
                       transition: "border-color 0.3s ease, box-shadow 0.3s ease",
                       background: card.available
-                        ? "rgba(10,10,14,0.88)"
-                        : "rgba(10,10,14,0.6)",
+                        ? EMERALD_BOX_BG
+                        : "rgba(120,116,96,0.35)",
                     }}
                   >
                     {/* Top accent bar */}
@@ -664,7 +671,7 @@ export default function SelectPage() {
                         colors={
                           card.available
                             ? card.gradientColors
-                            : ["#4a4a55", "#3a3a44", "#4a4a55"]
+                            : ["#8a8a80", "#6f6f66", "#8a8a80"]
                         }
                         animationSpeed={5}
                       >
@@ -676,13 +683,13 @@ export default function SelectPage() {
                     <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
                       <p
                         className="text-[10px] font-mono tracking-[0.2em] uppercase"
-                        style={{ color: "rgba(255,255,255,0.4)" }}
+                        style={{ color: "rgba(28,28,28,0.55)" }}
                       >
                         {card.subtitle}
                       </p>
                       <TypeBadge
                         type={card.pokemonType}
-                        color={card.available ? card.typeColor : "#3f3f46"}
+                        color={card.available ? card.typeColor : "#8a8a80"}
                       />
                     </div>
 
@@ -690,8 +697,8 @@ export default function SelectPage() {
                     <div
                       style={{
                         width: isHovered || isSelected ? "48px" : "24px",
-                        height: "1px",
-                        background: card.available ? card.accentColor : "#333",
+                        height: "2px",
+                        background: card.available ? card.accentColor : "#999",
                         marginBottom: "18px",
                         transition: "width 0.4s ease",
                         opacity: card.available ? 1 : 0.4,
@@ -703,8 +710,8 @@ export default function SelectPage() {
                       className="text-sm leading-relaxed flex-1"
                       style={{
                         color: card.available
-                          ? "rgba(255,255,255,0.62)"
-                          : "rgba(255,255,255,0.22)",
+                          ? "rgba(28,28,28,0.72)"
+                          : "rgba(28,28,28,0.3)",
                       }}
                     >
                       {card.description}
@@ -718,7 +725,7 @@ export default function SelectPage() {
                             fontSize: "11px",
                             fontFamily: "var(--font-pixel), monospace",
                             color: card.accentColor,
-                            opacity: isHovered ? 1 : 0.65,
+                            opacity: isHovered ? 1 : 0.8,
                             transition: "opacity 0.3s ease",
                             letterSpacing: "0.04em",
                           }}
@@ -730,9 +737,9 @@ export default function SelectPage() {
                           style={{
                             fontSize: "8px",
                             fontFamily: "var(--font-pixel), monospace",
-                            color: "rgba(255,255,255,0.2)",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.07)",
+                            color: "rgba(28,28,28,0.35)",
+                            background: "rgba(28,28,28,0.05)",
+                            border: "1px solid rgba(28,28,28,0.15)",
                             padding: "4px 10px 3px",
                             borderRadius: "4px",
                             letterSpacing: "0.04em",
@@ -754,11 +761,12 @@ export default function SelectPage() {
           <div
             style={{
               position: "relative",
-              background: "rgba(10,10,14,0.68)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "10px",
+              background: EMERALD_BOX_BG,
+              border: EMERALD_BOX_BORDER,
+              borderRadius: "8px",
               padding: "14px 18px 16px",
               overflow: "hidden",
+              boxShadow: EMERALD_BOX_INSET,
             }}
           >
             {/* Bezel accent stripe */}
@@ -789,7 +797,7 @@ export default function SelectPage() {
                 style={{
                   fontSize: "9px",
                   fontFamily: "var(--font-pixel), monospace",
-                  color: "rgba(255,255,255,0.32)",
+                  color: "rgba(28,28,28,0.5)",
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
                 }}
@@ -841,7 +849,7 @@ export default function SelectPage() {
 
               <div
                 className="hidden md:block"
-                style={{ width: "1px", alignSelf: "stretch", background: "rgba(255,255,255,0.08)" }}
+                style={{ width: "1px", alignSelf: "stretch", background: "rgba(28,28,28,0.18)" }}
               />
 
               {/* Secondary: uniform icon chips */}
@@ -881,7 +889,7 @@ export default function SelectPage() {
                   style={{
                     fontSize: "11px",
                     fontFamily: "var(--font-pixel), monospace",
-                    color: "rgba(255,255,255,0.55)",
+                    color: "rgba(28,28,28,0.7)",
                     letterSpacing: "0.05em",
                     lineHeight: "1.8",
                   }}
@@ -919,11 +927,11 @@ export default function SelectPage() {
                     lineHeight: "1.8",
                   }}
                 >
-                  <span style={{ color: "rgba(255,255,255,0.55)" }}>So, you want </span>
-                  <span style={{ color: selectedCard?.accentColor ?? "#fff" }}>
+                  <span style={{ color: "rgba(28,28,28,0.7)" }}>So, you want </span>
+                  <span style={{ color: selectedCard?.accentColor ?? EMERALD_INK }}>
                     {selectedCard?.title}
                   </span>
-                  <span style={{ color: "rgba(255,255,255,0.55)" }}>{"? "}This choice is yours!</span>
+                  <span style={{ color: "rgba(28,28,28,0.7)" }}>{"? "}This choice is yours!</span>
                 </motion.p>
               )}
             </AnimatePresence>
