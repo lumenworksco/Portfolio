@@ -557,7 +557,33 @@ export default function SelectPage() {
         </FadeContent>
 
         {/* Card grid */}
-        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl">
+        <div
+          className="w-full max-w-4xl"
+          style={{
+            position: "relative",
+            padding: "18px",
+            borderRadius: "16px",
+            background: "linear-gradient(145deg, #8a0000 0%, #4d0000 100%)",
+            border: "3px solid #1a0000",
+            boxShadow:
+              "0 0 40px rgba(204,0,0,0.3), inset 0 2px 3px rgba(255,255,255,0.15), inset 0 -6px 14px rgba(0,0,0,0.5)",
+          }}
+        >
+          {/* bezel screws */}
+          <div style={{ position: "absolute", top: "10px", left: "14px", width: "6px", height: "6px", borderRadius: "50%", background: "#2a0000", boxShadow: "inset 0 1px 1px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.1)" }} />
+          <div style={{ position: "absolute", top: "10px", right: "14px", width: "6px", height: "6px", borderRadius: "50%", background: "#2a0000", boxShadow: "inset 0 1px 1px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.1)" }} />
+
+          {/* dark screen */}
+          <div
+            style={{
+              borderRadius: "10px",
+              background: "#0a0a0c",
+              border: "2px solid #000",
+              padding: "16px",
+              boxShadow: "inset 0 0 24px rgba(0,0,0,0.85)",
+            }}
+          >
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full">
           {cards.map((card, i) => {
             const isSelected = selectedId === card.id;
             const isOther = (selectedId !== null && !isSelected) || navigatingToPokedex;
@@ -601,17 +627,17 @@ export default function SelectPage() {
                           ? card.accentColor
                           : isHovered
                           ? card.accentColor + "80"
-                          : EMERALD_INK
+                          : "rgba(255,255,255,0.09)"
                       }`,
                       boxShadow: isSelected
-                        ? `${EMERALD_BOX_INSET}, 0 0 50px ${card.accentColor}50, 0 0 90px ${card.accentColor}20`
+                        ? `0 0 50px ${card.accentColor}50, 0 0 90px ${card.accentColor}20`
                         : isHovered
-                        ? `${EMERALD_BOX_INSET}, 0 0 28px ${card.accentColor}30`
-                        : EMERALD_BOX_INSET,
+                        ? `0 0 28px ${card.accentColor}30`
+                        : "none",
                       transition: "border-color 0.3s ease, box-shadow 0.3s ease",
                       background: card.available
-                        ? EMERALD_BOX_BG
-                        : "rgba(120,116,96,0.35)",
+                        ? "rgba(20,20,24,0.9)"
+                        : "rgba(20,20,24,0.55)",
                     }}
                   >
                     {/* Top accent bar */}
@@ -671,7 +697,7 @@ export default function SelectPage() {
                         colors={
                           card.available
                             ? card.gradientColors
-                            : ["#8a8a80", "#6f6f66", "#8a8a80"]
+                            : ["#4a4a55", "#3a3a44", "#4a4a55"]
                         }
                         animationSpeed={5}
                       >
@@ -683,13 +709,13 @@ export default function SelectPage() {
                     <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
                       <p
                         className="text-[10px] font-mono tracking-[0.2em] uppercase"
-                        style={{ color: "rgba(28,28,28,0.55)" }}
+                        style={{ color: "rgba(255,255,255,0.4)" }}
                       >
                         {card.subtitle}
                       </p>
                       <TypeBadge
                         type={card.pokemonType}
-                        color={card.available ? card.typeColor : "#8a8a80"}
+                        color={card.available ? card.typeColor : "#3f3f46"}
                       />
                     </div>
 
@@ -698,7 +724,7 @@ export default function SelectPage() {
                       style={{
                         width: isHovered || isSelected ? "48px" : "24px",
                         height: "2px",
-                        background: card.available ? card.accentColor : "#999",
+                        background: card.available ? card.accentColor : "#333",
                         marginBottom: "18px",
                         transition: "width 0.4s ease",
                         opacity: card.available ? 1 : 0.4,
@@ -710,8 +736,8 @@ export default function SelectPage() {
                       className="text-sm leading-relaxed flex-1"
                       style={{
                         color: card.available
-                          ? "rgba(28,28,28,0.72)"
-                          : "rgba(28,28,28,0.3)",
+                          ? "rgba(255,255,255,0.62)"
+                          : "rgba(255,255,255,0.22)",
                       }}
                     >
                       {card.description}
@@ -737,9 +763,9 @@ export default function SelectPage() {
                           style={{
                             fontSize: "8px",
                             fontFamily: "var(--font-pixel), monospace",
-                            color: "rgba(28,28,28,0.35)",
-                            background: "rgba(28,28,28,0.05)",
-                            border: "1px solid rgba(28,28,28,0.15)",
+                            color: "rgba(255,255,255,0.2)",
+                            background: "rgba(255,255,255,0.04)",
+                            border: "1px solid rgba(255,255,255,0.07)",
                             padding: "4px 10px 3px",
                             borderRadius: "4px",
                             letterSpacing: "0.04em",
@@ -754,6 +780,8 @@ export default function SelectPage() {
               </motion.div>
             );
           })}
+        </div>
+          </div>
         </div>
 
         {/* System panel — secondary navigation, Pokédex-console styled */}
