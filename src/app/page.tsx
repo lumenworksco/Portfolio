@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf } from "lucide-react";
+import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -143,19 +143,23 @@ function DialogBox({
   );
 }
 
-// ─── System panel icon chip ────────────────────────────────────────────────────
-function IconChip({
+// ─── Start-menu row — GBA pause-menu list item ─────────────────────────────────
+function StartMenuRow({
   href,
+  onClick,
+  external = false,
   icon,
   label,
-  external = false,
-  accentColor = EMERALD_INK,
+  color,
+  badge,
 }: {
-  href: string;
+  href?: string;
+  onClick?: () => void;
+  external?: boolean;
   icon: React.ReactNode;
   label: string;
-  external?: boolean;
-  accentColor?: string;
+  color: string;
+  badge?: string;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -163,16 +167,25 @@ function IconChip({
     position: "relative",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    width: "44px",
-    height: "44px",
-    borderRadius: "8px",
-    background: hovered ? "rgba(28,28,28,0.08)" : "rgba(28,28,28,0.04)",
-    border: `1px solid ${hovered ? accentColor + "70" : "rgba(28,28,28,0.2)"}`,
+    gap: "12px",
+    width: "100%",
+    padding: "9px 14px 9px 26px",
+    borderRadius: "6px",
+    border: "none",
+    background: hovered ? color : "transparent",
+    color: hovered ? "#fff" : EMERALD_INK,
     textDecoration: "none",
-    transition: "background 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
-    transform: hovered ? "translateY(-2px)" : "translateY(0)",
-    flexShrink: 0,
+    cursor: "pointer",
+    transition: "background 0.15s ease, color 0.15s ease",
+    fontFamily: "var(--font-pixel), monospace",
+    fontSize: "10px",
+    letterSpacing: "0.04em",
+    textAlign: "left",
+  };
+
+  const handlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
   };
 
   const inner = (
@@ -180,104 +193,46 @@ function IconChip({
       <span
         style={{
           position: "absolute",
-          bottom: "calc(100% + 7px)",
-          left: "50%",
-          transform: `translateX(-50%) translateY(${hovered ? "0" : "4px"})`,
+          left: "9px",
           opacity: hovered ? 1 : 0,
-          pointerEvents: "none",
-          fontSize: "8px",
-          fontFamily: "var(--font-pixel), monospace",
-          letterSpacing: "0.04em",
-          color: "#fff",
-          background: "rgba(8,8,12,0.96)",
-          border: "1px solid rgba(255,255,255,0.15)",
-          borderRadius: "4px",
-          padding: "4px 7px 3px",
-          whiteSpace: "nowrap",
-          transition: "opacity 0.18s ease, transform 0.18s ease",
-          zIndex: 10,
+          transition: "opacity 0.15s ease",
+          fontSize: "9px",
+          lineHeight: 1,
         }}
       >
-        {label}
-        {external ? " ↗" : ""}
+        ▶
       </span>
-      <div style={{ color: hovered ? accentColor : "rgba(28,28,28,0.6)", transition: "color 0.2s ease", lineHeight: 0 }}>
+      <span
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "16px",
+          lineHeight: 0,
+          color: hovered ? "#fff" : color,
+          transition: "color 0.15s ease",
+        }}
+      >
         {icon}
-      </div>
-    </>
-  );
-
-  const handlers = {
-    onMouseEnter: () => setHovered(true),
-    onMouseLeave: () => setHovered(false),
-  };
-
-  if (external) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer" style={style} {...handlers}>
-        {inner}
-      </a>
-    );
-  }
-
-  return (
-    <Link href={href} style={style} {...handlers}>
-      {inner}
-    </Link>
-  );
-}
-
-// ─── System panel pill button — for the few links worth calling out ───────────
-function PillButton({
-  href,
-  onClick,
-  color,
-  external = false,
-  icon,
-  children,
-}: {
-  href?: string;
-  onClick?: () => void;
-  color: string;
-  external?: boolean;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  const style: React.CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "6px",
-    fontSize: "9px",
-    fontFamily: "var(--font-pixel), monospace",
-    lineHeight: 1,
-    color,
-    letterSpacing: "0.06em",
-    background: hovered ? `${color}2e` : `${color}17`,
-    border: `1px solid ${hovered ? color + "75" : color + "40"}`,
-    borderRadius: "6px",
-    padding: "9px 16px 7px",
-    cursor: "pointer",
-    whiteSpace: "nowrap",
-    textDecoration: "none",
-    boxShadow: hovered ? `0 0 16px ${color}40` : "none",
-    transition: "background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-  };
-
-  const handlers = {
-    onMouseEnter: () => setHovered(true),
-    onMouseLeave: () => setHovered(false),
-  };
-
-  const inner = (
-    <>
-      {icon && (
-        <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 0 }}>
-          {icon}
+      </span>
+      <span style={{ flex: 1, display: "inline-block", lineHeight: 1, transform: "translateY(1px)" }}>
+        {label}
+      </span>
+      {badge && (
+        <span
+          style={{
+            fontSize: "7px",
+            background: hovered ? "rgba(255,255,255,0.28)" : color,
+            color: "#fff",
+            padding: "3px 6px 2px",
+            borderRadius: "4px",
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {badge}
         </span>
       )}
-      <span style={{ display: "inline-block", lineHeight: 1, transform: "translateY(1px)" }}>{children}</span>
     </>
   );
 
@@ -419,6 +374,124 @@ function CornerBrackets({ color, visible }: { color: string; visible: boolean })
   );
 }
 
+// ─── Overworld strip — pixel-tile terrain + town entry banner ─────────────────
+function OverworldStrip() {
+  const [showBanner, setShowBanner] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowBanner(false), 2600);
+    return () => clearTimeout(t);
+  }, []);
+
+  const trees = [8, 90];
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "60px",
+        borderRadius: "8px",
+        overflow: "hidden",
+        border: `3px solid ${EMERALD_INK}`,
+        boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+      }}
+    >
+      {/* grass tiles */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "repeating-linear-gradient(90deg, #4d9c3f 0px, #4d9c3f 15px, #57ab49 15px, #57ab49 30px)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 15px, transparent 15px, transparent 30px)",
+        }}
+      />
+
+      {/* dirt path */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: "50%",
+          height: "20px",
+          transform: "translateY(-50%)",
+          background:
+            "repeating-linear-gradient(90deg, #c9a36a 0px, #c9a36a 15px, #bd9660 15px, #bd9660 30px)",
+          borderTop: "2px solid rgba(0,0,0,0.15)",
+          borderBottom: "2px solid rgba(0,0,0,0.15)",
+        }}
+      />
+
+      {/* trees */}
+      {trees.map((leftPct, i) => (
+        <div key={i} style={{ position: "absolute", left: `${leftPct}%`, bottom: 0, transform: "translateX(-50%)" }}>
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "6px",
+              height: "8px",
+              background: "#6b4423",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "6px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "20px",
+              height: "20px",
+              borderRadius: "50%",
+              background: "#2f6b2f",
+              border: "2px solid #1f4d1f",
+            }}
+          />
+        </div>
+      ))}
+
+      {/* entering-location banner */}
+      <AnimatePresence>
+        {showBanner && (
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              transform: "translateY(-50%)",
+              background: "rgba(8,8,8,0.92)",
+              padding: "7px 18px 6px",
+              fontFamily: "var(--font-pixel), monospace",
+              fontSize: "11px",
+              color: "#fff",
+              letterSpacing: "0.1em",
+              boxShadow: "0 2px 14px rgba(0,0,0,0.5)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            PROF. BRAUN&apos;S LAB
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Card entrance variants ────────────────────────────────────────────────────
 const cardVariants = {
   hidden: { opacity: 0, y: 36, scale: 0.95 },
@@ -478,10 +551,10 @@ export default function SelectPage() {
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
       <ChiptuneMusic />
 
-      {/* Aurora WebGL background */}
+      {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">
         <Aurora
-          colorStops={["#b45309", "#7c3aed", "#059669"]}
+          colorStops={["#2f6b2f", "#0e7490", "#c9a36a"]}
           speed={0.6}
           amplitude={1.1}
         />
@@ -525,6 +598,16 @@ export default function SelectPage() {
       </AnimatePresence>
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-8 md:py-16 gap-5 md:gap-8">
+        {/* Overworld strip */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full max-w-4xl"
+        >
+          <OverworldStrip />
+        </motion.div>
+
         {/* Professor dialog header */}
         <FadeContent blur duration={650} initialOpacity={0} className="w-full max-w-4xl">
           <DialogBox showCursor>
@@ -557,33 +640,7 @@ export default function SelectPage() {
         </FadeContent>
 
         {/* Card grid */}
-        <div
-          className="w-full max-w-4xl"
-          style={{
-            position: "relative",
-            padding: "18px",
-            borderRadius: "16px",
-            background: "linear-gradient(145deg, #8a0000 0%, #4d0000 100%)",
-            border: "3px solid #1a0000",
-            boxShadow:
-              "0 0 40px rgba(204,0,0,0.3), inset 0 2px 3px rgba(255,255,255,0.15), inset 0 -6px 14px rgba(0,0,0,0.5)",
-          }}
-        >
-          {/* bezel screws */}
-          <div style={{ position: "absolute", top: "10px", left: "14px", width: "6px", height: "6px", borderRadius: "50%", background: "#2a0000", boxShadow: "inset 0 1px 1px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.1)" }} />
-          <div style={{ position: "absolute", top: "10px", right: "14px", width: "6px", height: "6px", borderRadius: "50%", background: "#2a0000", boxShadow: "inset 0 1px 1px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.1)" }} />
-
-          {/* dark screen */}
-          <div
-            style={{
-              borderRadius: "10px",
-              background: "#0a0a0c",
-              border: "2px solid #000",
-              padding: "16px",
-              boxShadow: "inset 0 0 24px rgba(0,0,0,0.85)",
-            }}
-          >
-        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-4xl">
           {cards.map((card, i) => {
             const isSelected = selectedId === card.id;
             const isOther = (selectedId !== null && !isSelected) || navigatingToPokedex;
@@ -627,17 +684,17 @@ export default function SelectPage() {
                           ? card.accentColor
                           : isHovered
                           ? card.accentColor + "80"
-                          : "rgba(255,255,255,0.09)"
+                          : EMERALD_INK
                       }`,
                       boxShadow: isSelected
-                        ? `0 0 50px ${card.accentColor}50, 0 0 90px ${card.accentColor}20`
+                        ? `${EMERALD_BOX_INSET}, 0 0 50px ${card.accentColor}50, 0 0 90px ${card.accentColor}20`
                         : isHovered
-                        ? `0 0 28px ${card.accentColor}30`
-                        : "none",
+                        ? `${EMERALD_BOX_INSET}, 0 0 28px ${card.accentColor}30`
+                        : EMERALD_BOX_INSET,
                       transition: "border-color 0.3s ease, box-shadow 0.3s ease",
                       background: card.available
-                        ? "rgba(20,20,24,0.9)"
-                        : "rgba(20,20,24,0.55)",
+                        ? EMERALD_BOX_BG
+                        : "rgba(120,116,96,0.35)",
                     }}
                   >
                     {/* Top accent bar */}
@@ -697,7 +754,7 @@ export default function SelectPage() {
                         colors={
                           card.available
                             ? card.gradientColors
-                            : ["#4a4a55", "#3a3a44", "#4a4a55"]
+                            : ["#8a8a80", "#6f6f66", "#8a8a80"]
                         }
                         animationSpeed={5}
                       >
@@ -709,13 +766,13 @@ export default function SelectPage() {
                     <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
                       <p
                         className="text-[10px] font-mono tracking-[0.2em] uppercase"
-                        style={{ color: "rgba(255,255,255,0.4)" }}
+                        style={{ color: "rgba(28,28,28,0.55)" }}
                       >
                         {card.subtitle}
                       </p>
                       <TypeBadge
                         type={card.pokemonType}
-                        color={card.available ? card.typeColor : "#3f3f46"}
+                        color={card.available ? card.typeColor : "#8a8a80"}
                       />
                     </div>
 
@@ -724,7 +781,7 @@ export default function SelectPage() {
                       style={{
                         width: isHovered || isSelected ? "48px" : "24px",
                         height: "2px",
-                        background: card.available ? card.accentColor : "#333",
+                        background: card.available ? card.accentColor : "#999",
                         marginBottom: "18px",
                         transition: "width 0.4s ease",
                         opacity: card.available ? 1 : 0.4,
@@ -736,8 +793,8 @@ export default function SelectPage() {
                       className="text-sm leading-relaxed flex-1"
                       style={{
                         color: card.available
-                          ? "rgba(255,255,255,0.62)"
-                          : "rgba(255,255,255,0.22)",
+                          ? "rgba(28,28,28,0.72)"
+                          : "rgba(28,28,28,0.3)",
                       }}
                     >
                       {card.description}
@@ -763,9 +820,9 @@ export default function SelectPage() {
                           style={{
                             fontSize: "8px",
                             fontFamily: "var(--font-pixel), monospace",
-                            color: "rgba(255,255,255,0.2)",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.07)",
+                            color: "rgba(28,28,28,0.35)",
+                            background: "rgba(28,28,28,0.05)",
+                            border: "1px solid rgba(28,28,28,0.15)",
                             padding: "4px 10px 3px",
                             borderRadius: "4px",
                             letterSpacing: "0.04em",
@@ -781,10 +838,8 @@ export default function SelectPage() {
             );
           })}
         </div>
-          </div>
-        </div>
 
-        {/* System panel — secondary navigation, Pokédex-console styled */}
+        {/* Start menu — every other destination, GBA pause-menu style */}
         <FadeContent blur duration={600} delay={1100} initialOpacity={0} className="w-full max-w-4xl">
           <div
             style={{
@@ -792,25 +847,12 @@ export default function SelectPage() {
               background: EMERALD_BOX_BG,
               border: EMERALD_BOX_BORDER,
               borderRadius: "8px",
-              padding: "14px 18px 16px",
-              overflow: "hidden",
+              padding: "10px 10px 12px",
               boxShadow: EMERALD_BOX_INSET,
             }}
           >
-            {/* Bezel accent stripe */}
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "2px",
-                background: `linear-gradient(90deg, ${POKEDEX_RED} 0%, ${POKEDEX_RED}55 35%, transparent 70%)`,
-              }}
-            />
-
             {/* Panel label */}
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 px-3 pt-2 pb-2">
               <span
                 className="pulse-dot"
                 style={{
@@ -830,75 +872,28 @@ export default function SelectPage() {
                   textTransform: "uppercase",
                 }}
               >
-                System
+                Menu
               </p>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              {/* Primary: the specials, called out like Pokédex */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                <PillButton onClick={handlePokedex} color={POKEDEX_RED} icon={<span style={{ fontSize: "9px" }}>▶</span>}>
-                  POKEDEX
-                </PillButton>
-                <PillButton href="/research" color="#34d399" icon={<FlaskConical size={12} />}>
-                  RESEARCH
-                </PillButton>
-                <div style={{ position: "relative", display: "inline-flex" }}>
-                  <PillButton
-                    href="https://nihongo.braunf.com"
-                    external
-                    color="#f472b6"
-                    icon={<span style={{ fontSize: "12px" }}>日</span>}
-                  >
-                    NIHONGO
-                  </PillButton>
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-8px",
-                      right: "-8px",
-                      fontSize: "7px",
-                      fontFamily: "var(--font-pixel), monospace",
-                      letterSpacing: "0.02em",
-                      color: "#fff",
-                      background: "#f472b6",
-                      border: "1px solid #161616",
-                      borderRadius: "4px",
-                      padding: "3px 5px 2px",
-                      lineHeight: 1,
-                      whiteSpace: "nowrap",
-                      pointerEvents: "none",
-                    }}
-                  >
-                    WK LV.3
-                  </span>
-                </div>
-              </div>
-
-              <div
-                className="hidden md:block"
-                style={{ width: "1px", alignSelf: "stretch", background: "rgba(28,28,28,0.18)" }}
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              <StartMenuRow onClick={handlePokedex} icon={<BookOpen size={14} />} label="POKEDEX" color={POKEDEX_RED} />
+              <StartMenuRow href="/research" icon={<FlaskConical size={14} />} label="RESEARCH" color="#34d399" />
+              <StartMenuRow
+                href="https://nihongo.braunf.com"
+                external
+                icon={<span style={{ fontSize: "13px" }}>日</span>}
+                label="NIHONGO"
+                color="#f472b6"
+                badge="WK LV.3"
               />
 
-              {/* Secondary: uniform icon chips */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                <IconChip href="/contact" icon={<Mail size={16} />} label="Contact" />
-                <IconChip href="/uses" icon={<Wrench size={16} />} label="Uses" />
-                <IconChip
-                  href="https://data.braunf.com"
-                  icon={<BarChart3 size={16} />}
-                  label="DataCamp"
-                  external
-                  accentColor="#f59e0b"
-                />
-                <IconChip
-                  href="https://iot.braunf.com"
-                  icon={<Cpu size={16} />}
-                  label="IoT Lab"
-                  external
-                  accentColor="#60a5fa"
-                />
-              </div>
+              <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />
+
+              <StartMenuRow href="/contact" icon={<Mail size={14} />} label="CONTACT" color={EMERALD_INK} />
+              <StartMenuRow href="/uses" icon={<Wrench size={14} />} label="USES" color={EMERALD_INK} />
+              <StartMenuRow href="https://data.braunf.com" external icon={<BarChart3 size={14} />} label="DATACAMP" color="#f59e0b" />
+              <StartMenuRow href="https://iot.braunf.com" external icon={<Cpu size={14} />} label="IOT LAB" color="#60a5fa" />
             </div>
           </div>
         </FadeContent>
