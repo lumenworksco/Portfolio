@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Wrench, FlaskConical, BarChart3, Cpu } from "lucide-react";
+import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -297,48 +297,54 @@ function PillButton({
   );
 }
 
-// ─── Original creature mascots — not depictions of any existing character ─────
-type CreatureVariant = "fire" | "psychic" | "grass";
+// ─── Type emblem — CSS gradient + lucide icon, no freehand illustration ───────
+type PokeType = "fire" | "psychic" | "grass";
 
-function CreatureSprite({
+const TYPE_ICONS: Record<PokeType, typeof Flame> = {
+  fire: Flame,
+  psychic: Brain,
+  grass: Leaf,
+};
+
+function TypeEmblem({
   variant,
-  size = 92,
+  size = 76,
   hovered = false,
   selected = false,
   color,
 }: {
-  variant: CreatureVariant;
+  variant: PokeType;
   size?: number;
   hovered?: boolean;
   selected?: boolean;
   color: string;
 }) {
-  const gradId = `body-grad-${variant}`;
+  const Icon = TYPE_ICONS[variant];
 
   return (
     <motion.div
       style={{ width: size, height: size, position: "relative" }}
       animate={
         selected
-          ? { y: [0, -16, 2, -9, 0], rotate: [0, -4, 4, -2, 0] }
+          ? { scale: [1, 1.16, 0.94, 1.05, 1], rotate: [0, -6, 6, -3, 0] }
           : hovered
-          ? { y: [0, -7, 0], rotate: [0, -2, 2, 0] }
-          : { y: [0, -3, 0], rotate: 0 }
+          ? { y: [0, -5, 0] }
+          : { y: 0 }
       }
       transition={
         selected
-          ? { duration: 0.75, ease: "easeOut" }
-          : { duration: hovered ? 0.9 : 2.6, repeat: Infinity, ease: "easeInOut" }
+          ? { duration: 0.55, ease: "easeOut" }
+          : { duration: 0.8, ease: "easeInOut", repeat: hovered ? Infinity : 0 }
       }
     >
       {/* ground shadow */}
       <div
         style={{
           position: "absolute",
-          bottom: "-4px",
+          bottom: "-9px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: `${size * 0.5}px`,
+          width: `${size * 0.55}px`,
           height: `${size * 0.1}px`,
           borderRadius: "50%",
           background: "rgba(0,0,0,0.4)",
@@ -346,89 +352,32 @@ function CreatureSprite({
         }}
       />
 
-      <svg viewBox="0 0 100 100" width={size} height={size}>
-        <defs>
-          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
-            <stop offset="35%" stopColor={color} stopOpacity="0.9" />
-            <stop offset="100%" stopColor={color} />
-          </linearGradient>
-        </defs>
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: `radial-gradient(circle at 34% 30%, ${color}ee, ${color} 65%, ${color}bb 100%)`,
+          border: "3px solid #161616",
+          boxShadow:
+            hovered || selected
+              ? `0 0 0 4px ${color}30, 0 10px 24px ${color}55`
+              : `0 0 0 3px ${color}20, 0 6px 14px rgba(0,0,0,0.35)`,
+          transition: "box-shadow 0.25s ease",
+        }}
+      >
+        <Icon size={size * 0.46} color="#161616" strokeWidth={2.2} />
+      </div>
 
-        {/* stubby legs */}
-        <ellipse cx="36" cy="82" rx="9" ry="6" fill={color} />
-        <ellipse cx="64" cy="82" rx="9" ry="6" fill={color} />
-
-        {/* stubby arms, peeking from the sides */}
-        <ellipse cx="13" cy="60" rx="8" ry="6" fill={color} stroke="#161616" strokeWidth="1.5" />
-        <ellipse cx="87" cy="60" rx="8" ry="6" fill={color} stroke="#161616" strokeWidth="1.5" />
-
-        {/* tail, tucked behind the body */}
-        {variant === "fire" && (
-          <path d="M80 66 C92 64 97 54 92 45 C93 55 85 59 78 64 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
-        )}
-        {variant === "grass" && (
-          <path d="M79 68 C90 68 96 76 91 84 C90 76 83 74 77 76 Z" fill="#4ADE80" stroke="#166534" strokeWidth="1.5" />
-        )}
-
-        {/* head accessories */}
-        {variant === "fire" && (
-          <path d="M68 32 C79 24 81 11 74 3 C77 15 68 18 66 26 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
-        )}
-
-        {/* body */}
-        <path
-          d="M50 18 C72 18 88 34 88 56 C88 78 71 90 50 90 C29 90 12 78 12 56 C12 34 28 18 50 18 Z"
-          fill={`url(#${gradId})`}
-          stroke="#161616"
-          strokeWidth="3"
-        />
-
-        {/* belly patch */}
-        <ellipse cx="50" cy="70" rx="19" ry="15" fill="#fff" opacity="0.2" />
-
-        {/* front accessories */}
-        {variant === "grass" && (
-          <>
-            <path d="M50 19 C45 6 36 1 29 4 C38 6 41 15 44 21 Z" fill="#86EFAC" stroke="#166534" strokeWidth="2" />
-            <path d="M50 19 C55 6 64 1 71 4 C62 6 59 15 56 21 Z" fill="#4ADE80" stroke="#166534" strokeWidth="2" />
-          </>
-        )}
-        {variant === "psychic" && (
-          <>
-            <path d="M27 27 C18 12 12 3 8 5 C15 11 17 22 23 31 Z" fill={color} stroke="#161616" strokeWidth="1.5" />
-            <path d="M73 27 C82 12 88 3 92 5 C85 11 83 22 77 31 Z" fill={color} stroke="#161616" strokeWidth="1.5" />
-            <path d="M50 8 L55 17 L50 26 L45 17 Z" fill="#fff" opacity="0.9" stroke="#161616" strokeWidth="1.2" />
-          </>
-        )}
-        {variant === "fire" && (
-          <path
-            d="M50 6 C57 13 61 20 56 29 C55 22 51 21 47 27 C44 18 45 11 50 6 Z"
-            fill="#FDE68A"
-            stroke="#B45309"
-            strokeWidth="2"
-          />
-        )}
-
-        {/* glossy highlight */}
-        <ellipse cx="35" cy="34" rx="13" ry="9" fill="#fff" opacity="0.25" />
-
-        {/* face */}
-        <circle cx="37" cy="56" r="8" fill="#fff" />
-        <circle cx="38" cy="57" r="4.5" fill="#161616" />
-        <circle cx="40" cy="54.5" r="1.4" fill="#fff" />
-        <circle cx="63" cy="56" r="8" fill="#fff" />
-        <circle cx="64" cy="57" r="4.5" fill="#161616" />
-        <circle cx="66" cy="54.5" r="1.4" fill="#fff" />
-        <path d="M42 68 Q50 74 58 68" stroke="#161616" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      </svg>
-
-      {/* selection sparkle burst */}
+      {/* selection flash */}
       {selected && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.2 }}
-          animate={{ opacity: [0, 1, 0], scale: [0.2, 2.2, 2.4] }}
-          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{ opacity: [0, 1, 0], scale: [0.3, 1.9, 2.1] }}
+          transition={{ duration: 0.55, delay: 0.1, ease: "easeOut" }}
           style={{
             position: "absolute",
             inset: 0,
@@ -638,7 +587,7 @@ export default function SelectPage() {
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
-                      minHeight: "clamp(310px, 42vw, 410px)",
+                      minHeight: "clamp(300px, 40vw, 400px)",
                       borderRadius: "10px",
                       border: `2px solid ${
                         isSelected
@@ -658,6 +607,20 @@ export default function SelectPage() {
                         : "rgba(10,10,14,0.6)",
                     }}
                   >
+                    {/* Top accent bar */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: "3px",
+                        background: card.available ? card.accentColor : "#333",
+                        opacity: isHovered || isSelected ? 1 : 0.6,
+                        transition: "opacity 0.3s ease",
+                      }}
+                    />
+
                     {/* Corner glow */}
                     <div
                       style={{
@@ -675,19 +638,20 @@ export default function SelectPage() {
                       }}
                     />
 
-                    {/* Creature mascot */}
+                    {/* Type emblem */}
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        marginBottom: "14px",
+                        marginTop: "6px",
+                        marginBottom: "24px",
                         filter: card.available ? "none" : "grayscale(1)",
                         opacity: card.available ? 1 : 0.4,
                       }}
                     >
-                      <CreatureSprite
-                        variant={card.pokemonType.toLowerCase() as CreatureVariant}
-                        size={92}
+                      <TypeEmblem
+                        variant={card.pokemonType.toLowerCase() as PokeType}
+                        size={76}
                         hovered={isHovered}
                         selected={isSelected}
                         color={card.available ? card.accentColor : "#666"}
@@ -712,7 +676,7 @@ export default function SelectPage() {
                     <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
                       <p
                         className="text-[10px] font-mono tracking-[0.2em] uppercase"
-                        style={{ color: "rgba(255,255,255,0.3)" }}
+                        style={{ color: "rgba(255,255,255,0.4)" }}
                       >
                         {card.subtitle}
                       </p>
@@ -739,7 +703,7 @@ export default function SelectPage() {
                       className="text-sm leading-relaxed flex-1"
                       style={{
                         color: card.available
-                          ? "rgba(255,255,255,0.55)"
+                          ? "rgba(255,255,255,0.62)"
                           : "rgba(255,255,255,0.22)",
                       }}
                     >
@@ -843,14 +807,36 @@ export default function SelectPage() {
                 <PillButton href="/research" color="#34d399" icon={<FlaskConical size={12} />}>
                   RESEARCH
                 </PillButton>
-                <PillButton
-                  href="https://nihongo.braunf.com"
-                  external
-                  color="#f472b6"
-                  icon={<span style={{ fontSize: "12px" }}>日</span>}
-                >
-                  NIHONGO
-                </PillButton>
+                <div style={{ position: "relative", display: "inline-flex" }}>
+                  <PillButton
+                    href="https://nihongo.braunf.com"
+                    external
+                    color="#f472b6"
+                    icon={<span style={{ fontSize: "12px" }}>日</span>}
+                  >
+                    NIHONGO
+                  </PillButton>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      fontSize: "7px",
+                      fontFamily: "var(--font-pixel), monospace",
+                      letterSpacing: "0.02em",
+                      color: "#fff",
+                      background: "#f472b6",
+                      border: "1px solid #161616",
+                      borderRadius: "4px",
+                      padding: "3px 5px 2px",
+                      lineHeight: 1,
+                      whiteSpace: "nowrap",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    WK LV.3
+                  </span>
+                </div>
               </div>
 
               <div
