@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Music } from "lucide-react";
 
 const NOTE_FREQS: Record<string, number> = {
@@ -28,8 +28,13 @@ const BASS: (string | null)[] = [
   "F3", null, "F3", null, "G3", null, "C3", null,
 ];
 
-export default function ChiptuneMusic() {
-  const [enabled, setEnabled] = useState(false);
+export default function ChiptuneMusic({
+  enabled,
+  onToggle,
+}: {
+  enabled: boolean;
+  onToggle: () => void;
+}) {
   const ctxRef = useRef<AudioContext | null>(null);
   const masterRef = useRef<GainNode | null>(null);
   const nextStepRef = useRef(0);
@@ -95,24 +100,20 @@ export default function ChiptuneMusic() {
   }, []);
 
   useEffect(() => {
+    if (enabled) start();
+    else stop();
+  }, [enabled, start, stop]);
+
+  useEffect(() => {
     return () => {
       if (timerRef.current !== null) window.clearTimeout(timerRef.current);
       ctxRef.current?.close();
     };
   }, []);
 
-  const toggle = () => {
-    setEnabled((prev) => {
-      const next = !prev;
-      if (next) start();
-      else stop();
-      return next;
-    });
-  };
-
   return (
     <button
-      onClick={toggle}
+      onClick={onToggle}
       aria-pressed={enabled}
       aria-label={enabled ? "Mute background music" : "Play background music"}
       style={{

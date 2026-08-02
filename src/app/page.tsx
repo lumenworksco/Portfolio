@@ -10,6 +10,7 @@ import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
+import { playHoverBlip, playConfirmChime } from "@/lib/uiSfx";
 
 type CardId = "lumen" | "portfolio" | "calm";
 
@@ -152,6 +153,7 @@ function StartMenuRow({
   label,
   color,
   badge,
+  soundEnabled = false,
 }: {
   href?: string;
   onClick?: () => void;
@@ -160,6 +162,7 @@ function StartMenuRow({
   label: string;
   color: string;
   badge?: string;
+  soundEnabled?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -184,8 +187,15 @@ function StartMenuRow({
   };
 
   const handlers = {
-    onMouseEnter: () => setHovered(true),
+    onMouseEnter: () => {
+      setHovered(true);
+      if (soundEnabled) playHoverBlip();
+    },
     onMouseLeave: () => setHovered(false),
+    onClick: () => {
+      if (soundEnabled) playConfirmChime();
+      onClick?.();
+    },
   };
 
   const inner = (
@@ -238,7 +248,7 @@ function StartMenuRow({
 
   if (onClick) {
     return (
-      <button onClick={onClick} style={style} {...handlers}>
+      <button style={style} {...handlers}>
         {inner}
       </button>
     );
@@ -509,6 +519,7 @@ export default function SelectPage() {
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
+  const [musicEnabled, setMusicEnabled] = useState(false);
 
   // Backtick easter egg → terminal
   useEffect(() => {
@@ -526,6 +537,7 @@ export default function SelectPage() {
   const handleSelect = useCallback(
     (card: Card) => {
       if (!card.available || selectedId !== null || navigatingToPokedex) return;
+      if (musicEnabled) playConfirmChime();
       setSelectedId(card.id);
       if (card.href) {
         const isInternal = card.href.startsWith("/");
@@ -538,18 +550,19 @@ export default function SelectPage() {
         }, 850);
       }
     },
-    [selectedId, navigatingToPokedex, router]
+    [selectedId, navigatingToPokedex, router, musicEnabled]
   );
 
   const handlePokedex = useCallback(() => {
     if (selectedId !== null || navigatingToPokedex) return;
+    if (musicEnabled) playConfirmChime();
     setNavigatingToPokedex(true);
     setTimeout(() => router.push("/pokedex"), 700);
-  }, [selectedId, navigatingToPokedex, router]);
+  }, [selectedId, navigatingToPokedex, router, musicEnabled]);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
-      <ChiptuneMusic />
+      <ChiptuneMusic enabled={musicEnabled} onToggle={() => setMusicEnabled((v) => !v)} />
 
       {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">
@@ -566,6 +579,17 @@ export default function SelectPage() {
         style={{
           background:
             "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, rgba(6,6,8,0.55) 100%)",
+        }}
+      />
+
+      {/* CRT scanlines — subtle handheld-screen texture */}
+      <div
+        className="fixed inset-0 z-20 pointer-events-none"
+        style={{
+          background:
+            "repeating-linear-gradient(to bottom, rgba(0,0,0,0.09) 0px, rgba(0,0,0,0.09) 1px, transparent 1px, transparent 3px)",
+          mixBlendMode: "multiply",
+          opacity: 0.5,
         }}
       />
 
@@ -657,7 +681,11 @@ export default function SelectPage() {
                 style={{ position: "relative" }}
               >
                 <motion.div
-                  onHoverStart={() => card.available && setHoveredId(card.id)}
+                  onHoverStart={() => {
+                    if (!card.available) return;
+                    setHoveredId(card.id);
+                    if (musicEnabled) playHoverBlip();
+                  }}
                   onHoverEnd={() => setHoveredId(null)}
                   onClick={() => handleSelect(card)}
                   animate={{
@@ -877,8 +905,8 @@ export default function SelectPage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-              <StartMenuRow onClick={handlePokedex} icon={<BookOpen size={14} />} label="POKEDEX" color={POKEDEX_RED} />
-              <StartMenuRow href="/research" icon={<FlaskConical size={14} />} label="RESEARCH" color="#34d399" />
+              <StartMenuRow onClick={handlePokedex} icon={<BookOpen size={14} />} label="POKEDEX" color={POKEDEX_RED} soundEnabled={musicEnabled} />
+              <StartMenuRow href="/research" icon={<FlaskConical size={14} />} label="RESEARCH" color="#34d399" soundEnabled={musicEnabled} />
               <StartMenuRow
                 href="https://nihongo.braunf.com"
                 external
@@ -886,14 +914,15 @@ export default function SelectPage() {
                 label="NIHONGO"
                 color="#f472b6"
                 badge="WK LV.3"
+                soundEnabled={musicEnabled}
               />
 
               <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />
 
-              <StartMenuRow href="/contact" icon={<Mail size={14} />} label="CONTACT" color={EMERALD_INK} />
-              <StartMenuRow href="/uses" icon={<Wrench size={14} />} label="USES" color={EMERALD_INK} />
-              <StartMenuRow href="https://data.braunf.com" external icon={<BarChart3 size={14} />} label="DATACAMP" color="#f59e0b" />
-              <StartMenuRow href="https://iot.braunf.com" external icon={<Cpu size={14} />} label="IOT LAB" color="#60a5fa" />
+              <StartMenuRow href="/contact" icon={<Mail size={14} />} label="CONTACT" color={EMERALD_INK} soundEnabled={musicEnabled} />
+              <StartMenuRow href="/uses" icon={<Wrench size={14} />} label="USES" color={EMERALD_INK} soundEnabled={musicEnabled} />
+              <StartMenuRow href="https://data.braunf.com" external icon={<BarChart3 size={14} />} label="DATACAMP" color="#f59e0b" soundEnabled={musicEnabled} />
+              <StartMenuRow href="https://iot.braunf.com" external icon={<Cpu size={14} />} label="IOT LAB" color="#60a5fa" soundEnabled={musicEnabled} />
             </div>
           </div>
         </FadeContent>
