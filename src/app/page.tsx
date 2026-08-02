@@ -367,12 +367,6 @@ function CreatureSprite({
         {variant === "fire" && (
           <path d="M80 66 C92 64 97 54 92 45 C93 55 85 59 78 64 Z" fill="#FDBA74" stroke="#B45309" strokeWidth="1.5" />
         )}
-        {variant === "psychic" && (
-          <>
-            <path d="M78 68 C88 72 93 80 89 89" stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-            <path d="M89 82 L94 87 L89 92 L84 87 Z" fill="#fff" stroke="#161616" strokeWidth="1.2" />
-          </>
-        )}
         {variant === "grass" && (
           <path d="M79 68 C90 68 96 76 91 84 C90 76 83 74 77 76 Z" fill="#4ADE80" stroke="#166534" strokeWidth="1.5" />
         )}
