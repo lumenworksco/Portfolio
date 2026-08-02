@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen } from "lucide-react";
@@ -22,6 +22,26 @@ const EMERALD_BLUE = "#2E86AB";
 const EMERALD_BOX_BG = `linear-gradient(180deg, ${EMERALD_CREAM} 0%, ${EMERALD_CREAM_DEEP} 100%)`;
 const EMERALD_BOX_BORDER = `3px solid ${EMERALD_INK}`;
 const EMERALD_BOX_INSET = `inset 0 0 0 2px ${EMERALD_BLUE}30`;
+
+// ─── prefers-reduced-motion — SSR-safe via useSyncExternalStore ───────────────
+function subscribeReducedMotion(callback: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+function getReducedMotionServerSnapshot() {
+  return false;
+}
+function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  );
+}
 
 interface Card {
   id: CardId;
@@ -144,6 +164,59 @@ function DialogBox({
   );
 }
 
+// ─── Typewriter text — reveals character by character, like the game's boxes ──
+function TypewriterText({
+  segments,
+  speedMs = 22,
+  startDelay = 0,
+}: {
+  segments: { text: string; style?: React.CSSProperties }[];
+  speedMs?: number;
+  startDelay?: number;
+}) {
+  const fullLength = segments.reduce((n, s) => n + s.text.length, 0);
+  const [count, setCount] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    let raf = 0;
+    let cancelled = false;
+    const startTime = performance.now() + startDelay;
+    const tick = (now: number) => {
+      if (cancelled) return;
+      const elapsed = now - startTime;
+      if (elapsed >= 0) {
+        const n = Math.min(fullLength, Math.floor(elapsed / speedMs));
+        setCount(n);
+        if (n >= fullLength) return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
+  }, [fullLength, speedMs, startDelay, reducedMotion]);
+
+  const displayCount = reducedMotion ? fullLength : count;
+
+  return (
+    <>
+      {segments.map((seg, i) => {
+        const startOffset = segments.slice(0, i).reduce((n, s) => n + s.text.length, 0);
+        const take = Math.max(0, Math.min(seg.text.length, displayCount - startOffset));
+        return (
+          <span key={i} style={seg.style}>
+            {seg.text.slice(0, take)}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 // ─── Start-menu row — GBA pause-menu list item ─────────────────────────────────
 function StartMenuRow({
   href,
@@ -175,6 +248,7 @@ function StartMenuRow({
     padding: "9px 14px 9px 26px",
     borderRadius: "6px",
     border: "none",
+    outline: "none",
     background: hovered ? color : "transparent",
     color: hovered ? "#fff" : EMERALD_INK,
     textDecoration: "none",
@@ -192,6 +266,11 @@ function StartMenuRow({
       if (soundEnabled) playHoverBlip();
     },
     onMouseLeave: () => setHovered(false),
+    onFocus: () => {
+      setHovered(true);
+      if (soundEnabled) playHoverBlip();
+    },
+    onBlur: () => setHovered(false),
     onClick: () => {
       if (soundEnabled) playConfirmChime();
       onClick?.();
@@ -292,19 +371,24 @@ function TypeEmblem({
   color: string;
 }) {
   const Icon = TYPE_ICONS[variant];
+  const reducedMotion = usePrefersReducedMotion();
 
   return (
     <motion.div
       style={{ width: size, height: size, position: "relative" }}
       animate={
-        selected
+        reducedMotion
+          ? { scale: selected ? 1.08 : 1 }
+          : selected
           ? { scale: [1, 1.16, 0.94, 1.05, 1], rotate: [0, -6, 6, -3, 0] }
           : hovered
           ? { y: [0, -5, 0] }
           : { y: 0 }
       }
       transition={
-        selected
+        reducedMotion
+          ? { duration: 0.2 }
+          : selected
           ? { duration: 0.55, ease: "easeOut" }
           : { duration: 0.8, ease: "easeInOut", repeat: hovered ? Infinity : 0 }
       }
@@ -520,6 +604,11 @@ export default function SelectPage() {
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
+  const cardRefs = useRef<Record<CardId, HTMLDivElement | null>>({
+    lumen: null,
+    portfolio: null,
+    calm: null,
+  });
 
   // Backtick easter egg → terminal
   useEffect(() => {
@@ -551,6 +640,24 @@ export default function SelectPage() {
       }
     },
     [selectedId, navigatingToPokedex, router, musicEnabled]
+  );
+
+  const handleCardKeyDown = useCallback(
+    (e: React.KeyboardEvent, card: Card, index: number) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleSelect(card);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        const next = cards[(index + 1) % cards.length];
+        cardRefs.current[next.id]?.focus();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prev = cards[(index - 1 + cards.length) % cards.length];
+        cardRefs.current[prev.id]?.focus();
+      }
+    },
+    [handleSelect]
   );
 
   const handlePokedex = useCallback(() => {
@@ -657,8 +764,13 @@ export default function SelectPage() {
                 whiteSpace: undefined,
               }}
             >
-              These three are no ordinary Pokémon — each one rare in its own right.{" "}
-              <span style={{ color: EMERALD_INK, fontWeight: 600 }}>Which will you choose?</span>
+              <TypewriterText
+                segments={[
+                  { text: "These three are no ordinary Pokémon — each one rare in its own right. " },
+                  { text: "Which will you choose?", style: { color: EMERALD_INK, fontWeight: 600 } },
+                ]}
+                startDelay={300}
+              />
             </p>
           </DialogBox>
         </FadeContent>
@@ -681,12 +793,22 @@ export default function SelectPage() {
                 style={{ position: "relative" }}
               >
                 <motion.div
+                  ref={(el) => {
+                    cardRefs.current[card.id] = el;
+                  }}
+                  role="button"
+                  tabIndex={card.available ? 0 : -1}
+                  aria-label={`Choose ${card.title}`}
+                  aria-disabled={!card.available}
                   onHoverStart={() => {
                     if (!card.available) return;
                     setHoveredId(card.id);
                     if (musicEnabled) playHoverBlip();
                   }}
                   onHoverEnd={() => setHoveredId(null)}
+                  onFocus={() => card.available && setHoveredId(card.id)}
+                  onBlur={() => setHoveredId(null)}
+                  onKeyDown={(e) => handleCardKeyDown(e, card, i)}
                   onClick={() => handleSelect(card)}
                   animate={{
                     scale: isSelected ? 1.04 : isOther ? 0.93 : isHovered ? 1.025 : 1,
@@ -698,6 +820,7 @@ export default function SelectPage() {
                     cursor: card.available ? "pointer" : "not-allowed",
                     height: "100%",
                     position: "relative",
+                    outline: "none",
                   }}
                 >
                   <CornerBrackets color={card.accentColor} visible={(isHovered || isSelected) && card.available} />
@@ -946,7 +1069,7 @@ export default function SelectPage() {
                     lineHeight: "1.8",
                   }}
                 >
-                  Choose a Pokémon!
+                  <TypewriterText segments={[{ text: "Choose a Pokémon!" }]} speedMs={28} />
                 </motion.p>
               ) : navigatingToPokedex ? (
                 <motion.p
@@ -963,7 +1086,7 @@ export default function SelectPage() {
                     color: POKEDEX_RED,
                   }}
                 >
-                  Opening POKEDEX...
+                  <TypewriterText segments={[{ text: "Opening POKEDEX..." }]} speedMs={28} />
                 </motion.p>
               ) : (
                 <motion.p
@@ -979,11 +1102,14 @@ export default function SelectPage() {
                     lineHeight: "1.8",
                   }}
                 >
-                  <span style={{ color: "rgba(28,28,28,0.7)" }}>So, you want </span>
-                  <span style={{ color: selectedCard?.accentColor ?? EMERALD_INK }}>
-                    {selectedCard?.title}
-                  </span>
-                  <span style={{ color: "rgba(28,28,28,0.7)" }}>{"? "}This choice is yours!</span>
+                  <TypewriterText
+                    segments={[
+                      { text: "So, you want ", style: { color: "rgba(28,28,28,0.7)" } },
+                      { text: selectedCard?.title ?? "", style: { color: selectedCard?.accentColor ?? EMERALD_INK } },
+                      { text: "? This choice is yours!", style: { color: "rgba(28,28,28,0.7)" } },
+                    ]}
+                    speedMs={28}
+                  />
                 </motion.p>
               )}
             </AnimatePresence>
