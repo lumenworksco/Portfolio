@@ -346,20 +346,6 @@ function CreatureSprite({
         }}
       />
 
-      {/* psychic aura ring */}
-      {variant === "psychic" && (
-        <motion.svg
-          viewBox="0 0 100 100"
-          width={size}
-          height={size}
-          style={{ position: "absolute", inset: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
-        >
-          <ellipse cx="50" cy="55" rx="44" ry="44" fill="none" stroke={color} strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="3 6" />
-        </motion.svg>
-      )}
-
       <svg viewBox="0 0 100 100" width={size} height={size}>
         <defs>
           <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
@@ -858,7 +844,7 @@ export default function SelectPage() {
               {/* Primary: the specials, called out like Pokédex */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                 <PillButton onClick={handlePokedex} color={POKEDEX_RED} icon={<span style={{ fontSize: "9px" }}>▶</span>}>
-                  POKÉDEX
+                  POKEDEX
                 </PillButton>
                 <PillButton href="/research" color="#34d399" icon={<FlaskConical size={12} />}>
                   RESEARCH
@@ -937,7 +923,7 @@ export default function SelectPage() {
                     color: POKEDEX_RED,
                   }}
                 >
-                  Opening POKÉDEX...
+                  Opening POKEDEX...
                 </motion.p>
               ) : (
                 <motion.p

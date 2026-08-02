@@ -496,7 +496,7 @@ export default function PokedexPage() {
               textShadow: "0 0 40px #CC000055, 0 0 80px #CC000025",
             }}
           >
-            POKÉDEX
+            POKEDEX
           </h1>
           <p
             style={{
