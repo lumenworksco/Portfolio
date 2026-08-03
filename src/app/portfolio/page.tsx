@@ -281,6 +281,32 @@ export default function PortfolioPage() {
                 </span>
               ))}
             </div>
+            <div
+              className="inline-flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4"
+              style={{
+                padding: "7px 13px",
+                borderRadius: "8px",
+                background: "rgba(255,255,255,0.02)",
+                border: "1px dashed rgba(255,255,255,0.1)",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "9px",
+                  fontFamily: "monospace",
+                  letterSpacing: "0.12em",
+                  color: "rgba(255,255,255,0.22)",
+                }}
+              >
+                OFF DUTY
+              </span>
+              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+                📷 Film photography
+              </span>
+              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+                ⌚ Collecting mechanical watches
+              </span>
+            </div>
           </div>
         </FadeContent>
 
