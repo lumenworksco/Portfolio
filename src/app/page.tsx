@@ -140,7 +140,7 @@ function DialogBox({
         background: EMERALD_BOX_BG,
         border: EMERALD_BOX_BORDER,
         borderRadius: "8px",
-        padding: "14px 20px",
+        padding: "7px 16px",
         boxShadow: `${EMERALD_BOX_INSET}, 0 6px 28px rgba(0,0,0,0.45)`,
       }}
     >
@@ -150,7 +150,7 @@ function DialogBox({
           className="dialog-cursor"
           style={{
             position: "absolute",
-            bottom: "10px",
+            bottom: "7px",
             right: "16px",
             color: EMERALD_INK,
             fontSize: "10px",
@@ -245,7 +245,7 @@ function StartMenuRow({
     alignItems: "center",
     gap: "12px",
     width: "100%",
-    padding: "9px 14px 9px 26px",
+    padding: "5px 10px 5px 20px",
     borderRadius: "6px",
     border: "none",
     outline: "none",
@@ -484,11 +484,11 @@ function OverworldStrip() {
       style={{
         position: "relative",
         width: "100%",
-        height: "60px",
-        borderRadius: "8px",
+        height: "40px",
+        borderRadius: "7px",
         overflow: "hidden",
-        border: `3px solid ${EMERALD_INK}`,
-        boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+        border: `2px solid ${EMERALD_INK}`,
+        boxShadow: "0 4px 14px rgba(0,0,0,0.4)",
       }}
     >
       {/* grass tiles */}
@@ -516,7 +516,7 @@ function OverworldStrip() {
           left: 0,
           right: 0,
           top: "50%",
-          height: "20px",
+          height: "14px",
           transform: "translateY(-50%)",
           background:
             "repeating-linear-gradient(90deg, #c9a36a 0px, #c9a36a 15px, #bd9660 15px, #bd9660 30px)",
@@ -534,19 +534,19 @@ function OverworldStrip() {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              width: "6px",
-              height: "8px",
+              width: "5px",
+              height: "6px",
               background: "#6b4423",
             }}
           />
           <div
             style={{
               position: "absolute",
-              bottom: "6px",
+              bottom: "4px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "20px",
-              height: "20px",
+              width: "14px",
+              height: "14px",
               borderRadius: "50%",
               background: "#2f6b2f",
               border: "2px solid #1f4d1f",
@@ -569,9 +569,9 @@ function OverworldStrip() {
               left: 0,
               transform: "translateY(-50%)",
               background: "rgba(8,8,8,0.92)",
-              padding: "7px 18px 6px",
+              padding: "5px 14px 4px",
               fontFamily: "var(--font-pixel), monospace",
-              fontSize: "11px",
+              fontSize: "9px",
               color: "#fff",
               letterSpacing: "0.1em",
               boxShadow: "0 2px 14px rgba(0,0,0,0.5)",
@@ -728,7 +728,7 @@ export default function SelectPage() {
         )}
       </AnimatePresence>
 
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-8 md:py-16 gap-5 md:gap-8">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-2 md:py-3 gap-2 md:gap-2.5">
         {/* Overworld strip */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -748,7 +748,7 @@ export default function SelectPage() {
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                 fontWeight: 600,
                 color: "rgba(28,28,28,0.5)",
-                marginBottom: "8px",
+                marginBottom: "3px",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
               }}
@@ -828,7 +828,8 @@ export default function SelectPage() {
                     spotlightColor={card.available ? card.spotlightColor : "rgba(80, 80, 80, 0.08)"}
                     className="flex flex-col h-full"
                     style={{
-                      minHeight: "clamp(300px, 40vw, 400px)",
+                      minHeight: "clamp(210px, 26vw, 260px)",
+                      padding: "13px",
                       borderRadius: "10px",
                       border: `2px solid ${
                         isSelected
@@ -884,15 +885,15 @@ export default function SelectPage() {
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        marginTop: "6px",
-                        marginBottom: "24px",
+                        marginTop: "0px",
+                        marginBottom: "7px",
                         filter: card.available ? "none" : "grayscale(1)",
                         opacity: card.available ? 1 : 0.4,
                       }}
                     >
                       <TypeEmblem
                         variant={card.pokemonType.toLowerCase() as PokeType}
-                        size={76}
+                        size={50}
                         hovered={isHovered}
                         selected={isSelected}
                         color={card.available ? card.accentColor : "#666"}
@@ -900,7 +901,7 @@ export default function SelectPage() {
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-xl md:text-2xl font-bold mb-1">
+                    <h2 className="text-lg md:text-xl font-bold mb-0.5">
                       <GradientText
                         colors={
                           card.available
@@ -914,7 +915,7 @@ export default function SelectPage() {
                     </h2>
 
                     {/* Subtitle + type badge */}
-                    <div className="flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
+                    <div className="flex items-center gap-2 mb-1.5" style={{ flexWrap: "wrap" }}>
                       <p
                         className="text-[10px] font-mono tracking-[0.2em] uppercase"
                         style={{ color: "rgba(28,28,28,0.55)" }}
@@ -933,7 +934,7 @@ export default function SelectPage() {
                         width: isHovered || isSelected ? "48px" : "24px",
                         height: "2px",
                         background: card.available ? card.accentColor : "#999",
-                        marginBottom: "18px",
+                        marginBottom: "6px",
                         transition: "width 0.4s ease",
                         opacity: card.available ? 1 : 0.4,
                       }}
@@ -941,7 +942,7 @@ export default function SelectPage() {
 
                     {/* Description */}
                     <p
-                      className="text-sm leading-relaxed flex-1"
+                      className="text-[12.5px] leading-snug flex-1"
                       style={{
                         color: card.available
                           ? "rgba(28,28,28,0.72)"
@@ -952,7 +953,7 @@ export default function SelectPage() {
                     </p>
 
                     {/* CTA */}
-                    <div className="mt-7">
+                    <div className="mt-2">
                       {card.available ? (
                         <span
                           style={{
@@ -998,17 +999,17 @@ export default function SelectPage() {
               background: EMERALD_BOX_BG,
               border: EMERALD_BOX_BORDER,
               borderRadius: "8px",
-              padding: "10px 10px 12px",
+              padding: "7px 8px 8px",
               boxShadow: EMERALD_BOX_INSET,
             }}
           >
             {/* Panel label */}
-            <div className="flex items-center gap-2 px-3 pt-2 pb-2">
+            <div className="flex items-center gap-2 px-2 pt-0.5 pb-1">
               <span
                 className="pulse-dot"
                 style={{
-                  width: "6px",
-                  height: "6px",
+                  width: "5px",
+                  height: "5px",
                   borderRadius: "50%",
                   background: POKEDEX_RED,
                   boxShadow: `0 0 8px ${POKEDEX_RED}`,
@@ -1016,7 +1017,7 @@ export default function SelectPage() {
               />
               <p
                 style={{
-                  fontSize: "9px",
+                  fontSize: "8px",
                   fontFamily: "var(--font-pixel), monospace",
                   color: "rgba(28,28,28,0.5)",
                   letterSpacing: "0.15em",
@@ -1039,9 +1040,11 @@ export default function SelectPage() {
                 badge="WK LV.3"
                 soundEnabled={musicEnabled}
               />
+            </div>
 
-              <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />
+            <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "3px 12px" }} />
 
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
               <StartMenuRow href="/contact" icon={<Mail size={14} />} label="CONTACT" color={EMERALD_INK} soundEnabled={musicEnabled} />
               <StartMenuRow href="/uses" icon={<Wrench size={14} />} label="USES" color={EMERALD_INK} soundEnabled={musicEnabled} />
               <StartMenuRow href="https://data.braunf.com" external icon={<BarChart3 size={14} />} label="DATACAMP" color="#f59e0b" soundEnabled={musicEnabled} />
