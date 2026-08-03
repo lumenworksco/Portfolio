@@ -4,6 +4,9 @@ import {
   Languages, ScrollText, Music, BarChart3, Link2,
   Bot, Lightbulb, GitBranch, Shield, ShieldAlert,
   Globe, BookMarked, Network,
+  Server, Eye, CalendarDays, Megaphone, ClipboardList,
+  Monitor, Users, Camera, Watch, Database,
+  FileSpreadsheet, Calculator,
   type LucideIcon,
 } from "lucide-react";
 
@@ -22,7 +25,7 @@ export const typeColors: Record<PokemonType, string> = {
   NORMAL: "#A8A878",
 };
 
-export type Category = "founding" | "hackathon" | "award" | "education" | "cert" | "research";
+export type Category = "founding" | "hackathon" | "award" | "education" | "cert" | "research" | "role";
 
 export interface Achievement {
   id: string;
@@ -175,7 +178,7 @@ export const achievements: Achievement[] = [
     icon: Languages,
     description: "Formal Japanese language study at KU Leuven, targeting N5 proficiency.",
     detail:
-      "Formal Japanese language study at KU Leuven, working toward JLPT N5 proficiency. Motivated by research interest in Japanese-English cross-lingual NLP and a broader goal of linguistic fluency. Practical study supplemented by the Nihongo web app — a custom learning tool built alongside this programme.",
+      "Formal Japanese language study at KU Leuven — Genki I (JPN 101) and WaniKani Kanji (JPN 102) — working toward JLPT N5 proficiency. Motivated by research interest in Japanese-English cross-lingual NLP and a broader goal of linguistic fluency. Practical study supplemented by the Nihongo web app — a custom learning tool built alongside this programme.",
   },
   {
     id: "012",
@@ -325,5 +328,199 @@ export const achievements: Achievement[] = [
     detail:
       "Independent research paper: \"The Foundational Role of Data Structures and Algorithms in Artificial Intelligence Systems.\" Examines how classical CS fundamentals — sorting, searching, graph algorithms, dynamic programming — underpin modern AI infrastructure and ML systems at scale.",
     highlight: "Published Oct 2025",
+  },
+  {
+    id: "024",
+    name: "NEXT Leuven",
+    org: "Information Technology",
+    period: "May 2026 – Present",
+    category: "role",
+    types: ["ELECTRIC", "NORMAL"],
+    icon: Server,
+    description: "IT team member powering the tech infrastructure behind Belgium's largest student entrepreneurship organisation.",
+    detail:
+      "Part of the IT team at NEXT Leuven, one of Belgium's largest student entrepreneurship organisations — connecting students with startups, scale-ups, and industry through flagship events like the Next Level Challenge and MedTech Convention. Manages and maintains the technical infrastructure and internal tooling powering operations across large-scale student initiatives, from 24-hour hackathons to professional industry conventions.",
+  },
+  {
+    id: "025",
+    name: "i-Force",
+    org: "Security Consultant",
+    period: "Apr 2026 – Jun 2026",
+    category: "role",
+    types: ["GHOST", "DRAGON"],
+    icon: Eye,
+    description: "Covert security assessments at Brussels Airport — testing protocols and staff vigilance.",
+    detail:
+      "Conducted covert security assessments at Brussels Airport Zaventem, testing the effectiveness of security protocols and staff vigilance across checkpoints and restricted zones. Evaluated compliance with security procedures, identified potential vulnerabilities, and submitted detailed reports to support continuous improvement of airport security operations.",
+    highlight: "Brussels Airport",
+  },
+  {
+    id: "026",
+    name: "Insignia",
+    org: "Head of Events",
+    period: "Jul 2025 – Dec 2025",
+    category: "role",
+    types: ["NORMAL", "FIRE"],
+    icon: CalendarDays,
+    description: "Led event planning and coordination for UCLL's international student association.",
+    detail:
+      "Led event planning and coordination as Head of Events for Insignia, UCLL's international student association — organising and executing events for the university's international student community.",
+  },
+  {
+    id: "027",
+    name: "Insignia",
+    org: "Social Media Manager",
+    period: "Sep 2024 – Jun 2025",
+    category: "role",
+    types: ["NORMAL", "ELECTRIC"],
+    icon: Megaphone,
+    description: "Managed Insignia's online presence, content creation, and community engagement.",
+    detail:
+      "Managed Insignia's online presence as Social Media Manager, overseeing content creation and engagement for UCLL's international student community.",
+  },
+  {
+    id: "028",
+    name: "Insignia's Culture Fest",
+    org: "Head of Logistics",
+    period: "Oct 2025 – Present",
+    category: "role",
+    types: ["NORMAL"],
+    icon: ClipboardList,
+    description: "Leads logistics and coordination for Insignia's flagship cultural festival.",
+    detail:
+      "Leads logistics and coordination efforts for Insignia's Culture Fest, ensuring smooth event execution and operational efficiency for one of the association's flagship events.",
+  },
+  {
+    id: "029",
+    name: "Pupils' Committee IT",
+    org: "European School of Luxembourg 1",
+    period: "Sep 2022 – Jun 2023",
+    category: "role",
+    types: ["ELECTRIC", "WATER"],
+    icon: Monitor,
+    description: "Led all IT operations, specialising in website development, for the school's Pupils' Committee.",
+    detail:
+      "Head of Information Technology Department for the Pupils' Committee of European School of Luxembourg 1. Led all IT operations, specialising in website development and ensuring smooth digital functionality across the organisation.",
+  },
+  {
+    id: "030",
+    name: "Pupils' Committee Sports",
+    org: "Front-End Developer",
+    period: "Nov 2022 – Jun 2023",
+    category: "role",
+    types: ["WATER", "ELECTRIC"],
+    icon: Code2,
+    description: "Built and maintained the front-end of the Pupils' Committee Sports website.",
+    detail:
+      "Built and maintained the front-end of the Pupils' Committee Sports website at European School of Luxembourg 1, ensuring an engaging and user-friendly experience for the school community.",
+  },
+  {
+    id: "031",
+    name: "ESL1 IT Club",
+    org: "Founder & President",
+    period: "Feb 2022 – Feb 2023",
+    category: "role",
+    types: ["ELECTRIC", "DRAGON"],
+    icon: Users,
+    description: "Founded and led the school's IT Club — workshops, projects, and peer mentoring.",
+    detail:
+      "Founded and led the IT Club at European School of Luxembourg 1, organising workshops, coordinating projects, and mentoring peers in IT skills — an early step into technical leadership.",
+    highlight: "Founder",
+  },
+  {
+    id: "032",
+    name: "Digital Teaching & Learning WG",
+    org: "Student Representative",
+    period: "Jan 2023 – Jun 2023",
+    category: "role",
+    types: ["WATER", "NORMAL"],
+    icon: GraduationCap,
+    description: "Represented students in shaping digitalisation across courses and the education system.",
+    detail:
+      "Served as Student Representative on the Digital Teaching and Learning Working Group, contributing to integrating digitalisation into courses and the broader education system at European School of Luxembourg 1.",
+  },
+  {
+    id: "033",
+    name: "Guitar Orchestra",
+    org: "Conservatoire de la Ville de Luxembourg",
+    period: "Sep 2017 – Jun 2020",
+    category: "role",
+    types: ["NORMAL"],
+    icon: Music,
+    description: "Performed with the Conservatoire's Guitar Orchestra across regular concerts.",
+    detail:
+      "Performed as a member of the Conservatoire de la Ville de Luxembourg's Guitar Orchestra, participating in regular rehearsals and concerts alongside formal guitar and music theory study.",
+  },
+  {
+    id: "034",
+    name: "Studio Grain",
+    org: "Founder",
+    period: "Ongoing",
+    category: "founding",
+    types: ["FIRE", "NORMAL"],
+    icon: Camera,
+    description: "Photography studio balancing creative vision with business execution.",
+    detail:
+      "Founded and runs Studio Grain, a photography business. Balances creative vision with business execution — one of two ventures run alongside technical and academic work, feeding into a broader interest in the intersection of technology, entrepreneurship, and strategic decision-making.",
+  },
+  {
+    id: "035",
+    name: "Pulse Watch Co.",
+    org: "Founder",
+    period: "Ongoing",
+    category: "founding",
+    types: ["FIRE", "GHOST"],
+    icon: Watch,
+    description: "Luxury watch business exploring the trade side of entrepreneurship.",
+    detail:
+      "Founded and runs Pulse Watch Co., a luxury watch business. Alongside Studio Grain, this venture builds practical experience in creative and commercial execution outside of pure software — sharpening business instincts that carry into product and strategic decisions elsewhere.",
+  },
+  {
+    id: "036",
+    name: "Data Engineer",
+    org: "DataCamp",
+    period: "2025",
+    category: "cert",
+    types: ["GHOST", "WATER"],
+    icon: Database,
+    description: "DataCamp certification covering data pipelines, warehousing, and processing at scale.",
+    detail:
+      "Data Engineer certification from DataCamp, covering data pipelines, ETL processes, data warehousing, and processing frameworks. Builds the data-engineering foundation underpinning production work across Velox, FinSight, and other data-heavy projects.",
+  },
+  {
+    id: "037",
+    name: "Python Data Associate",
+    org: "DataCamp",
+    period: "2025",
+    category: "cert",
+    types: ["GHOST", "WATER"],
+    icon: FileSpreadsheet,
+    description: "Associate-level DataCamp certification in Python for data analysis.",
+    detail:
+      "Python Data Associate certification from DataCamp, covering data manipulation, analysis, and visualisation with Python — pandas, NumPy, and core data-analysis workflows.",
+  },
+  {
+    id: "038",
+    name: "Korea University",
+    org: "International Summer Program",
+    period: "Jun 2026 – Jul 2026",
+    category: "education",
+    types: ["WATER", "ELECTRIC"],
+    icon: Calculator,
+    description: "International summer program in Linear Algebra at Korea University.",
+    detail:
+      "International Summer Program at Korea University, focused on Linear Algebra — eigenvalue analysis, least-squares methods, and matrix theory. Complements a one-week Preparatory Mathematics course at KU Leuven, and directly informs applied work in ML and data engineering, where linear algebra is foundational.",
+  },
+  {
+    id: "039",
+    name: "BSc Computer Science",
+    org: "KU Leuven",
+    period: "Sep 2023 – Sep 2024",
+    category: "education",
+    types: ["WATER"],
+    icon: GraduationCap,
+    description: "First year of Computer Science studies at KU Leuven before transferring to UCLL.",
+    detail:
+      "Bachelor of Science in Computer Science at KU Leuven, Sep 2023 – Sep 2024, before continuing the degree at UC Leuven-Limburg (UCLL). Built the foundational CS coursework — programming, algorithms, and systems — that carried into the BASc at UCLL.",
   },
 ];

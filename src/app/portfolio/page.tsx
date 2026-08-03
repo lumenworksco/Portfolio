@@ -288,8 +288,20 @@ export default function PortfolioPage() {
         <Section className="mb-14">
           <SectionHeading>Experience</SectionHeading>
           <div className="flex flex-col gap-7">
-            <TimelineItem title="IT" org="NEXT Leuven" period="May 2026 – Present" />
-            <TimelineItem title="Mystery Shopper" org="i-Force" period="Apr 2026 – Present" />
+            <TimelineItem title="Information Technology" org="NEXT Leuven" period="May 2026 – Present">
+              Part of the IT team at NEXT Leuven, one of Belgium&apos;s largest student
+              entrepreneurship organisations — connecting students with startups, scale-ups,
+              and industry through flagship events like the Next Level Challenge and MedTech
+              Convention. Manages and maintains the technical infrastructure and internal
+              tooling powering operations across large-scale student initiatives.
+            </TimelineItem>
+            <TimelineItem title="Security Consultant" org="i-Force" period="Apr 2026 – Jun 2026">
+              Conducted covert security assessments at Brussels Airport Zaventem, testing the
+              effectiveness of security protocols and staff vigilance across checkpoints and
+              restricted zones. Evaluated compliance with security procedures, identified
+              potential vulnerabilities, and submitted detailed reports to support continuous
+              improvement of airport security operations.
+            </TimelineItem>
             <TimelineItem title="Co-Founder & CTO" org="CalmCampus" period="Jan 2026 – Present">
               Co-founded a privacy-first student wellbeing platform through the KU Leuven KICK
               Challenge, in collaboration with KU Leuven STUVO. Identifies burnout risk through
@@ -304,15 +316,48 @@ export default function PortfolioPage() {
               services and APIs, front-end experiences, infrastructure, deployments, and
               performance optimisation.
             </TimelineItem>
+            <TimelineItem title="Founder" org="Studio Grain" period="Ongoing">
+              Runs a photography business balancing creative vision with business execution —
+              one of two ventures pursued alongside technical and academic work.
+            </TimelineItem>
+            <TimelineItem title="Founder" org="Pulse Watch Co." period="Ongoing">
+              Runs a luxury watch business, building practical experience in creative and
+              commercial execution outside of pure software.
+            </TimelineItem>
+          </div>
+        </Section>
+
+        {/* ── Organisations & Volunteering ─────────────────────────────────────── */}
+        <Section className="mb-14">
+          <SectionHeading>Organisations &amp; Volunteering</SectionHeading>
+          <div className="flex flex-col gap-7">
             <TimelineItem title="Head of Events" org="Insignia — UCLL International Student Association" period="Jul 2025 – Dec 2025">
-              Led event planning and coordination for UCLL's international student association.
+              Led event planning and coordination for UCLL&apos;s international student association.
             </TimelineItem>
             <TimelineItem title="Social Media Manager" org="Insignia — UCLL International Student Association" period="Sep 2024 – Jun 2025">
               Managed online presence, content creation, and community engagement.
             </TimelineItem>
+            <TimelineItem title="Head of Logistics" org="Insignia's Culture Fest" period="Oct 2025 – Present">
+              Leads logistics and coordination for Insignia&apos;s flagship cultural festival.
+            </TimelineItem>
             <TimelineItem title="Head of IT Department" org="Pupils' Committee — European School of Luxembourg 1" period="Sep 2022 – Jun 2023">
               Led all IT operations, specialising in website development and ensuring smooth
               digital functionality across the organisation.
+            </TimelineItem>
+            <TimelineItem title="Front-End Developer" org="Pupils' Committee Sports — European School of Luxembourg 1" period="Nov 2022 – Jun 2023">
+              Built and maintained the front-end of the Pupils&apos; Committee Sports website.
+            </TimelineItem>
+            <TimelineItem title="Founder & President" org="ESL1 IT Club" period="Feb 2022 – Feb 2023">
+              Founded and led the IT Club at European School of Luxembourg 1, organising
+              workshops, coordinating projects, and mentoring peers in IT skills.
+            </TimelineItem>
+            <TimelineItem title="Student Representative" org="Digital Teaching &amp; Learning Working Group" period="Jan 2023 – Jun 2023">
+              Represented students in integrating digitalisation into courses and the broader
+              education system at European School of Luxembourg 1.
+            </TimelineItem>
+            <TimelineItem title="Guitarist" org="Guitar Orchestra — Conservatoire de la Ville de Luxembourg" period="Sep 2017 – Jun 2020">
+              Performed in regular rehearsals and concerts alongside formal guitar and music
+              theory study.
             </TimelineItem>
           </div>
         </Section>
@@ -352,7 +397,8 @@ export default function PortfolioPage() {
             <TimelineItem title="Japanese Language Program" org="KU Leuven" period="Feb 2026 – Dec 2026" />
             <TimelineItem title="Finance (Non-Degree Program)" org="Yale University" period="Jan 2026 – Jun 2026" />
             <TimelineItem title="CS50: Introduction to Computer Science" org="Harvard University" period="Sep 2024 – Dec 2024" />
-            <TimelineItem title="BSc Computer Science" org="KU Leuven" period="2023 – 2024" />
+            <TimelineItem title="BSc Computer Science" org="KU Leuven" period="Sep 2023 – Sep 2024" />
+            <TimelineItem title="Linear Algebra — International Summer Program" org="Korea University" period="Jun 2026 – Jul 2026" />
             <TimelineItem title="European Baccalaureate" org="European School of Luxembourg 1" period="2012 – 2023" />
             <TimelineItem title="Certificate in Guitar & Music Theory" org="Conservatoire de la Ville de Luxembourg" period="2014 – 2021" />
           </div>
@@ -368,9 +414,11 @@ export default function PortfolioPage() {
                 "PyTorch", "Hugging Face", "LangChain", "Claude API",
                 "NLP / LLMs", "Sentiment Analysis", "scikit-learn",
                 "Data Engineering", "pandas", "NumPy", "SQL",
-                "React / Next.js", "Flutter",
+                "React / Next.js", "Flutter", "HTML / CSS / JavaScript",
                 "Cybersecurity", "Network Security",
                 "Docker", "PostgreSQL", "Git",
+                "Linear Algebra", "Least Squares Methods", "Eigenvalue Analysis",
+                "Rapid Prototyping",
                 "Product Strategy", "Project Management",
               ].map((s) => (
                 <SkillPill key={s} label={s} />
@@ -401,6 +449,8 @@ export default function PortfolioPage() {
               <BadgeCard label="Intermediate Deep Learning with PyTorch" sub="DataCamp" />
               <BadgeCard label="AI Fundamentals" sub="DataCamp" />
               <BadgeCard label="GitHub Foundations" sub="DataCamp" />
+              <BadgeCard label="Data Engineer" sub="DataCamp" />
+              <BadgeCard label="Python Data Associate" sub="DataCamp" />
               <BadgeCard label="Pre Security Certificate" sub="TryHackMe" />
               <BadgeCard label="Advent of Cyber 2025" sub="TryHackMe" />
               <BadgeCard label="IPv6 Sage Certification" sub="Hurricane Electric" />

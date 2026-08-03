@@ -31,6 +31,7 @@ const CATEGORIES: { id: Category | "all"; label: string }[] = [
   { id: "education",  label: "EDUCATION" },
   { id: "cert",       label: "CERT"      },
   { id: "research",   label: "RESEARCH"  },
+  { id: "role",       label: "ROLE"      },
 ];
 
 // ─── Type badge ────────────────────────────────────────────────────────────────
