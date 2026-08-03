@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen } from "lucide-react";
+import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -76,8 +76,8 @@ const cards: Card[] = [
     id: "portfolio",
     title: "Portfolio",
     subtitle: "Personal Space",
-    pokemonType: "PSYCHIC",
-    typeColor: "#F95587",
+    pokemonType: "BUG",
+    typeColor: "#10b981",
     description:
       "A personal portfolio showcasing projects, experience, and the journey of a developer.",
     href: "/portfolio",
@@ -117,6 +117,7 @@ function TypeBadge({ type, color }: { type: string; color: string }) {
         letterSpacing: "0.04em",
         textTransform: "uppercase",
         lineHeight: "1.8",
+        textShadow: "0 1px 1px rgba(0,0,0,0.75), 0 0 3px rgba(0,0,0,0.4)",
         boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.25)",
       }}
     >
@@ -349,12 +350,13 @@ function StartMenuRow({
 }
 
 // ─── Type emblem — CSS gradient + lucide icon, no freehand illustration ───────
-type PokeType = "fire" | "psychic" | "grass";
+type PokeType = "fire" | "psychic" | "grass" | "bug";
 
 const TYPE_ICONS: Record<PokeType, typeof Flame> = {
   fire: Flame,
   psychic: Brain,
   grass: Leaf,
+  bug: Bug,
 };
 
 function TypeEmblem({

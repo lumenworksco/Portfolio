@@ -12,6 +12,16 @@ import {
   type Category,
 } from "@/data/achievements";
 
+// ─── Emerald-menu chrome — shared with the home page ───────────────────────────
+const POKEDEX_RED = "#CC0000";
+const EMERALD_CREAM = "#F7F4E3";
+const EMERALD_CREAM_DEEP = "#EAE5C8";
+const EMERALD_INK = "#1C1C1C";
+const EMERALD_BLUE = "#2E86AB";
+const EMERALD_BOX_BG = `linear-gradient(180deg, ${EMERALD_CREAM} 0%, ${EMERALD_CREAM_DEEP} 100%)`;
+const EMERALD_BOX_BORDER = `2px solid ${EMERALD_INK}`;
+const EMERALD_BOX_INSET = `inset 0 0 0 2px ${EMERALD_BLUE}30`;
+
 // ─── Filter categories ─────────────────────────────────────────────────────────
 const CATEGORIES: { id: Category | "all"; label: string }[] = [
   { id: "all",        label: "ALL"       },
@@ -39,6 +49,7 @@ function TypeBadge({ type }: { type: string }) {
         letterSpacing: "0.04em",
         textTransform: "uppercase",
         lineHeight: "1.8",
+        textShadow: "0 1px 1px rgba(0,0,0,0.75), 0 0 3px rgba(0,0,0,0.4)",
         boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.25)",
       }}
     >
@@ -66,10 +77,10 @@ function AchievementCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, delay: 0.06 + index * 0.035, ease: "easeOut" }}
       onClick={onClick}
-      whileHover={{ scale: 1.02, borderColor: primaryColor + "55" }}
+      whileHover={{ scale: 1.02, borderColor: primaryColor }}
       style={{
-        background: "rgba(10,10,14,0.88)",
-        border: "1px solid rgba(255,255,255,0.07)",
+        background: EMERALD_BOX_BG,
+        border: EMERALD_BOX_BORDER,
         borderRadius: "10px",
         padding: "16px",
         cursor: "pointer",
@@ -77,7 +88,8 @@ function AchievementCard({
         width: "100%",
         position: "relative",
         overflow: "hidden",
-        transition: "box-shadow 0.25s ease",
+        boxShadow: EMERALD_BOX_INSET,
+        transition: "box-shadow 0.25s ease, border-color 0.25s ease",
       }}
     >
       {/* Corner glow */}
@@ -90,7 +102,7 @@ function AchievementCard({
           height: 80,
           borderRadius: "50%",
           background: primaryColor,
-          opacity: 0.05,
+          opacity: 0.12,
           filter: "blur(20px)",
           pointerEvents: "none",
         }}
@@ -101,7 +113,7 @@ function AchievementCard({
         style={{
           fontSize: "9px",
           fontFamily: "var(--font-pixel), monospace",
-          color: "rgba(255,255,255,0.18)",
+          color: "rgba(28,28,28,0.35)",
           marginBottom: "10px",
           letterSpacing: "0.1em",
         }}
@@ -114,7 +126,6 @@ function AchievementCard({
         style={{
           color: primaryColor,
           marginBottom: "10px",
-          filter: `drop-shadow(0 0 5px ${primaryColor}50)`,
         }}
       >
         <Icon size={22} />
@@ -125,7 +136,7 @@ function AchievementCard({
         style={{
           fontSize: "12px",
           fontWeight: 600,
-          color: "rgba(255,255,255,0.9)",
+          color: EMERALD_INK,
           marginBottom: "3px",
           lineHeight: 1.3,
         }}
@@ -137,7 +148,7 @@ function AchievementCard({
       <p
         style={{
           fontSize: "10px",
-          color: "rgba(255,255,255,0.3)",
+          color: "rgba(28,28,28,0.55)",
           marginBottom: "9px",
           lineHeight: 1.3,
         }}
@@ -220,15 +231,15 @@ function Modal({
         transition={{ duration: 0.28, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: "rgba(8,8,12,0.97)",
-          border: `1px solid ${primaryColor}38`,
+          background: EMERALD_BOX_BG,
+          border: EMERALD_BOX_BORDER,
           borderRadius: "12px",
           padding: "24px",
           maxWidth: "480px",
           width: "100%",
           maxHeight: "88vh",
           overflowY: "auto",
-          boxShadow: `0 0 60px ${primaryColor}18, 0 24px 60px rgba(0,0,0,0.85)`,
+          boxShadow: `${EMERALD_BOX_INSET}, 0 0 60px ${primaryColor}25, 0 24px 60px rgba(0,0,0,0.85)`,
           position: "relative",
         }}
       >
@@ -239,12 +250,12 @@ function Modal({
             position: "absolute",
             top: "16px",
             right: "16px",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.09)",
+            background: "rgba(28,28,28,0.06)",
+            border: `1px solid ${EMERALD_INK}30`,
             borderRadius: "6px",
             padding: "5px",
             cursor: "pointer",
-            color: "rgba(255,255,255,0.45)",
+            color: "rgba(28,28,28,0.6)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -259,7 +270,7 @@ function Modal({
           style={{
             fontSize: "9px",
             fontFamily: "var(--font-pixel), monospace",
-            color: "rgba(255,255,255,0.2)",
+            color: "rgba(28,28,28,0.35)",
             marginBottom: "16px",
             letterSpacing: "0.1em",
           }}
@@ -291,7 +302,7 @@ function Modal({
               style={{
                 fontSize: "18px",
                 fontWeight: 700,
-                color: "#fff",
+                color: EMERALD_INK,
                 lineHeight: 1.2,
                 marginBottom: "7px",
               }}
@@ -322,7 +333,7 @@ function Modal({
             style={{
               fontSize: "10px",
               fontFamily: "var(--font-pixel), monospace",
-              color: "rgba(255,255,255,0.22)",
+              color: "rgba(28,28,28,0.4)",
               letterSpacing: "0.04em",
             }}
           >
@@ -358,7 +369,7 @@ function Modal({
         <div
           style={{
             height: "1px",
-            background: "rgba(255,255,255,0.06)",
+            background: "rgba(28,28,28,0.12)",
             marginBottom: "16px",
           }}
         />
@@ -367,7 +378,7 @@ function Modal({
         <p
           style={{
             fontSize: "13px",
-            color: "rgba(255,255,255,0.52)",
+            color: "rgba(28,28,28,0.7)",
             lineHeight: 1.75,
           }}
         >
@@ -461,17 +472,21 @@ export default function PokedexPage() {
         href="/"
         className="fixed top-5 left-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase"
         style={{
-          color: "rgba(255,255,255,0.35)",
+          padding: "6px 12px 5px",
+          borderRadius: "6px",
+          background: EMERALD_BOX_BG,
+          border: `2px solid ${EMERALD_INK}`,
+          boxShadow: "0 3px 10px rgba(0,0,0,0.35)",
+          color: "rgba(28,28,28,0.7)",
           transition: "color 0.15s ease",
           textDecoration: "none",
         }}
         onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLAnchorElement).style.color =
-            "rgba(255,255,255,0.7)")
+          ((e.currentTarget as HTMLAnchorElement).style.color = EMERALD_INK)
         }
         onMouseLeave={(e) =>
           ((e.currentTarget as HTMLAnchorElement).style.color =
-            "rgba(255,255,255,0.35)")
+            "rgba(28,28,28,0.7)")
         }
       >
         <ArrowLeft size={14} />
@@ -538,11 +553,11 @@ export default function PokedexPage() {
                   whiteSpace: "nowrap",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
-                  background: isActive ? "#CC0000" : "rgba(255,255,255,0.04)",
+                  background: isActive ? POKEDEX_RED : EMERALD_BOX_BG,
                   border: isActive
-                    ? "1px solid #CC0000"
-                    : "1px solid rgba(255,255,255,0.08)",
-                  color: isActive ? "#fff" : "rgba(255,255,255,0.38)",
+                    ? `1px solid ${POKEDEX_RED}`
+                    : `1px solid ${EMERALD_INK}`,
+                  color: isActive ? "#fff" : "rgba(28,28,28,0.6)",
                   boxShadow: isActive ? "0 0 16px #CC000038" : "none",
                 }}
               >
