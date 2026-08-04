@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Printer } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ArrowUp, MapPin, Printer } from "lucide-react";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
@@ -289,6 +289,46 @@ function SectionNav() {
   );
 }
 
+// ─── Back to top — mobile only, the scrollspy rail covers desktop ─────────────
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          transition={{ duration: 0.2 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Back to top"
+          className="print-hide lg:hidden fixed bottom-5 right-5 z-20 flex items-center justify-center"
+          style={{
+            width: "38px",
+            height: "38px",
+            borderRadius: "50%",
+            background: "rgba(16,185,129,0.15)",
+            border: "1px solid rgba(16,185,129,0.35)",
+            color: "#34d399",
+            cursor: "pointer",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <ArrowUp size={16} />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function PortfolioPage() {
   return (
@@ -325,6 +365,7 @@ export default function PortfolioPage() {
       </button>
 
       <SectionNav />
+      <BackToTop />
 
       <main className="relative z-10 max-w-3xl mx-auto px-5 pt-20 pb-24">
 
@@ -530,22 +571,41 @@ export default function PortfolioPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14">
           <Section id="skills">
             <SectionHeading>Skills</SectionHeading>
-            <motion.div variants={staggerContainer} className="flex flex-wrap gap-2">
+            <div className="flex flex-col gap-5">
               {[
-                "Python", "TypeScript", "Rust",
-                "PyTorch", "Hugging Face", "LangChain", "Claude API",
-                "NLP / LLMs", "Sentiment Analysis", "scikit-learn",
-                "Data Engineering", "pandas", "NumPy", "SQL",
-                "React / Next.js", "Flutter", "HTML / CSS / JavaScript",
-                "Cybersecurity", "Network Security",
-                "Docker", "PostgreSQL", "Git",
-                "Linear Algebra", "Least Squares Methods", "Eigenvalue Analysis",
-                "Rapid Prototyping",
-                "Product Strategy", "Project Management",
-              ].map((s) => (
-                <SkillPill key={s} label={s} />
+                {
+                  label: "AI & NLP",
+                  skills: ["PyTorch", "Hugging Face", "scikit-learn", "NLP / LLMs", "Sentiment Analysis", "Claude API", "LangChain"],
+                },
+                {
+                  label: "Data & Programming",
+                  skills: ["Python", "TypeScript", "Rust", "pandas", "NumPy", "SQL", "Data Engineering", "Git", "Linear Algebra", "Least Squares Methods", "Eigenvalue Analysis"],
+                },
+                {
+                  label: "Web & Systems",
+                  skills: ["React / Next.js", "Flutter", "HTML / CSS / JavaScript", "Docker", "PostgreSQL", "Cybersecurity", "Network Security"],
+                },
+                {
+                  label: "Product & Leadership",
+                  skills: ["Product Strategy", "Project Management", "Rapid Prototyping"],
+                },
+              ].map((group) => (
+                <div key={group.label}>
+                  <motion.p
+                    variants={itemVariant}
+                    className="text-[10px] font-mono tracking-[0.15em] uppercase mb-2"
+                    style={{ color: "rgba(255,255,255,0.3)" }}
+                  >
+                    {group.label}
+                  </motion.p>
+                  <motion.div variants={staggerContainer} className="flex flex-wrap gap-2">
+                    {group.skills.map((s) => (
+                      <SkillPill key={s} label={s} />
+                    ))}
+                  </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </Section>
 
           <Section>
