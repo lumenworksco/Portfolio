@@ -11,6 +11,8 @@ import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
 import { playHoverBlip, playConfirmChime } from "@/lib/uiSfx";
+import { useSeenAchievements } from "@/lib/useSeenAchievements";
+import { achievements } from "@/data/achievements";
 
 type CardId = "lumen" | "portfolio" | "calm";
 
@@ -606,6 +608,7 @@ export default function SelectPage() {
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
+  const { seenCount } = useSeenAchievements();
   const cardRefs = useRef<Record<CardId, HTMLDivElement | null>>({
     lumen: null,
     portfolio: null,
@@ -1031,7 +1034,14 @@ export default function SelectPage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-              <StartMenuRow onClick={handlePokedex} icon={<BookOpen size={14} />} label="POKEDEX" color={POKEDEX_RED} soundEnabled={musicEnabled} />
+              <StartMenuRow
+                onClick={handlePokedex}
+                icon={<BookOpen size={14} />}
+                label="POKEDEX"
+                color={POKEDEX_RED}
+                soundEnabled={musicEnabled}
+                badge={seenCount > 0 ? `${seenCount}/${achievements.length}` : undefined}
+              />
               <StartMenuRow href="/research" icon={<FlaskConical size={14} />} label="RESEARCH" color="#34d399" soundEnabled={musicEnabled} />
               <StartMenuRow
                 href="https://nihongo.braunf.com"

@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, Printer } from "lucide-react";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
@@ -25,14 +26,16 @@ const itemVariant = {
 };
 
 // ─── Section wrapper ──────────────────────────────────────────────────────────
-function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
     <motion.section
+      id={id}
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
       className={className}
+      style={id ? { scrollMarginTop: "80px" } : undefined}
     >
       {children}
     </motion.section>
@@ -205,30 +208,123 @@ function ProjectCard({ title, period, tag, children }: { title: string; period: 
   );
 }
 
+// ─── Section jump nav — scrollspy dot rail, desktop only ──────────────────────
+const NAV_SECTIONS = [
+  { id: "experience", label: "Experience" },
+  { id: "orgs", label: "Organisations" },
+  { id: "projects", label: "Projects" },
+  { id: "education", label: "Education" },
+  { id: "skills", label: "Skills" },
+  { id: "certs", label: "Certifications" },
+  { id: "research", label: "Research" },
+];
+
+function SectionNav() {
+  const [active, setActive] = useState(NAV_SECTIONS[0].id);
+
+  useEffect(() => {
+    const elements = NAV_SECTIONS.map((s) => document.getElementById(s.id)).filter(
+      (el): el is HTMLElement => el !== null
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-15% 0px -70% 0px", threshold: 0 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <nav
+      className="print-hide hidden lg:flex"
+      aria-label="Section navigation"
+      style={{
+        position: "fixed",
+        right: "24px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 20,
+        flexDirection: "column",
+        gap: "14px",
+      }}
+    >
+      {NAV_SECTIONS.map((s) => {
+        const isActive = active === s.id;
+        return (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            aria-label={s.label}
+            aria-current={isActive ? "true" : undefined}
+            className="group flex items-center justify-end gap-2 no-underline"
+          >
+            <span
+              className="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+              style={{ fontSize: "10px", fontFamily: "monospace", letterSpacing: "0.05em", color: "rgba(255,255,255,0.55)" }}
+            >
+              {s.label}
+            </span>
+            <span
+              style={{
+                width: isActive ? "8px" : "6px",
+                height: isActive ? "8px" : "6px",
+                borderRadius: "50%",
+                background: isActive ? "#10b981" : "rgba(255,255,255,0.2)",
+                boxShadow: isActive ? "0 0 8px rgba(16,185,129,0.7)" : "none",
+                transition: "all 0.2s ease",
+                flexShrink: 0,
+              }}
+            />
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function PortfolioPage() {
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden" style={{ background: "#060608" }}>
+    <div className="relative min-h-screen w-full overflow-x-hidden print-area" style={{ background: "#060608" }}>
       {/* Aurora */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      <div className="print-hide fixed inset-0 z-0 pointer-events-none">
         <Aurora colorStops={["#064e3b", "#059669", "#047857"]} speed={0.5} amplitude={0.9} />
       </div>
 
       {/* Vignette */}
       <div
-        className="fixed inset-0 z-[1] pointer-events-none"
+        className="print-hide fixed inset-0 z-[1] pointer-events-none"
         style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(6,6,8,0.65) 100%)" }}
       />
 
       {/* Back button */}
       <Link
         href="/"
-        className="fixed top-5 left-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
+        className="print-hide fixed top-5 left-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
         style={{ color: "rgba(255,255,255,0.35)", opacity: 0.6 }}
       >
         <ArrowLeft size={14} />
         Back
       </Link>
+
+      {/* Print button */}
+      <button
+        onClick={() => window.print()}
+        className="print-hide fixed top-5 right-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
+        style={{ color: "rgba(255,255,255,0.35)", opacity: 0.6, background: "none", border: "none", cursor: "pointer" }}
+      >
+        <Printer size={14} />
+        Print
+      </button>
+
+      <SectionNav />
 
       <main className="relative z-10 max-w-3xl mx-auto px-5 pt-20 pb-24">
 
@@ -282,7 +378,7 @@ export default function PortfolioPage() {
               ))}
             </div>
             <div
-              className="inline-flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4"
+              className="print-hide inline-flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4"
               style={{
                 padding: "7px 13px",
                 borderRadius: "8px",
@@ -311,7 +407,7 @@ export default function PortfolioPage() {
         </FadeContent>
 
         {/* ── Experience ────────────────────────────────────────────────────── */}
-        <Section className="mb-14">
+        <Section id="experience" className="mb-14">
           <SectionHeading>Experience</SectionHeading>
           <div className="flex flex-col gap-7">
             <TimelineItem title="Information Technology" org="NEXT Leuven" period="May 2026 – Present">
@@ -354,7 +450,7 @@ export default function PortfolioPage() {
         </Section>
 
         {/* ── Organisations & Volunteering ─────────────────────────────────────── */}
-        <Section className="mb-14">
+        <Section id="orgs" className="mb-14">
           <SectionHeading>Organisations &amp; Volunteering</SectionHeading>
           <div className="flex flex-col gap-7">
             <TimelineItem title="Head of Events" org="Insignia — UCLL International Student Association" period="Jul 2025 – Dec 2025">
@@ -389,7 +485,7 @@ export default function PortfolioPage() {
         </Section>
 
         {/* ── Projects ──────────────────────────────────────────────────────── */}
-        <Section className="mb-14">
+        <Section id="projects" className="mb-14">
           <SectionHeading>Projects & Hackathons</SectionHeading>
           <div className="flex flex-col gap-4">
             <ProjectCard title="NeuroMedix Hackathon" period="Mar 2026" tag="Finalist">
@@ -414,7 +510,7 @@ export default function PortfolioPage() {
         </Section>
 
         {/* ── Education ─────────────────────────────────────────────────────── */}
-        <Section className="mb-14">
+        <Section id="education" className="mb-14">
           <SectionHeading>Education</SectionHeading>
           <div className="flex flex-col gap-7">
             <TimelineItem title="BASc Applied Computer Science" org="UCLL University of Applied Sciences" period="2024 – 2027">
@@ -432,7 +528,7 @@ export default function PortfolioPage() {
 
         {/* ── Skills + Languages ────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14">
-          <Section>
+          <Section id="skills">
             <SectionHeading>Skills</SectionHeading>
             <motion.div variants={staggerContainer} className="flex flex-wrap gap-2">
               {[
@@ -467,7 +563,7 @@ export default function PortfolioPage() {
 
         {/* ── Certifications + Awards ───────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14">
-          <Section>
+          <Section id="certs">
             <SectionHeading>Certifications</SectionHeading>
             <div className="flex flex-col gap-3">
               <BadgeCard label="Bloomberg Market Concepts" sub="Bloomberg" />
@@ -504,7 +600,7 @@ export default function PortfolioPage() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="mb-14"
+          className="mb-14 print-hide"
         >
           <motion.h2
             variants={fadeUp}
@@ -523,7 +619,7 @@ export default function PortfolioPage() {
         </motion.section>
 
         {/* ── Research ──────────────────────────────────────────────────────── */}
-        <Section className="mb-14">
+        <Section id="research" className="mb-14">
           <SectionHeading>Research</SectionHeading>
 
           {/* Interests */}

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, Search, Check } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import {
@@ -11,6 +11,7 @@ import {
   type Achievement,
   type Category,
 } from "@/data/achievements";
+import { useSeenAchievements } from "@/lib/useSeenAchievements";
 
 // ─── Emerald-menu chrome — shared with the home page ───────────────────────────
 const POKEDEX_RED = "#CC0000";
@@ -64,10 +65,12 @@ function AchievementCard({
   achievement,
   onClick,
   index,
+  seen,
 }: {
   achievement: Achievement;
   onClick: () => void;
   index: number;
+  seen: boolean;
 }) {
   const Icon = achievement.icon;
   const primaryColor = typeColors[achievement.types[0]];
@@ -108,6 +111,28 @@ function AchievementCard({
           pointerEvents: "none",
         }}
       />
+
+      {/* Seen indicator */}
+      {seen && (
+        <div
+          title="Seen"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            width: "16px",
+            height: "16px",
+            borderRadius: "50%",
+            background: "#2E86AB",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 0 0 2px rgba(28,28,28,0.12)",
+          }}
+        >
+          <Check size={10} color="#fff" strokeWidth={3} />
+        </div>
+      )}
 
       {/* Number */}
       <p
@@ -393,13 +418,38 @@ function Modal({
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export default function PokedexPage() {
   const [filter, setFilter] = useState<Category | "all">("all");
+  const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Achievement | null>(null);
   const [scanDone, setScanDone] = useState(false);
+  const { seenIds, markSeen, seenCount } = useSeenAchievements();
 
-  const filtered =
-    filter === "all"
-      ? achievements
-      : achievements.filter((a) => a.category === filter);
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: achievements.length };
+    for (const a of achievements) {
+      counts[a.category] = (counts[a.category] ?? 0) + 1;
+    }
+    return counts;
+  }, []);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return achievements.filter((a) => {
+      const matchesCategory = filter === "all" || a.category === filter;
+      const matchesQuery =
+        q.length === 0 ||
+        a.name.toLowerCase().includes(q) ||
+        a.org.toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+  }, [filter, query]);
+
+  const handleSelect = useCallback(
+    (achievement: Achievement) => {
+      setSelected(achievement);
+      markSeen(achievement.id);
+    },
+    [markSeen]
+  );
 
   const handleClose = useCallback(() => setSelected(null), []);
 
@@ -522,8 +572,39 @@ export default function PokedexPage() {
               letterSpacing: "0.18em",
             }}
           >
-            {achievements.length} ACHIEVEMENTS CAPTURED
+            {achievements.length} CAPTURED · {seenCount} SEEN
           </p>
+        </motion.div>
+
+        {/* Search */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          style={{ position: "relative", marginBottom: "14px" }}
+        >
+          <Search
+            size={13}
+            color="rgba(28,28,28,0.4)"
+            style={{ position: "absolute", left: "13px", top: "50%", transform: "translateY(-50%)" }}
+          />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name or organisation..."
+            style={{
+              width: "100%",
+              padding: "9px 12px 9px 34px",
+              borderRadius: "6px",
+              background: EMERALD_BOX_BG,
+              border: `2px solid ${EMERALD_INK}`,
+              boxShadow: EMERALD_BOX_INSET,
+              fontSize: "12px",
+              color: EMERALD_INK,
+              outline: "none",
+            }}
+          />
         </motion.div>
 
         {/* Filter tabs */}
@@ -562,33 +643,51 @@ export default function PokedexPage() {
                   boxShadow: isActive ? "0 0 16px #CC000038" : "none",
                 }}
               >
-                {cat.label}
+                {cat.label} · {categoryCounts[cat.id] ?? 0}
               </button>
             );
           })}
         </motion.div>
 
         {/* Grid */}
-        <motion.div
-          key={filter}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.18 }}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))",
-            gap: "10px",
-          }}
-        >
-          {filtered.map((achievement, i) => (
-            <AchievementCard
-              key={achievement.id}
-              achievement={achievement}
-              index={i}
-              onClick={() => setSelected(achievement)}
-            />
-          ))}
-        </motion.div>
+        {filtered.length === 0 ? (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+              textAlign: "center",
+              fontSize: "11px",
+              fontFamily: "var(--font-pixel), monospace",
+              color: "rgba(255,255,255,0.3)",
+              letterSpacing: "0.06em",
+              padding: "40px 0",
+            }}
+          >
+            NO ACHIEVEMENTS FOUND
+          </motion.p>
+        ) : (
+          <motion.div
+            key={filter + query}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.18 }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))",
+              gap: "10px",
+            }}
+          >
+            {filtered.map((achievement, i) => (
+              <AchievementCard
+                key={achievement.id}
+                achievement={achievement}
+                index={i}
+                seen={seenIds.has(achievement.id)}
+                onClick={() => handleSelect(achievement)}
+              />
+            ))}
+          </motion.div>
+        )}
       </main>
 
       {/* Modal */}

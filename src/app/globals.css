@@ -52,3 +52,21 @@ body {
     animation: none;
   }
 }
+
+@media print {
+  html,
+  body,
+  .print-area,
+  .print-area * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .print-area {
+    filter: invert(1) grayscale(1);
+  }
+}
