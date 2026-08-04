@@ -220,7 +220,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: "015",
-    name: "LangChain LLM Applications",
+    name: "Developing LLM Applications with LangChain",
     org: "DataCamp",
     period: "2025",
     category: "cert",
@@ -232,7 +232,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: "016",
-    name: "Deep Learning with PyTorch",
+    name: "Intermediate Deep Learning with PyTorch",
     org: "DataCamp",
     period: "2025",
     category: "cert",

@@ -2,12 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowUp, MapPin, Printer } from "lucide-react";
+import { ArrowLeft, ArrowUp, MapPin, Printer, Rocket, Award, BookOpen, Languages, type LucideIcon } from "lucide-react";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
+import { achievements, typeColors, type Achievement } from "@/data/achievements";
+
+// ─── Languages — single source for the hero pills and the stats strip ─────────
+const LANGUAGES = [
+  { flag: "🇳🇱", lang: "Dutch",    note: "Native" },
+  { flag: "🇫🇷", lang: "French",   note: "Native" },
+  { flag: "🇬🇧", lang: "English",  note: "C1"     },
+  { flag: "🇩🇪", lang: "German",   note: "A2"     },
+  { flag: "🇯🇵", lang: "Japanese", note: "N5"     },
+  { flag: "🇪🇸", lang: "Spanish",  note: "A1"     },
+];
 
 // ─── Animation variants ────────────────────────────────────────────────────────
 const fadeUp = {
@@ -126,16 +137,68 @@ function TimelineItem({
   );
 }
 
-// ─── Badge card ───────────────────────────────────────────────────────────────
-function BadgeCard({ label, sub }: { label: string; sub?: string }) {
+// ─── Trophy card — certifications & awards, sourced straight from the Pokédex
+// data so the two pages can never drift out of sync with each other again ────
+function TrophyCard({ achievement }: { achievement: Achievement }) {
+  const Icon = achievement.icon;
+  const color = typeColors[achievement.types[0]];
   return (
     <motion.div
       variants={itemVariant}
-      className="rounded-xl p-4"
+      className="rounded-xl p-4 flex items-start gap-3"
       style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
-      <p className="text-sm text-white leading-snug">{label}</p>
-      {sub && <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>{sub}</p>}
+      <div style={{ color, flexShrink: 0, marginTop: "2px" }}>
+        <Icon size={18} />
+      </div>
+      <div>
+        <p className="text-sm text-white leading-snug">{achievement.name}</p>
+        <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>{achievement.org}</p>
+        {achievement.highlight && (
+          <p className="text-[10px] mt-1.5" style={{ color, opacity: 0.9 }}>★ {achievement.highlight}</p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Stat tile — bento-style quick-glance numbers, derived from real data ─────
+function StatTile({
+  icon: Icon,
+  value,
+  label,
+  href,
+}: {
+  icon: LucideIcon;
+  value: number;
+  label: string;
+  href?: string;
+}) {
+  const inner = (
+    <>
+      <Icon size={16} style={{ color: "#34d399" }} />
+      <p className="text-2xl font-bold text-white mt-2 leading-none">{value}</p>
+      <p
+        className="text-[10px] font-mono uppercase tracking-wide mt-1.5"
+        style={{ color: "rgba(255,255,255,0.35)" }}
+      >
+        {label}
+      </p>
+    </>
+  );
+  return (
+    <motion.div
+      variants={itemVariant}
+      className="rounded-xl p-3.5"
+      style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)" }}
+    >
+      {href ? (
+        <Link href={href} className="block">
+          {inner}
+        </Link>
+      ) : (
+        inner
+      )}
     </motion.div>
   );
 }
@@ -331,6 +394,26 @@ function BackToTop() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function PortfolioPage() {
+  const [preparingPrint, setPreparingPrint] = useState(false);
+
+  // whileInView / FadeContent only animate elements once they've actually
+  // scrolled through the viewport — printing immediately after load would
+  // leave everything below the fold invisible. Scroll through first so every
+  // section settles before the print dialog opens.
+  const handlePrint = async () => {
+    setPreparingPrint(true);
+    const height = document.body.scrollHeight;
+    for (let y = 0; y < height; y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 60));
+    }
+    await new Promise((r) => setTimeout(r, 700));
+    window.scrollTo(0, 0);
+    await new Promise((r) => setTimeout(r, 50));
+    setPreparingPrint(false);
+    window.print();
+  };
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden print-area" style={{ background: "#060608" }}>
       {/* Aurora */}
@@ -356,12 +439,19 @@ export default function PortfolioPage() {
 
       {/* Print button */}
       <button
-        onClick={() => window.print()}
+        onClick={handlePrint}
+        disabled={preparingPrint}
         className="print-hide fixed top-5 right-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
-        style={{ color: "rgba(255,255,255,0.35)", opacity: 0.6, background: "none", border: "none", cursor: "pointer" }}
+        style={{
+          color: "rgba(255,255,255,0.35)",
+          opacity: 0.6,
+          background: "none",
+          border: "none",
+          cursor: preparingPrint ? "default" : "pointer",
+        }}
       >
         <Printer size={14} />
-        Print
+        {preparingPrint ? "Preparing…" : "Print"}
       </button>
 
       <SectionNav />
@@ -392,14 +482,7 @@ export default function PortfolioPage() {
               <span className="text-xs font-mono">Leuven, Belgium</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              {[
-                { flag: "🇳🇱", lang: "Dutch",    note: "Native" },
-                { flag: "🇫🇷", lang: "French",   note: "Native" },
-                { flag: "🇬🇧", lang: "English",  note: "C1"     },
-                { flag: "🇩🇪", lang: "German",   note: "A2"     },
-                { flag: "🇯🇵", lang: "Japanese", note: "N5"     },
-                { flag: "🇪🇸", lang: "Spanish",  note: "A1"     },
-              ].map(({ flag, lang, note }) => (
+              {LANGUAGES.map(({ flag, lang, note }) => (
                 <span
                   key={lang}
                   style={{
@@ -444,6 +527,31 @@ export default function PortfolioPage() {
                 ⌚ Collecting mechanical watches
               </span>
             </div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="print-hide grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 max-w-xl"
+            >
+              <StatTile
+                icon={Rocket}
+                value={achievements.filter((a) => a.category === "founding").length}
+                label="Ventures Founded"
+              />
+              <StatTile
+                icon={Award}
+                value={achievements.filter((a) => a.category === "cert").length}
+                label="Certifications"
+              />
+              <StatTile
+                icon={BookOpen}
+                value={achievements.length}
+                label="Achievements"
+                href="/pokedex"
+              />
+              <StatTile icon={Languages} value={LANGUAGES.length} label="Languages" />
+            </motion.div>
           </div>
         </FadeContent>
 
@@ -626,30 +734,22 @@ export default function PortfolioPage() {
           <Section id="certs">
             <SectionHeading>Certifications</SectionHeading>
             <div className="flex flex-col gap-3">
-              <BadgeCard label="Bloomberg Market Concepts" sub="Bloomberg" />
-              <BadgeCard label="Developing LLM Applications with LangChain" sub="DataCamp" />
-              <BadgeCard label="Intermediate Deep Learning with PyTorch" sub="DataCamp" />
-              <BadgeCard label="AI Fundamentals" sub="DataCamp" />
-              <BadgeCard label="GitHub Foundations" sub="DataCamp" />
-              <BadgeCard label="Data Engineer" sub="DataCamp" />
-              <BadgeCard label="Python Data Associate" sub="DataCamp" />
-              <BadgeCard label="Pre Security Certificate" sub="TryHackMe" />
-              <BadgeCard label="Advent of Cyber 2025" sub="TryHackMe" />
-              <BadgeCard label="IPv6 Sage Certification" sub="Hurricane Electric" />
+              {achievements
+                .filter((a) => a.category === "cert")
+                .map((a) => (
+                  <TrophyCard key={a.id} achievement={a} />
+                ))}
             </div>
           </Section>
 
           <Section>
             <SectionHeading>Awards</SectionHeading>
             <div className="flex flex-col gap-3">
-              <BadgeCard
-                label="Finalist · Top 50"
-                sub="Future of IT Leaders: Data & AI Challenge 2025 — Editx"
-              />
-              <BadgeCard
-                label="Selected Participant"
-                sub="KU Leuven KICK Challenge 2026"
-              />
+              {achievements
+                .filter((a) => a.category === "award")
+                .map((a) => (
+                  <TrophyCard key={a.id} achievement={a} />
+                ))}
             </div>
           </Section>
         </div>
