@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Wrench, FlaskConical, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
+import { Mail, Wrench, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -14,7 +14,7 @@ import { playHoverBlip, playConfirmChime } from "@/lib/uiSfx";
 import { useSeenAchievements } from "@/lib/useSeenAchievements";
 import { achievements } from "@/data/achievements";
 
-type CardId = "lumen" | "portfolio" | "calm";
+type CardId = "lumen" | "portfolio" | "research";
 
 const POKEDEX_RED = "#CC0000";
 const EMERALD_CREAM = "#F7F4E3";
@@ -89,18 +89,18 @@ const cards: Card[] = [
     gradientColors: ["#059669", "#10b981", "#34d399", "#10b981", "#059669"],
   },
   {
-    id: "calm",
-    title: "CalmCampus",
-    subtitle: "Student Wellbeing",
-    pokemonType: "GRASS",
-    typeColor: "#7AC74C",
+    id: "research",
+    title: "Research",
+    subtitle: "Independent Research",
+    pokemonType: "PSYCHIC",
+    typeColor: "#F95587",
     description:
-      "A privacy-first student wellbeing platform using passive behavioural signals and on-device AI to help universities support students before stress becomes a crisis — without surveillance.",
-    href: "https://calm.braunf.com",
+      "Independent research on cross-lingual NLP and LLM interpretability — probing how small language models reason across languages and cultures, from pragmatic alignment to the algorithmic foundations of AI systems.",
+    href: "/research",
     available: true,
-    accentColor: "#65a30d",
-    spotlightColor: "rgba(101, 163, 13, 0.3)",
-    gradientColors: ["#65a30d", "#4d7c0f", "#84cc16", "#4d7c0f", "#65a30d"],
+    accentColor: "#ec4899",
+    spotlightColor: "rgba(236, 72, 153, 0.3)",
+    gradientColors: ["#ec4899", "#db2777", "#f472b6", "#db2777", "#ec4899"],
   },
 ];
 
@@ -612,7 +612,7 @@ export default function SelectPage() {
   const cardRefs = useRef<Record<CardId, HTMLDivElement | null>>({
     lumen: null,
     portfolio: null,
-    calm: null,
+    research: null,
   });
 
   // Backtick easter egg → terminal
@@ -1042,7 +1042,6 @@ export default function SelectPage() {
                 soundEnabled={musicEnabled}
                 badge={seenCount > 0 ? `${seenCount}/${achievements.length}` : undefined}
               />
-              <StartMenuRow href="/research" icon={<FlaskConical size={14} />} label="RESEARCH" color="#34d399" soundEnabled={musicEnabled} />
               <StartMenuRow
                 href="https://nihongo.braunf.com"
                 external
@@ -1052,6 +1051,7 @@ export default function SelectPage() {
                 badge="WK LV.3"
                 soundEnabled={musicEnabled}
               />
+              <StartMenuRow href="https://calm.braunf.com" external icon={<Leaf size={14} />} label="CALMCAMPUS" color="#65a30d" soundEnabled={musicEnabled} />
             </div>
 
             <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />

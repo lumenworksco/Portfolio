@@ -858,35 +858,66 @@ export default function PortfolioPage() {
             borderTop: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <a
-            href="/contact"
-            style={{
-              display: "inline-block",
-              marginBottom: "20px",
-              padding: "9px 22px 8px",
-              borderRadius: "6px",
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.09)",
-              fontSize: "9px",
-              fontFamily: "var(--font-pixel), monospace",
-              color: "rgba(255,255,255,0.5)",
-              letterSpacing: "0.1em",
-              textDecoration: "none",
-              transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
-              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
-            }}
-          >
-            ✉ GET IN TOUCH
-          </a>
+          <div className="flex items-center justify-center gap-3 flex-wrap mb-5">
+            <a
+              href="/contact"
+              style={{
+                display: "inline-block",
+                padding: "9px 22px 8px",
+                borderRadius: "6px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.09)",
+                fontSize: "9px",
+                fontFamily: "var(--font-pixel), monospace",
+                color: "rgba(255,255,255,0.5)",
+                letterSpacing: "0.1em",
+                textDecoration: "none",
+                transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
+              }}
+            >
+              ✉ GET IN TOUCH
+            </a>
+            <a
+              href="https://www.linkedin.com/in/braunflorian25/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                padding: "9px 22px 8px",
+                borderRadius: "6px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.09)",
+                fontSize: "9px",
+                fontFamily: "var(--font-pixel), monospace",
+                color: "rgba(255,255,255,0.5)",
+                letterSpacing: "0.1em",
+                textDecoration: "none",
+                transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
+              }}
+            >
+              in LINKEDIN
+            </a>
+          </div>
           <p
             style={{
               color: "rgba(255,255,255,0.2)",
