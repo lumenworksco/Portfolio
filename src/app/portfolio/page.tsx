@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowUp, MapPin, Printer, Rocket, Award, BookOpen, Languages, type LucideIcon } from "lucide-react";
+import { ArrowLeft, ArrowUp, MapPin, Printer, Rocket, Award, BookOpen, Languages, Linkedin, type LucideIcon } from "lucide-react";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
@@ -437,22 +437,34 @@ export default function PortfolioPage() {
         Back
       </Link>
 
-      {/* Print button */}
-      <button
-        onClick={handlePrint}
-        disabled={preparingPrint}
-        className="print-hide fixed top-5 right-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
-        style={{
-          color: "rgba(255,255,255,0.35)",
-          opacity: 0.6,
-          background: "none",
-          border: "none",
-          cursor: preparingPrint ? "default" : "pointer",
-        }}
-      >
-        <Printer size={14} />
-        {preparingPrint ? "Preparing…" : "Print"}
-      </button>
+      {/* Top-right actions */}
+      <div className="print-hide fixed top-5 right-5 z-20 flex items-center gap-5">
+        <a
+          href="https://www.linkedin.com/in/braunflorian25/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
+          style={{ color: "rgba(255,255,255,0.35)", opacity: 0.6 }}
+        >
+          <Linkedin size={14} />
+          LinkedIn
+        </a>
+        <button
+          onClick={handlePrint}
+          disabled={preparingPrint}
+          className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
+          style={{
+            color: "rgba(255,255,255,0.35)",
+            opacity: 0.6,
+            background: "none",
+            border: "none",
+            cursor: preparingPrint ? "default" : "pointer",
+          }}
+        >
+          <Printer size={14} />
+          {preparingPrint ? "Preparing…" : "Print"}
+        </button>
+      </div>
 
       <SectionNav />
       <BackToTop />
@@ -858,66 +870,35 @@ export default function PortfolioPage() {
             borderTop: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <div className="flex items-center justify-center gap-3 flex-wrap mb-5">
-            <a
-              href="/contact"
-              style={{
-                display: "inline-block",
-                padding: "9px 22px 8px",
-                borderRadius: "6px",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.09)",
-                fontSize: "9px",
-                fontFamily: "var(--font-pixel), monospace",
-                color: "rgba(255,255,255,0.5)",
-                letterSpacing: "0.1em",
-                textDecoration: "none",
-                transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
-                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
-                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
-              }}
-            >
-              ✉ GET IN TOUCH
-            </a>
-            <a
-              href="https://www.linkedin.com/in/braunflorian25/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                padding: "9px 22px 8px",
-                borderRadius: "6px",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.09)",
-                fontSize: "9px",
-                fontFamily: "var(--font-pixel), monospace",
-                color: "rgba(255,255,255,0.5)",
-                letterSpacing: "0.1em",
-                textDecoration: "none",
-                transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
-                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
-                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
-              }}
-            >
-              in LINKEDIN
-            </a>
-          </div>
+          <a
+            href="/contact"
+            style={{
+              display: "inline-block",
+              marginBottom: "20px",
+              padding: "9px 22px 8px",
+              borderRadius: "6px",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.09)",
+              fontSize: "9px",
+              fontFamily: "var(--font-pixel), monospace",
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.1em",
+              textDecoration: "none",
+              transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.16)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.8)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.09)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)";
+            }}
+          >
+            ✉ GET IN TOUCH
+          </a>
           <p
             style={{
               color: "rgba(255,255,255,0.2)",
