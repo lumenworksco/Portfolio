@@ -5,7 +5,7 @@ import {
   Bot, Lightbulb, GitBranch, Shield, ShieldAlert,
   Globe, BookMarked, Network,
   Server, Eye, CalendarDays, Megaphone, ClipboardList,
-  Monitor, Users, Camera, Watch, Database,
+  Monitor, Users, Database,
   FileSpreadsheet, Calculator,
   type LucideIcon,
 } from "lucide-react";
@@ -450,30 +450,6 @@ export const achievements: Achievement[] = [
     description: "Performed with the Conservatoire's Guitar Orchestra across regular concerts.",
     detail:
       "Performed as a member of the Conservatoire de la Ville de Luxembourg's Guitar Orchestra, participating in regular rehearsals and concerts alongside formal guitar and music theory study.",
-  },
-  {
-    id: "034",
-    name: "Studio Grain",
-    org: "Founder",
-    period: "Ongoing",
-    category: "founding",
-    types: ["FIRE", "NORMAL"],
-    icon: Camera,
-    description: "Photography studio balancing creative vision with business execution.",
-    detail:
-      "Founded and runs Studio Grain, a photography business. Balances creative vision with business execution — one of two ventures run alongside technical and academic work, feeding into a broader interest in the intersection of technology, entrepreneurship, and strategic decision-making.",
-  },
-  {
-    id: "035",
-    name: "Pulse Watch Co.",
-    org: "Founder",
-    period: "Ongoing",
-    category: "founding",
-    types: ["FIRE", "GHOST"],
-    icon: Watch,
-    description: "Luxury watch business exploring the trade side of entrepreneurship.",
-    detail:
-      "Founded and runs Pulse Watch Co., a luxury watch business. Alongside Studio Grain, this venture builds practical experience in creative and commercial execution outside of pure software — sharpening business instincts that carry into product and strategic decisions elsewhere.",
   },
   {
     id: "036",
