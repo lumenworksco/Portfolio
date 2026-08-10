@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowUp, MapPin, Printer, Rocket, Award, BookOpen, Languages, Linkedin, type LucideIcon } from "lucide-react";
+import { ArrowLeft, ArrowUp, MapPin, Printer, Rocket, Award, BookOpen, Languages, Linkedin, Wrench, type LucideIcon } from "lucide-react";
 import { GitHubActivity } from "@/components/GitHubActivity";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
@@ -392,6 +392,47 @@ function BackToTop() {
   );
 }
 
+// ─── Under construction — page is temporarily gated while content is reworked.
+// The full page below is left intact so it can be switched back on later. ─────
+const UNDER_CONSTRUCTION = true;
+
+function UnderConstruction() {
+  return (
+    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center" style={{ background: "#060608" }}>
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Aurora colorStops={["#064e3b", "#059669", "#047857"]} speed={0.5} amplitude={0.9} />
+      </div>
+      <div
+        className="fixed inset-0 z-[1] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(6,6,8,0.65) 100%)" }}
+      />
+
+      <Link
+        href="/"
+        className="fixed top-5 left-5 z-20 flex items-center gap-2 text-xs font-mono tracking-widest uppercase transition-opacity hover:opacity-100"
+        style={{ color: "rgba(255,255,255,0.35)", opacity: 0.6 }}
+      >
+        <ArrowLeft size={14} />
+        Back
+      </Link>
+
+      <FadeContent blur duration={600} initialOpacity={0} className="relative z-10 text-center px-5">
+        <div className="flex justify-center mb-5" style={{ color: "#10b981" }}>
+          <Wrench size={32} />
+        </div>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+          <GradientText colors={["#6ee7b7", "#10b981", "#34d399", "#10b981", "#6ee7b7"]} animationSpeed={5}>
+            Page Under Construction
+          </GradientText>
+        </h1>
+        <p className="text-sm max-w-md mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
+          This page is being reworked. Check back soon.
+        </p>
+      </FadeContent>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function PortfolioPage() {
   const [preparingPrint, setPreparingPrint] = useState(false);
@@ -413,6 +454,10 @@ export default function PortfolioPage() {
     setPreparingPrint(false);
     window.print();
   };
+
+  if (UNDER_CONSTRUCTION) {
+    return <UnderConstruction />;
+  }
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden print-area" style={{ background: "#060608" }}>
@@ -598,14 +643,6 @@ export default function PortfolioPage() {
               development, testing, release, and iteration. End-to-end across the stack: back-end
               services and APIs, front-end experiences, infrastructure, deployments, and
               performance optimisation.
-            </TimelineItem>
-            <TimelineItem title="Founder" org="Studio Grain" period="Ongoing">
-              Runs a photography business balancing creative vision with business execution —
-              one of two ventures pursued alongside technical and academic work.
-            </TimelineItem>
-            <TimelineItem title="Founder" org="Pulse Watch Co." period="Ongoing">
-              Runs a luxury watch business, building practical experience in creative and
-              commercial execution outside of pure software.
             </TimelineItem>
           </div>
         </Section>
