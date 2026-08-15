@@ -15,6 +15,10 @@ const LINKS = [
   { label: "CalmCampus", href: "https://calm.braunf.com", sub: "calm.braunf.com" },
 ];
 
+const FRIEND_LINKS = [
+  { label: "Delphi", href: "https://delphi.tools/", sub: "by a fellow developer" },
+];
+
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
 
@@ -256,6 +260,89 @@ export default function ContactPage() {
               }}
             >
               {LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "7px",
+                    padding: "8px 14px",
+                    borderRadius: "7px",
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    textDecoration: "none",
+                    transition: "background 0.2s ease, border-color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background =
+                      "rgba(255,255,255,0.07)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "rgba(255,255,255,0.14)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background =
+                      "rgba(255,255,255,0.03)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                      "rgba(255,255,255,0.07)";
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        fontSize: "12px",
+                        color: "rgba(255,255,255,0.7)",
+                        fontWeight: 500,
+                        margin: 0,
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {link.label}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "9px",
+                        color: "rgba(255,255,255,0.28)",
+                        fontFamily: "var(--font-pixel), monospace",
+                        letterSpacing: "0.04em",
+                        margin: 0,
+                      }}
+                    >
+                      {link.sub}
+                    </p>
+                  </div>
+                  <ExternalLink size={11} style={{ color: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+                </a>
+              ))}
+            </div>
+          </FadeContent>
+
+          {/* Friends */}
+          <FadeContent blur duration={600} delay={650} initialOpacity={0} className="mt-6">
+            <p
+              style={{
+                fontSize: "9px",
+                fontFamily: "var(--font-pixel), monospace",
+                color: "rgba(255,255,255,0.18)",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                textAlign: "center",
+                marginBottom: "10px",
+              }}
+            >
+              Also worth a look
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {FRIEND_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
