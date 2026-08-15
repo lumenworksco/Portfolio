@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileText, Archive } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Aurora from "@/components/ui/Aurora";
@@ -19,17 +19,40 @@ const staggerContainer = {
 };
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
+interface PaperLink {
+  label: string;
+  href: string;
+}
+
 interface Paper {
   title: string;
   year: string;
   abstract: string;
   contributions: string[];
   tags: string[];
-  link?: string;
+  links: PaperLink[];
   status: "Published" | "In progress" | "Under review";
 }
 
 const PAPERS: Paper[] = [
+  {
+    title: "Excess Separability: Nuisance-Controlled Residual-Stream Probing for Benchmark Contamination Detection",
+    year: "August 2026",
+    abstract:
+      "Benchmark contamination is diagnosed today with n-gram overlap, with likelihood-based membership inference, or with canary strings, and each needs something usually unavailable: the training corpus, a well-chosen test statistic, or foresight at dataset release. A recent alternative reads contamination off a linear probe on internal activations — this work shows the natural way to do this does not work, and specifies one that survives measurement. The protocol reports a zero-sum contrast on the depth profile of probe accuracy, recentred on a level-matched placebo baseline, tested against a label-permutation null, with the reference set twice the size of the suspect set. Reporting the level of excess separability rather than its shape makes the false-positive rate track the size of the analyst's own control set, from 0.03 to 0.99 under a true null. On real transformers, baseline depth profiles are measurably not flat, spanning up to 29.1 accuracy points on a temporal split, and their non-flatness tracks the surface difference between item sets (correlation 0.87 over 6 audits) — so the correction is largest exactly where it's needed.",
+    contributions: [
+      "Nuisance-controlled protocol for contamination probing: zero-sum depth-profile contrast against a level-matched placebo, tested with a label-permutation null at 2× reference-to-suspect sizing",
+      "Shows naive linear-probe contamination detection fails: false-positive rate ranges 0.03–0.99 under a true null depending on control-set size; a flat-baseline contrast rejects a true null up to 72% of the time",
+      "6-audit empirical study across transformer/dataset pairs — all 4 well-matched Pile arms return null, the protocol abstains on the confounded temporal split rather than reporting a verdict; implementation, tests, and audits released",
+    ],
+    tags: ["NLP", "LLM Evaluation", "Probing", "Benchmark Contamination", "Statistics"],
+    links: [
+      { label: "arXiv ↗", href: "https://arxiv.org/abs/2608.12652" },
+      { label: "Zenodo ↗", href: "https://doi.org/10.5281/zenodo.21855509" },
+      { label: "Code ↗", href: "https://github.com/mabushi-lab/residual-stream-contamination-probing" },
+    ],
+    status: "Published",
+  },
   {
     title: "Interpretable Cross-Lingual Alignment in Small Language Models: Probing Cultural and Pragmatic Reasoning in Japanese-English Bilingual LLMs",
     year: "April 2026",
@@ -41,7 +64,7 @@ const PAPERS: Paper[] = [
       "Pragmatic Representation Steering (PRS) — parameter-free inference-time steering via residual-stream activation editing",
     ],
     tags: ["NLP", "Japanese", "Pragmatics", "Probing", "Representation Steering", "LLMs"],
-    link: "https://doi.org/10.13140/RG.2.2.22007.18088",
+    links: [{ label: "ResearchGate ↗", href: "https://doi.org/10.13140/RG.2.2.22007.18088" }],
     status: "Published",
   },
   {
@@ -55,7 +78,7 @@ const PAPERS: Paper[] = [
       "Concrete examples of how data structure choices affect memory consumption, processing speed, and scalability in real-world AI systems",
     ],
     tags: ["Algorithms", "Data Structures", "AI Systems", "ML Infrastructure", "Thesis"],
-    link: "https://doi.org/10.13140/RG.2.2.13838.42566",
+    links: [{ label: "ResearchGate ↗", href: "https://doi.org/10.13140/RG.2.2.13838.42566" }],
     status: "Published",
   },
 ];
@@ -63,10 +86,14 @@ const PAPERS: Paper[] = [
 const TOOLKIT = [
   "Python", "PyTorch", "Hugging Face Transformers", "scikit-learn",
   "LangChain", "Claude API", "Linear Algebra", "Linear Probing",
-  "Activation Steering", "LaTeX",
+  "Activation Steering", "Permutation Testing", "LaTeX",
 ];
 
 const INTERESTS = [
+  {
+    label: "LLM Evaluation Integrity",
+    detail: "Detecting benchmark contamination and other confounds that make reported model capabilities look better than they are",
+  },
   {
     label: "Cross-lingual NLP",
     detail: "How models transfer knowledge across languages and what internal representations make this possible",
@@ -101,11 +128,13 @@ function SocialLink({
   color,
   label,
   path,
+  icon,
 }: {
   href: string;
   color: string;
   label: string;
-  path: string;
+  path?: string;
+  icon?: React.ReactNode;
 }) {
   return (
     <a
@@ -132,9 +161,11 @@ function SocialLink({
         (e.currentTarget as HTMLAnchorElement).style.borderColor = `${color}38`;
       }}
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
-        <path d={path} />
-      </svg>
+      {icon ?? (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
+          <path d={path} />
+        </svg>
+      )}
       <span style={{ fontSize: "11px", color, fontWeight: 500, letterSpacing: "0.02em" }}>
         {label}
       </span>
@@ -230,36 +261,41 @@ function PaperCard({ paper }: { paper: Paper }) {
             </span>
           ))}
         </div>
-        {paper.link && (
-          <a
-            href={paper.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "11px",
-              color: "rgba(255,255,255,0.4)",
-              textDecoration: "none",
-              padding: "5px 12px",
-              borderRadius: "6px",
-              border: "1px solid rgba(255,255,255,0.08)",
-              transition: "color 0.15s ease, border-color 0.15s ease",
-              flexShrink: 0,
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.18)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.4)";
-              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.08)";
-            }}
-          >
-            <ExternalLink size={11} />
-            Read
-          </a>
+        {paper.links.length > 0 && (
+          <div className="flex items-center gap-2 flex-wrap" style={{ flexShrink: 0 }}>
+            {paper.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.4)",
+                  textDecoration: "none",
+                  padding: "5px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  transition: "color 0.15s ease, border-color 0.15s ease",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.18)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.4)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.08)";
+                }}
+              >
+                <ExternalLink size={11} />
+                {l.label}
+              </a>
+            ))}
+          </div>
         )}
       </div>
     </motion.div>
@@ -334,14 +370,30 @@ export default function ResearchPage() {
             <span style={{ color: "rgba(255,255,255,0.75)" }}>model interpretability</span>.
             I am particularly interested in understanding what small language models learn about language structure
             across typologically different languages — and whether that learning is genuinely cross-lingual
-            or a surface-level statistical artefact.
+            or a surface-level statistical artefact. Lately that's extended to a more adversarial question:
+            whether the internal signals we use to <em style={{ fontStyle: "normal", color: "rgba(255,255,255,0.75)" }}>evaluate</em>{" "}
+            models — like linear probes for benchmark contamination — hold up under the same scrutiny.
           </p>
-          <SocialLink
-            href="https://www.researchgate.net/profile/Florian-Braun-14"
-            color="#00CC88"
-            label="ResearchGate ↗"
-            path="M19.586 0H4.414A4.414 4.414 0 0 0 0 4.414v15.172A4.414 4.414 0 0 0 4.414 24h15.172A4.414 4.414 0 0 0 24 19.586V4.414A4.414 4.414 0 0 0 19.586 0zM9.5 7.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm4.75 9.25H9.75v-7h4.5v7z"
-          />
+          <div className="flex items-center gap-2 flex-wrap">
+            <SocialLink
+              href="https://www.researchgate.net/profile/Florian-Braun-14"
+              color="#00CC88"
+              label="ResearchGate ↗"
+              path="M19.586 0H4.414A4.414 4.414 0 0 0 0 4.414v15.172A4.414 4.414 0 0 0 4.414 24h15.172A4.414 4.414 0 0 0 24 19.586V4.414A4.414 4.414 0 0 0 19.586 0zM9.5 7.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm4.75 9.25H9.75v-7h4.5v7z"
+            />
+            <SocialLink
+              href="https://arxiv.org/abs/2608.12652"
+              color="#B31B1B"
+              label="arXiv ↗"
+              icon={<FileText size={14} color="#B31B1B" />}
+            />
+            <SocialLink
+              href="https://doi.org/10.5281/zenodo.21855509"
+              color="#1682D4"
+              label="Zenodo ↗"
+              icon={<Archive size={14} color="#1682D4" />}
+            />
+          </div>
         </FadeContent>
 
         {/* ── Research Interests ───────────────────────────────────────────────── */}
