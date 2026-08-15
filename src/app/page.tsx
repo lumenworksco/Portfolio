@@ -1130,6 +1130,34 @@ export default function SelectPage() {
             </AnimatePresence>
           </DialogBox>
         </FadeContent>
+
+        {/* Friend credit — not one of my own projects, kept visually separate */}
+        <FadeContent blur duration={600} delay={1250} initialOpacity={0}>
+          <a
+            href="https://delphi.tools/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "9px",
+              fontFamily: "var(--font-pixel), monospace",
+              letterSpacing: "0.06em",
+              color: "rgba(255,255,255,0.28)",
+              textDecoration: "none",
+              transition: "color 0.15s ease",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.6)")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.28)")
+            }
+          >
+            delphi.tools ↗ — built by a fellow developer
+          </a>
+        </FadeContent>
       </main>
     </div>
   );
