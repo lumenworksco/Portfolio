@@ -5,11 +5,13 @@ import Link from "next/link";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import { GitHubActivity } from "@/components/GitHubActivity";
+import { HuggingFaceActivity } from "@/components/HuggingFaceActivity";
 
 const AMBER = "#f59e0b";
 const TEAL = "#14b8a6";
 const PINK = "#ec4899";
 const BLUE = "#38bdf8";
+const VIOLET = "#a78bfa";
 
 interface Focus {
   label: string;
@@ -135,7 +137,7 @@ export default function NowPage() {
             </GradientText>
           </h1>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.38)", lineHeight: "1.7" }}>
-            Current focus, and what I&apos;ve actually been shipping — pulled live from GitHub.
+            Current focus, and what I&apos;ve actually been shipping — pulled live from GitHub and Hugging Face.
           </p>
         </FadeContent>
 
@@ -156,16 +158,25 @@ export default function NowPage() {
           ))}
         </div>
 
-        {/* Live GitHub stats */}
-        <FadeContent blur duration={600} delay={480} initialOpacity={0}>
-          <BentoTile color={BLUE}>
-            <TileLabel color={BLUE} icon={<Github size={13} />} text="Live from GitHub" />
-            <GitHubActivity />
-          </BentoTile>
-        </FadeContent>
+        {/* Live stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <FadeContent blur duration={600} delay={480} initialOpacity={0}>
+            <BentoTile color={BLUE} className="h-full">
+              <TileLabel color={BLUE} icon={<Github size={13} />} text="Live from GitHub" />
+              <GitHubActivity />
+            </BentoTile>
+          </FadeContent>
+
+          <FadeContent blur duration={600} delay={560} initialOpacity={0}>
+            <BentoTile color={VIOLET} className="h-full">
+              <TileLabel color={VIOLET} icon={<span style={{ fontSize: "13px", lineHeight: 1 }}>🤗</span>} text="Live from Hugging Face" />
+              <HuggingFaceActivity />
+            </BentoTile>
+          </FadeContent>
+        </div>
 
         {/* Footnote */}
-        <FadeContent blur duration={600} delay={600} initialOpacity={0} className="mt-6">
+        <FadeContent blur duration={600} delay={680} initialOpacity={0} className="mt-6">
           <div className="flex items-center gap-2 justify-center">
             <Radio size={11} style={{ color: "rgba(255,255,255,0.2)" }} />
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.22)", fontFamily: "var(--font-pixel), monospace", letterSpacing: "0.08em" }}>
