@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Wrench, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
+import { Mail, Radio, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
 import Link from "next/link";
 import Aurora from "@/components/ui/Aurora";
 import SpotlightCard from "@/components/ui/SpotlightCard";
@@ -1058,7 +1058,7 @@ export default function SelectPage() {
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
               <StartMenuRow href="/contact" icon={<Mail size={14} />} label="CONTACT" color={EMERALD_INK} soundEnabled={musicEnabled} />
-              <StartMenuRow href="/uses" icon={<Wrench size={14} />} label="USES" color={EMERALD_INK} soundEnabled={musicEnabled} />
+              <StartMenuRow href="/now" icon={<Radio size={14} />} label="NOW" color={EMERALD_INK} soundEnabled={musicEnabled} />
               <StartMenuRow href="https://data.braunf.com" external icon={<BarChart3 size={14} />} label="DATACAMP" color="#f59e0b" soundEnabled={musicEnabled} />
               <StartMenuRow href="https://iot.braunf.com" external icon={<Cpu size={14} />} label="IOT LAB" color="#60a5fa" soundEnabled={musicEnabled} />
             </div>

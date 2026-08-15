@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Uses",
-  description: "The tools, languages, and setup Florian Braun uses daily.",
+  title: "Now",
+  description: "What Florian Braun is currently focused on, plus live GitHub activity.",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
