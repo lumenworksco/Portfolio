@@ -42,7 +42,7 @@ function BentoTile({
         background: "rgba(255,255,255,0.03)",
         border: `1px solid ${color}33`,
         borderRadius: "14px",
-        padding: "22px 24px",
+        padding: "26px 28px",
         overflow: "hidden",
       }}
     >
@@ -115,7 +115,7 @@ export default function NowPage() {
         Back
       </Link>
 
-      <main className="relative z-10 max-w-3xl mx-auto px-5 pt-24 pb-24">
+      <main className="relative z-10 max-w-4xl mx-auto px-5 pt-24 pb-24">
 
         {/* Header */}
         <FadeContent blur duration={600} initialOpacity={0} className="mb-10">
@@ -158,17 +158,17 @@ export default function NowPage() {
           ))}
         </div>
 
-        {/* Live stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        {/* Live stats — stacked full-width so the calendar and repo list have room to breathe */}
+        <div className="flex flex-col gap-4 mb-4">
           <FadeContent blur duration={600} delay={480} initialOpacity={0}>
-            <BentoTile color={BLUE} className="h-full">
+            <BentoTile color={BLUE}>
               <TileLabel color={BLUE} icon={<Github size={13} />} text="Live from GitHub" />
               <GitHubActivity />
             </BentoTile>
           </FadeContent>
 
           <FadeContent blur duration={600} delay={560} initialOpacity={0}>
-            <BentoTile color={VIOLET} className="h-full">
+            <BentoTile color={VIOLET}>
               <TileLabel color={VIOLET} icon={<span style={{ fontSize: "13px", lineHeight: 1 }}>🤗</span>} text="Live from Hugging Face" />
               <HuggingFaceActivity />
             </BentoTile>

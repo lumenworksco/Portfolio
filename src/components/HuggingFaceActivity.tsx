@@ -107,9 +107,9 @@ export function HuggingFaceActivity() {
       {repos.length === 0 ? (
         <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.2)" }}>No public repos yet.</p>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
           {repos.slice(0, 6).map((repo) => (
-            <div key={repo.id} style={{ display: "flex", alignItems: "baseline", gap: "10px", minWidth: 0 }}>
+            <div key={repo.id} style={{ display: "flex", alignItems: "baseline", gap: "12px", minWidth: 0 }}>
               <span
                 style={{
                   fontSize: "8px",
