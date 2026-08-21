@@ -36,3 +36,10 @@ export function playConfirmChime() {
   tone(660, 0, 0.09, "square", 0.055);
   tone(990, 0.08, 0.16, "square", 0.055);
 }
+
+// Rising three-note blip, like a small device powering on.
+export function playPowerOn() {
+  tone(220, 0, 0.05, "square", 0.05);
+  tone(440, 0.05, 0.05, "square", 0.05);
+  tone(880, 0.1, 0.12, "square", 0.05);
+}

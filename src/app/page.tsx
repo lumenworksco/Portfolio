@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Radio, BarChart3, Cpu, Flame, Brain, Leaf, BookOpen, Bug } from "lucide-react";
@@ -10,13 +10,16 @@ import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
-import { playHoverBlip, playConfirmChime } from "@/lib/uiSfx";
+import { playHoverBlip, playConfirmChime, playPowerOn } from "@/lib/uiSfx";
 import { useSeenAchievements } from "@/lib/useSeenAchievements";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import { achievements } from "@/data/achievements";
+import PocketOperator from "@/components/ui/PocketOperator";
 
 type CardId = "lumen" | "portfolio" | "research";
 
 const POKEDEX_RED = "#CC0000";
+const PO_GREEN = "#8fd94a";
 const EMERALD_CREAM = "#F7F4E3";
 const EMERALD_CREAM_DEEP = "#EAE5C8";
 const EMERALD_INK = "#1C1C1C";
@@ -24,26 +27,6 @@ const EMERALD_BLUE = "#2E86AB";
 const EMERALD_BOX_BG = `linear-gradient(180deg, ${EMERALD_CREAM} 0%, ${EMERALD_CREAM_DEEP} 100%)`;
 const EMERALD_BOX_BORDER = `3px solid ${EMERALD_INK}`;
 const EMERALD_BOX_INSET = `inset 0 0 0 2px ${EMERALD_BLUE}30`;
-
-// ─── prefers-reduced-motion — SSR-safe via useSyncExternalStore ───────────────
-function subscribeReducedMotion(callback: () => void) {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  mq.addEventListener("change", callback);
-  return () => mq.removeEventListener("change", callback);
-}
-function getReducedMotionSnapshot() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-function getReducedMotionServerSnapshot() {
-  return false;
-}
-function usePrefersReducedMotion(): boolean {
-  return useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot
-  );
-}
 
 interface Card {
   id: CardId;
@@ -607,8 +590,10 @@ export default function SelectPage() {
   const [hoveredId, setHoveredId] = useState<CardId | null>(null);
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
+  const [navigatingToBeats, setNavigatingToBeats] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const { seenCount } = useSeenAchievements();
+  const reducedMotion = usePrefersReducedMotion();
   const cardRefs = useRef<Record<CardId, HTMLDivElement | null>>({
     lumen: null,
     portfolio: null,
@@ -672,9 +657,20 @@ export default function SelectPage() {
     setTimeout(() => router.push("/pokedex"), 700);
   }, [selectedId, navigatingToPokedex, router, musicEnabled]);
 
+  const handleBeats = useCallback(() => {
+    if (selectedId !== null || navigatingToPokedex || navigatingToBeats) return;
+    playPowerOn();
+    setNavigatingToBeats(true);
+    setTimeout(() => router.push("/beats"), 650);
+  }, [selectedId, navigatingToPokedex, navigatingToBeats, router]);
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
       <ChiptuneMusic enabled={musicEnabled} onToggle={() => setMusicEnabled((v) => !v)} />
+      <PocketOperator
+        onLaunch={handleBeats}
+        disabled={selectedId !== null || navigatingToPokedex || navigatingToBeats}
+      />
 
       {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">
@@ -729,6 +725,20 @@ export default function SelectPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.82, 0] }}
             transition={{ duration: 0.7, times: [0, 0.2, 1], ease: "easeOut" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Beats navigation flash — phosphor green, capped low for photosensitivity */}
+      <AnimatePresence>
+        {navigatingToBeats && (
+          <motion.div
+            key="beats-flash"
+            className="fixed inset-0 z-50 pointer-events-none"
+            style={{ background: PO_GREEN }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: reducedMotion ? [0, 0.25, 0] : [0, 0.4, 0] }}
+            transition={{ duration: 0.65, times: [0, 0.25, 1], ease: "easeOut" }}
           />
         )}
       </AnimatePresence>
@@ -1067,9 +1077,9 @@ export default function SelectPage() {
 
         {/* Bottom dialog */}
         <FadeContent blur duration={600} delay={950} initialOpacity={0} className="w-full max-w-4xl">
-          <DialogBox showCursor={selectedId === null && !navigatingToPokedex}>
+          <DialogBox showCursor={selectedId === null && !navigatingToPokedex && !navigatingToBeats}>
             <AnimatePresence mode="wait">
-              {selectedId === null && !navigatingToPokedex ? (
+              {selectedId === null && !navigatingToPokedex && !navigatingToBeats ? (
                 <motion.p
                   key="idle"
                   initial={{ opacity: 0 }}
@@ -1102,6 +1112,23 @@ export default function SelectPage() {
                   }}
                 >
                   <TypewriterText segments={[{ text: "Opening POKEDEX..." }]} speedMs={28} />
+                </motion.p>
+              ) : navigatingToBeats ? (
+                <motion.p
+                  key="beats"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    fontSize: "11px",
+                    fontFamily: "var(--font-pixel), monospace",
+                    letterSpacing: "0.05em",
+                    lineHeight: "1.8",
+                    color: PO_GREEN,
+                  }}
+                >
+                  <TypewriterText segments={[{ text: "Powering on PO-33..." }]} speedMs={28} />
                 </motion.p>
               ) : (
                 <motion.p
