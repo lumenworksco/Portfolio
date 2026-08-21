@@ -661,7 +661,7 @@ export default function SelectPage() {
     if (selectedId !== null || navigatingToPokedex || navigatingToBeats) return;
     playPowerOn();
     setNavigatingToBeats(true);
-    setTimeout(() => router.push("/beats"), 650);
+    setTimeout(() => router.push("/music"), 650);
   }, [selectedId, navigatingToPokedex, navigatingToBeats, router]);
 
   return (
