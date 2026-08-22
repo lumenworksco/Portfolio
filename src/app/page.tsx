@@ -10,11 +10,12 @@ import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
-import { playHoverBlip, playConfirmChime, playPowerOn } from "@/lib/uiSfx";
+import { playHoverBlip, playConfirmChime, playPowerOn, playShutterClick } from "@/lib/uiSfx";
 import { useSeenAchievements } from "@/lib/useSeenAchievements";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import { achievements } from "@/data/achievements";
 import PocketOperator from "@/components/ui/PocketOperator";
+import PolaroidStack from "@/components/ui/PolaroidStack";
 
 type CardId = "lumen" | "portfolio" | "research";
 
@@ -591,6 +592,7 @@ export default function SelectPage() {
   const [selectedId, setSelectedId] = useState<CardId | null>(null);
   const [navigatingToPokedex, setNavigatingToPokedex] = useState(false);
   const [navigatingToBeats, setNavigatingToBeats] = useState(false);
+  const [photoFlash, setPhotoFlash] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const { seenCount } = useSeenAchievements();
   const reducedMotion = usePrefersReducedMotion();
@@ -664,6 +666,12 @@ export default function SelectPage() {
     setTimeout(() => router.push("/music"), 650);
   }, [selectedId, navigatingToPokedex, navigatingToBeats, router]);
 
+  const handlePortfolio = useCallback(() => {
+    playShutterClick();
+    setPhotoFlash(true);
+    setTimeout(() => setPhotoFlash(false), 260);
+  }, []);
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden" style={{ background: "#060608" }}>
       <ChiptuneMusic enabled={musicEnabled} onToggle={() => setMusicEnabled((v) => !v)} />
@@ -671,6 +679,7 @@ export default function SelectPage() {
         onLaunch={handleBeats}
         disabled={selectedId !== null || navigatingToPokedex || navigatingToBeats}
       />
+      <PolaroidStack href="https://braunf25.myportfolio.com" onLaunch={handlePortfolio} />
 
       {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">
@@ -739,6 +748,20 @@ export default function SelectPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: reducedMotion ? [0, 0.25, 0] : [0, 0.4, 0] }}
             transition={{ duration: 0.65, times: [0, 0.25, 1], ease: "easeOut" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Camera flash — capped low for photosensitivity, doesn't navigate */}
+      <AnimatePresence>
+        {photoFlash && (
+          <motion.div
+            key="photo-flash"
+            className="fixed inset-0 z-50 pointer-events-none"
+            style={{ background: "#fff" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: reducedMotion ? [0, 0.2, 0] : [0, 0.85, 0] }}
+            transition={{ duration: 0.26, times: [0, 0.2, 1], ease: "easeOut" }}
           />
         )}
       </AnimatePresence>

@@ -43,3 +43,9 @@ export function playPowerOn() {
   tone(440, 0.05, 0.05, "square", 0.05);
   tone(880, 0.1, 0.12, "square", 0.05);
 }
+
+// Two quick high clicks, like a camera shutter.
+export function playShutterClick() {
+  tone(2600, 0, 0.018, "square", 0.05);
+  tone(1400, 0.03, 0.03, "square", 0.045);
+}
