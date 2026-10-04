@@ -10,13 +10,12 @@ import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
-import GoTab from "@/components/ui/GoTab";
+import CalmTab from "@/components/ui/CalmTab";
 import { playHoverBlip, playConfirmChime, playPowerOn, playShutterClick } from "@/lib/uiSfx";
 import { useSeenAchievements } from "@/lib/useSeenAchievements";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import { achievements } from "@/data/achievements";
 import PocketOperator from "@/components/ui/PocketOperator";
-import PolaroidStack from "@/components/ui/PolaroidStack";
 
 type CardId = "lumen" | "portfolio" | "research";
 
@@ -680,8 +679,7 @@ export default function SelectPage() {
         onLaunch={handleBeats}
         disabled={selectedId !== null || navigatingToPokedex || navigatingToBeats}
       />
-      <PolaroidStack href="https://braunf25.myportfolio.com" onLaunch={handlePortfolio} />
-      <GoTab href="https://go.braunf.com" />
+      <CalmTab href="https://calm.braunf.com" />
 
       {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">
@@ -1086,7 +1084,7 @@ export default function SelectPage() {
                 badge="WK LV.3"
                 soundEnabled={musicEnabled}
               />
-              <StartMenuRow href="https://calm.braunf.com" external icon={<Leaf size={14} />} label="CALMCAMPUS" color="#65a30d" soundEnabled={musicEnabled} />
+              <StartMenuRow href="https://go.braunf.com" external icon={<span style={{ fontSize: "13px" }}>●</span>} label="GO" color="#78716c" soundEnabled={musicEnabled} />
             </div>
 
             <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />
