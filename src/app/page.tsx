@@ -1084,7 +1084,15 @@ export default function SelectPage() {
                 badge="WK LV.3"
                 soundEnabled={musicEnabled}
               />
-              <StartMenuRow href="https://go.braunf.com" external icon={<span style={{ fontSize: "13px" }}>●</span>} label="GO" color="#78716c" soundEnabled={musicEnabled} />
+              <StartMenuRow
+                href="https://go.braunf.com"
+                external
+                icon={<span style={{ fontSize: "13px" }}>●</span>}
+                label="GO"
+                color="#78716c"
+                badge="25 KYU · 600 ELO"
+                soundEnabled={musicEnabled}
+              />
             </div>
 
             <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />
