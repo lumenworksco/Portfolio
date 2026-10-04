@@ -36,7 +36,7 @@ export default function PocketOperator({
       style={{
         position: "fixed",
         left: 0,
-        top: "50%",
+        top: "calc(50% - 52px)",
         translate: "0 -50%",
         zIndex: 30,
         display: "flex",
