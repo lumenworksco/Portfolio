@@ -10,14 +10,14 @@ import SpotlightCard from "@/components/ui/SpotlightCard";
 import GradientText from "@/components/ui/GradientText";
 import FadeContent from "@/components/ui/FadeContent";
 import ChiptuneMusic from "@/components/ui/ChiptuneMusic";
-import CalmTab from "@/components/ui/CalmTab";
+import PolaroidStack from "@/components/ui/PolaroidStack";
 import { playHoverBlip, playConfirmChime, playPowerOn, playShutterClick } from "@/lib/uiSfx";
 import { useSeenAchievements } from "@/lib/useSeenAchievements";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import { achievements } from "@/data/achievements";
 import PocketOperator from "@/components/ui/PocketOperator";
 
-type CardId = "lumen" | "portfolio" | "research";
+type CardId = "lumen" | "calm" | "research";
 
 const POKEDEX_RED = "#CC0000";
 const PO_GREEN = "#8fd94a";
@@ -59,18 +59,18 @@ const cards: Card[] = [
     gradientColors: ["#f59e0b", "#d97706", "#fbbf24", "#d97706", "#f59e0b"],
   },
   {
-    id: "portfolio",
-    title: "Portfolio",
-    subtitle: "Personal Space",
-    pokemonType: "BUG",
-    typeColor: "#10b981",
+    id: "calm",
+    title: "CalmCampus",
+    subtitle: "Student Wellness",
+    pokemonType: "GRASS",
+    typeColor: "#7AC74C",
     description:
-      "A personal portfolio showcasing projects, experience, and the journey of a developer.",
-    href: "/portfolio",
+      "A student wellness app that helps students manage stress, build healthy routines, and find calm during campus life.",
+    href: "https://calm.braunf.com",
     available: true,
-    accentColor: "#10b981",
-    spotlightColor: "rgba(16, 185, 129, 0.2)",
-    gradientColors: ["#059669", "#10b981", "#34d399", "#10b981", "#059669"],
+    accentColor: "#65a30d",
+    spotlightColor: "rgba(101, 163, 13, 0.25)",
+    gradientColors: ["#4d7c0f", "#65a30d", "#a3e635", "#65a30d", "#4d7c0f"],
   },
   {
     id: "research",
@@ -598,7 +598,7 @@ export default function SelectPage() {
   const reducedMotion = usePrefersReducedMotion();
   const cardRefs = useRef<Record<CardId, HTMLDivElement | null>>({
     lumen: null,
-    portfolio: null,
+    calm: null,
     research: null,
   });
 
@@ -679,7 +679,7 @@ export default function SelectPage() {
         onLaunch={handleBeats}
         disabled={selectedId !== null || navigatingToPokedex || navigatingToBeats}
       />
-      <CalmTab href="https://calm.braunf.com" />
+      <PolaroidStack href="https://braunf25.myportfolio.com" onLaunch={handlePortfolio} />
 
       {/* Aurora WebGL background — Hoenn-leaning tropical palette */}
       <div className="fixed inset-0 z-0">

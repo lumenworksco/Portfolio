@@ -8,8 +8,8 @@ import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 const CREAM = "#f3ede0";
 const INK = "#1c1c1c";
 
-// The photography counterpart to PocketOperator — docked under it on the
-// same edge, same "peek in, slide out on hover" language, different medium.
+// The photography counterpart to PocketOperator — docked at the opposite
+// edge, same "peek in, slide out on hover" language, different medium.
 export default function PolaroidStack({
   href,
   onLaunch,
@@ -32,13 +32,13 @@ export default function PolaroidStack({
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
       onClick={onLaunch}
-      initial={{ x: -58 }}
-      animate={{ x: awake ? 0 : -58 }}
+      initial={{ x: 58 }}
+      animate={{ x: awake ? 0 : 58 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
       style={{
         position: "fixed",
-        left: 0,
-        top: "calc(50% + 52px)",
+        right: 0,
+        top: "50%",
         translate: "0 -50%",
         zIndex: 30,
         display: "flex",
@@ -53,11 +53,11 @@ export default function PolaroidStack({
       <div
         style={{
           position: "absolute",
-          inset: "6px 10px 6px 6px",
+          inset: "6px 6px 6px 10px",
           background: CREAM,
           border: `1px solid ${INK}30`,
-          borderRadius: "2px 8px 8px 2px",
-          transform: `rotate(${awake ? 6 : 3}deg)`,
+          borderRadius: "8px 2px 2px 8px",
+          transform: `rotate(${awake ? -6 : -3}deg)`,
           transition: "transform 0.3s ease",
           boxShadow: "0 4px 10px rgba(0,0,0,0.35)",
         }}
@@ -71,14 +71,14 @@ export default function PolaroidStack({
           height: "100%",
           background: CREAM,
           border: `1px solid ${INK}55`,
-          borderRadius: "2px 8px 8px 2px",
+          borderRadius: "8px 2px 2px 8px",
           boxShadow: awake
             ? "0 10px 26px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)"
             : "0 4px 14px rgba(0,0,0,0.4)",
           display: "flex",
           flexDirection: "column",
           padding: "6px 6px 5px",
-          transform: `rotate(${awake ? -1 : 1}deg)`,
+          transform: `rotate(${awake ? 1 : -1}deg)`,
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
         }}
       >
