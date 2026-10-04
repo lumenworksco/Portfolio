@@ -1085,6 +1085,7 @@ export default function SelectPage() {
                 soundEnabled={musicEnabled}
               />
               <StartMenuRow href="https://calm.braunf.com" external icon={<Leaf size={14} />} label="CALMCAMPUS" color="#65a30d" soundEnabled={musicEnabled} />
+              <StartMenuRow href="https://go.braunf.com" external icon={<span style={{ fontSize: "13px" }}>●</span>} label="GO" color="#78716c" soundEnabled={musicEnabled} />
             </div>
 
             <div style={{ height: "1px", background: "rgba(28,28,28,0.15)", margin: "5px 12px" }} />

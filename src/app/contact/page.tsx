@@ -13,6 +13,7 @@ const EMAIL = "contact@braunf.com";
 const LINKS = [
   { label: "Lumen Studio", href: "https://lumen.braunf.com", sub: "lumen.braunf.com" },
   { label: "CalmCampus", href: "https://calm.braunf.com", sub: "calm.braunf.com" },
+  { label: "Go", href: "https://go.braunf.com", sub: "go.braunf.com" },
 ];
 
 export default function ContactPage() {

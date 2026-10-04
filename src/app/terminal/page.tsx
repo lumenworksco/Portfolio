@@ -137,12 +137,13 @@ function run(
         "calmcampus":   "https://calm.braunf.com",
         "calm-campus":  "https://calm.braunf.com",
         "nihongo":      "https://nihongo.braunf.com",
+        "go":           "https://go.braunf.com",
       };
       const url = projects[arg];
       if (!url) {
         const notHosted = ["velox","finsight","leafy","piste","research"].includes(arg);
         if (notHosted) return [L("muted", `${arg}: not publicly hosted.`), BLANK()];
-        return [L("err", `open: unknown project '${arg}'`), L("muted", "try: lumen, calmcampus, nihongo"), BLANK()];
+        return [L("err", `open: unknown project '${arg}'`), L("muted", "try: lumen, calmcampus, nihongo, go"), BLANK()];
       }
       setTimeout(() => window.open(url, "_blank"), 250);
       return [L("muted", `→ opening ${url}`), BLANK()];
