@@ -66,7 +66,7 @@ const cards: Card[] = [
     typeColor: "#7AC74C",
     description:
       "A student wellness app that helps students manage stress, build healthy routines, and find calm during campus life.",
-    href: "https://calm.braunf.com",
+    href: "https://cc.braunf.com",
     available: true,
     accentColor: "#65a30d",
     spotlightColor: "rgba(101, 163, 13, 0.25)",

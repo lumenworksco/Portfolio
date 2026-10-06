@@ -133,9 +133,9 @@ function run(
         "lumen":        "https://lumen.braunf.com",
         "lumen-studio": "https://lumen.braunf.com",
         "lumenstudio":  "https://lumen.braunf.com",
-        "calm":         "https://calm.braunf.com",
-        "calmcampus":   "https://calm.braunf.com",
-        "calm-campus":  "https://calm.braunf.com",
+        "calm":         "https://cc.braunf.com",
+        "calmcampus":   "https://cc.braunf.com",
+        "calm-campus":  "https://cc.braunf.com",
         "nihongo":      "https://nihongo.braunf.com",
         "go":           "https://go.braunf.com",
       };
